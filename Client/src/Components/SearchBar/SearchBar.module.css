@@ -8,7 +8,7 @@
   top: 0px;
   right: 0;
 
-  padding: 0 30px;
+  padding-right: 30px;
 
   display: flex;
   align-items: center;
@@ -21,8 +21,15 @@
   flex: 1;
 }
 
-.link {
+.access {
   text-decoration: none;
-  margin-right: 16px;
+  margin: 0 16px;
+  /* Estilos para los enlaces "ACCESO" y "CARRITO" */
+}
+.cart {
+  font-size: 26px;
+  line-height: 0;
+  text-decoration: none;
+
   /* Estilos para los enlaces "ACCESO" y "CARRITO" */
 }

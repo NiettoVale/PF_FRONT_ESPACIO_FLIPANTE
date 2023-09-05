@@ -7,6 +7,8 @@ import {
   GET_CATEGORY,
   GET_GENDER,
   ORDER,
+  // PRICE_ORDER,
+  // GET_PRICES,
   GET_USER_NAME,
   FAVORITES,
 } from "./actionTypes";
@@ -16,14 +18,14 @@ const back = process.env.REACT_APP_BACK;
 export const getProducts = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${back}/products`);
+      const response = await axios.get(`${back}products`);
       const products = response.data;
 
       dispatch({ type: GET_PRODUCTS, payload: products });
 
       return products;
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con getProducts!");
       console.error("Error fetching products:", error);
     }
   };
@@ -32,14 +34,14 @@ export const getProducts = () => {
 export const postProduct = (productData) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`${back}/products`, productData);
+      const response = await axios.post(`${back}products`, productData);
       const createdProduct = response.data;
 
       dispatch({ type: POST_PRODUCT, payload: createdProduct });
 
       return createdProduct;
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con postProduct!");
       console.error("Error creating product:", error);
     }
   };
@@ -48,24 +50,39 @@ export const postProduct = (productData) => {
 export const getSizes = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios(`${back}/sizes`);
+      const { data } = await axios(`${back}sizes`);
 
       dispatch({ type: GET_SIZES, payload: data });
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con getSizes!");
       console.error(error);
     }
   };
 };
 
+// export const getPrices = () => {
+//   return async (dispatch) => {
+//     try {
+//       const { data } = await axios(
+//         "https://espacioflipante.onrender.com/prices"
+//       );
+
+//       dispatch({ type: GET_PRICES, payload: data });
+//     } catch (error) {
+//       alert("Algo salió mal con getPrices!");
+//       console.error(error);
+//     }
+//   };
+// };
+
 export const getGenders = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios(`${back}/gender`);
+      const { data } = await axios(`${back}gender`);
 
       dispatch({ type: GET_GENDER, payload: data });
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con getGenders!");
       console.error(error);
     }
   };
@@ -74,11 +91,11 @@ export const getGenders = () => {
 export const getCategory = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios(`${back}/category`);
+      const { data } = await axios(`${back}category`);
 
       dispatch({ type: GET_CATEGORY, payload: data });
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con getCategory!");
       console.error(error);
     }
   };
@@ -96,7 +113,7 @@ export const getFilters = (dataFilter) => {
         return;
       }
 
-      const response = await fetch(`${back}/filter`, {
+      const response = await fetch(`${back}filter`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +129,7 @@ export const getFilters = (dataFilter) => {
 
       dispatch({ type: FILTER, payload: data });
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con getFilters!");
       console.log(error);
     }
   };
@@ -121,7 +138,7 @@ export const getFilters = (dataFilter) => {
 export const getUserByName = (name) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`${back}/profile/${name}`);
+      const response = await fetch(`${back}profile/${name}`);
 
       const data = await response.json();
 
@@ -131,7 +148,7 @@ export const getUserByName = (name) => {
 
       dispatch({ type: GET_USER_NAME, payload: data });
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con getUserByName!");
       console.log(error);
     }
   };
@@ -141,7 +158,7 @@ export const addFavorite = (userId, productId) => {
   return async () => {
     try {
       const response = await fetch(
-        `${back}/users/${userId}/products/${productId}/favorite`,
+        `${back}users/${userId}/products/${productId}/favorite`,
         {
           method: "POST",
           headers: {
@@ -156,7 +173,7 @@ export const addFavorite = (userId, productId) => {
         alert(data.message);
       }
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con addFavorite!");
       console.log(error);
     }
   };
@@ -165,7 +182,7 @@ export const addFavorite = (userId, productId) => {
 export const getFavorites = (userId) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`${back}/favorites/${userId}`);
+      const response = await fetch(`${back}favorites/${userId}`);
 
       const data = await response.json();
 
@@ -175,7 +192,7 @@ export const getFavorites = (userId) => {
 
       dispatch({ type: FAVORITES, payload: data });
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con getFavorites!");
       console.log(error);
     }
   };
@@ -184,8 +201,8 @@ export const getFavorites = (userId) => {
 export const removeFromFavorites = (userId, productId) => {
   return async () => {
     try {
-      const response = await fetch(`${back}/favorites/${userId}/${productId}`, {
-        method: "DELETE", // Utiliza el método DELETE para eliminar el producto de favoritos
+      const response = await fetch(`${back}favorites/${userId}/${productId}`, {
+        method: "DELETE",
       });
 
       const data = await response.json();
@@ -199,7 +216,7 @@ export const removeFromFavorites = (userId, productId) => {
         window.location.href = "/userProfile";
       }
     } catch (error) {
-      alert("Algo salió mal!!!");
+      alert("Algo salió mal con removeFromFavorites!");
       console.log(error);
     }
   };
@@ -208,3 +225,6 @@ export const removeFromFavorites = (userId, productId) => {
 export const setOrderByName = (order) => {
   return { type: ORDER, payload: order };
 };
+// export const setOrderByPrice = (order) => {
+//   return { type: PRICE_ORDER, payload: order };
+// };
