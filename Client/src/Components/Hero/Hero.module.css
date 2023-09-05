@@ -1,0 +1,57 @@
+.heroContainer {
+  height: 1000px;
+  width: 98.9vw;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-image: url(../../assets/landing2.jpg);
+  background-position: center;
+  background-size: cover;
+
+  user-select: none;
+}
+
+.heroText h3,
+.heroText h1,
+.heroText h2 {
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: #333 2px 2px 5px;
+}
+
+.heroText h3 {
+  font-size: 33px;
+  color: #fff;
+}
+
+.heroText h1 {
+  font-family: "Jomhuria", cursive;
+  font-size: 300px;
+  line-height: 200px;
+
+  color: yellow;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #333;
+}
+
+.heroText h2 {
+  line-height: 0;
+  font-size: 64px;
+
+  color: #fff;
+}
+.heroText button {
+  margin-top: 70px;
+
+  border-radius: 50px;
+  border: solid 2px #fff;
+
+  color: #fff;
+  background-color: #e100ff;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}

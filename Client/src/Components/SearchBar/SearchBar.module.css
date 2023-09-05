@@ -1,0 +1,28 @@
+/* SearchBar.module.css */
+
+.searchBarContainer {
+  z-index: 1000;
+  height: 60px;
+
+  position: fixed;
+  top: 0px;
+  right: 0;
+
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #fff;
+}
+
+.flexSpace {
+  flex: 1;
+}
+
+.link {
+  text-decoration: none;
+  margin-right: 16px;
+  /* Estilos para los enlaces "ACCESO" y "CARRITO" */
+}

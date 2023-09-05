@@ -1,0 +1,20 @@
+.catalogueSection {
+  margin-top: 50px;
+}
+
+.catalogueSectionP {
+  margin-bottom: 50px;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+/* NavBar.module.css */
+
+.navBarWithSearch {
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos */
+}
+
+.spaceBetween {
+  width: 16px; /* Puedes ajustar el valor según el espacio deseado */
+}

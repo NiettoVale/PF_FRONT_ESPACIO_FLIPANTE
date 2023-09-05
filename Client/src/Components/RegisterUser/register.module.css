@@ -1,0 +1,67 @@
+/* Registro.module.css */
+.registerContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  align-items: center;
+}
+
+.formContainer {
+  display: flex;
+
+  align-items: center;
+  max-width: 350px;
+}
+
+.registerImage {
+  width: 40vw;
+  height: 400px;
+  background-image: url(../../assets/register.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+
+  width: 355px;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.input {
+  width: 330px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  color: #000;
+}
+
+.button {
+  background-color: #000;
+  color: #fff;
+  padding: auto;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.title {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.error {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  color: red;
+  margin-bottom: 1px;
+}
+span {
+  color: #e100ff;
+}

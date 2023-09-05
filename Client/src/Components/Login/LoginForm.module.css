@@ -1,0 +1,57 @@
+.loginView {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  justify-content: space-between;
+  min-width: 370px;
+  max-width: 1300px;
+  height: 100%;
+}
+
+.imageContainer {
+  width: 45vw;
+  height: 600px;
+  background-image: url(../../assets/login.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 340px;
+}
+.loginContainer div {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 14px;
+}
+.loginContainer input {
+  margin: 0;
+}
+.loginContainer button {
+  width: 100%;
+
+  margin-bottom: 30px;
+  padding: auto;
+}
+
+.internalLogin button {
+  margin-bottom: 10px;
+}
+.externalLogin button {
+  margin-bottom: 10px;
+  background-color: #fff;
+  color: #000;
+  border: solid 1px #000;
+}
+.registrate {
+  display: flex;
+  justify-content: space-around;
+}
+p a {
+  color: #e100ff;
+  font-weight: 600;
+}

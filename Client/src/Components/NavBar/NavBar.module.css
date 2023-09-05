@@ -1,0 +1,26 @@
+.navBar {
+  display: flex;
+  gap: 16px; /* Espacio entre los elementos */
+}
+
+.navBar a {
+  text-decoration: none;
+  color: black;
+}
+
+.navContainer {
+  z-index: 1000;
+  height: 60px;
+  width: 100%;
+
+  position: fixed;
+  top: 0px;
+
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #fff;
+}

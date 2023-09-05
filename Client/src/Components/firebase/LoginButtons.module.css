@@ -1,0 +1,14 @@
+.loginButtons {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+.googleIcon {
+  font-size: 30px;
+  margin-right: 8px;
+}
+.facebookIcon {
+  font-size: 26px;
+  margin-right: 8px;
+}

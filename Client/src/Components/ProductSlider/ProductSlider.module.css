@@ -1,0 +1,92 @@
+.sliderContainer {
+  background-color: #000;
+  color: yellow;
+  height: 500px;
+  overflow-x: hidden;
+  width: 100%;
+
+  padding: 50px 10px;
+  margin-bottom: 50px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.sliderCards {
+  margin: auto;
+  width: 1300px;
+}
+
+/*    ESTILOS DE CARTAS PARA SLIDE        */
+
+.cardContainer {
+  width: 240px;
+  height: 350px;
+  margin: auto;
+
+  /* border: solid 1px #333; */
+  border-radius: 15px;
+
+  background-color: #fff;
+  color: #000000;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  text-align: left;
+
+  transition: 300ms cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.cardContainer:hover {
+  box-shadow: 0 0 50px #dddddd;
+}
+.hoverMessage {
+  transition: 500ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  position: absolute;
+  opacity: 0;
+  width: 240px;
+  text-align: center;
+
+  padding: 8px 0;
+  margin-top: 280px;
+
+  color: #fff;
+  background-color: #333333da;
+}
+.cardContainer:hover .hoverMessage {
+  opacity: 1;
+}
+
+.imgCard {
+  margin: 0;
+  margin-bottom: 15px;
+
+  border-radius: 15px 15px 0 0;
+
+  width: 240px;
+  height: 200px;
+
+  object-fit: cover;
+  object-position: center;
+}
+.cardInfo p {
+  margin: 0 5px;
+}
+.cardName {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 16px;
+}
+
+.cardPrice {
+  font-size: 22px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

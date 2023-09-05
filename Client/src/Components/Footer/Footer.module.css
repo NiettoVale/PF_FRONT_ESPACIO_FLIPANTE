@@ -1,0 +1,35 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  height: 400px;
+  max-width: 98.9vw;
+
+  padding: 20px 0 20px 20px;
+
+  text-align: left;
+
+  background-color: #000;
+  color: #fff;
+}
+.footer ul li:first-child {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.footer ul {
+  margin: 50px 20px;
+}
+
+.leftFooter {
+  width: 250px;
+}
+.leftFooter h1 {
+  margin: 50px 20px;
+  font-size: 30px;
+}
+.rightFooter {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 60vw;
+}
