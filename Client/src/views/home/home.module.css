@@ -18,3 +18,46 @@
 .spaceBetween {
   width: 16px; /* Puedes ajustar el valor según el espacio deseado */
 }
+
+.filterButton {
+  position: absolute;
+  right: 10px;
+}
+.paginationButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  margin: 30px 0 50px 0;
+}
+.paginationButtons button {
+  border: solid 1px #000;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #000;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+  margin-right: 10px;
+}
+
+.currentPageButton:focus {
+  outline: #e100ff;
+  color: #fff;
+  background-color: #000;
+}
+.paginationButtons button:first-child,
+.paginationButtons button:last-of-type {
+  font-size: 16px;
+  padding: 3px 0 0 5px;
+}
+
+.paginationButtons button:last-of-type {
+  padding-right: 3px;
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Footer.module.css";
-import MapComponent from "../Mapa/MapComponent"
+import MapComponent from "../Mapa/MapComponent";
 
 const Footer = () => {
   return (
@@ -18,7 +18,11 @@ const Footer = () => {
           <li>Twitter</li>
         </ul>
       </div>
-      <MapComponent/>
+
+      <div className={styles.mapContainer}>
+        <MapComponent />
+      </div>
+
       <div className={styles.rightFooter}>
         <ul className={styles.appData}>
           <li>Shop</li>

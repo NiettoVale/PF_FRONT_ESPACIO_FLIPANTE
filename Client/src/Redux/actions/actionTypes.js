@@ -4,6 +4,9 @@ export const POST_PRODUCT = "POST_PRODUCT";
 export const GET_GENDER = "GET_GENDER";
 export const GET_CATEGORY = "GET_CATEGORY";
 export const GET_SIZES = "GET_SIZES";
+// export const GET_PRICES = "GET_PRICES";
+// export const PRICE_ORDER = "PRICE_ORDER";
+
 export const FILTER = "FILTER";
 export const ORDER = "ORDER";
 export const GET_USER_NAME = "GET_USER_NAME";
