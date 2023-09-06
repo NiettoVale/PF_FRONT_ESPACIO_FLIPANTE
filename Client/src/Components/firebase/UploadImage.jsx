@@ -38,7 +38,7 @@ function UploadImage({ handleImageURLChange, imageURLs }) {
   return (
     <div>
       <input type="file" onChange={handleImageChange} />
-      <button onClick={() => handleImageUpload(imageURLs.length)}>Subir Imagen</button>
+      <button type="button" onClick={() => handleImageUpload(imageURLs.length)}>Subir Imagen</button>
     </div>
   );
 }

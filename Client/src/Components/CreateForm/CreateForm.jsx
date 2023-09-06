@@ -68,6 +68,8 @@ function CreateForm() {
     dispatch(getCategory());
   }, [dispatch]);
 
+
+
   const handleImageURLChange = (index, imageURL) => {
     const newImages = [...formData.images];
     newImages[index] = imageURL;
@@ -86,13 +88,7 @@ function CreateForm() {
     return pattern.test(url);
   };
 
-  const handleAddImageInput = () => {
-    setFormData({
-      ...formData,
-      images: [...formData.images, ""],
-    });
-    setIsValidUrls([...isValidUrls, true]);
-  };
+
 
   const handleRemoveImageInput = (index) => {
     const newImages = [...formData.images];
@@ -238,19 +234,19 @@ function CreateForm() {
             {isValidUrls[index] ? null : (
               <span className={styles["error-message"]}>URL inválida</span>
             )}
-            {index > 0 && (
+            
               <button
                 type="button"
                 onClick={() => handleRemoveImageInput(index)}
               >
                 Eliminar
               </button>
-            )}
+            
           </div>
         ))}
-        <button type="button" onClick={handleAddImageInput}>
+        {/* <button type="button" onClick={handleAddImageInput}>
           Agregar Otra Imagen
-        </button>
+        </button> */}
       </div>
 
       <div>
