@@ -11,6 +11,8 @@ import ProductSlider from "../../Components/ProductSlider/ProductSlider";
 import styles from "./home.module.css";
 import Footer from "../../Components/Footer/Footer";
 
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+
 const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
@@ -93,49 +95,62 @@ const Home = () => {
 
       <FilterBar />
 
-      <button className={styles.unButton} onClick={prev}>
-        PREV
-      </button>
-      {pageNumbers.map((number) => (
+      <div className={styles.paginationButtons}>
         <button
-          className={`${styles.unButton} ${
-            number === currentPage ? styles.currentPageButton : ""
-          }`}
-          key={number}
-          onClick={() => handlePageChange(number)}
+          className={styles.unButton}
+          onClick={prev}
+          disabled={currentPage === 1}
         >
-          {number}
+          <MdArrowBackIos />
         </button>
-      ))}
-      <button className={styles.unButton} onClick={next}>
-        NEXT
-      </button>
+
+        {pageNumbers.map((number) => (
+          <button
+            className={`${styles.unButton} ${
+              number === currentPage ? styles.currentPageButton : ""
+            }`}
+            key={number}
+            onClick={() => handlePageChange(number)}
+          >
+            {number}
+          </button>
+        ))}
+
+        <button
+          className={styles.unButton}
+          onClick={next}
+          disabled={currentPage === pageNumbers.length}
+        >
+          <MdArrowForwardIos />
+        </button>
+      </div>
+
       <div className="cards-container">
         {productsFiltered.length > 0 ? (
           <>
-            <h2>Soy filtrado</h2>
+            <h2>Productos seleccionados</h2>
             <Cards products={productsFiltered} />
           </>
         ) : null}
-
-        {busqueda === "" ? (
-          <>
-            <h1>Catalogo</h1>
-            <Cards products={currentProducts} />
-          </>
-        ) : (
-          <>
-            {currentProducts.length > 0 ? (
-              <>
-                <h1>Resultado de búsqueda</h1>
-                <Cards products={currentProducts} />
-              </>
-            ) : (
-              <p>No se encontraron productos.</p>
-            )}
-          </>
-        )}
       </div>
+
+      {busqueda === "" ? (
+        <>
+          <h1>Catalogo</h1>
+          <Cards products={currentProducts} />
+        </>
+      ) : (
+        <>
+          {currentProducts.length > 0 ? (
+            <>
+              <h1>Resultado de búsqueda</h1>
+              <Cards products={currentProducts} />
+            </>
+          ) : (
+            <p>No se encontraron productos.</p>
+          )}
+        </>
+      )}
 
       <Footer />
     </div>

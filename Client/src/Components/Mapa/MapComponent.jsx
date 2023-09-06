@@ -42,7 +42,17 @@ const MapComponent = () => {
     };
   }, []);
 
-  return <div id="map" style={{ width: "500px", height: "250px" }}></div>; // Ajusta el tamaño del contenedor del mapa aquí
+  return (
+    <div
+      id="map"
+      style={{
+        width: "280px",
+        height: "250px",
+        borderRadius: "15px",
+        marginRight: "0",
+      }}
+    ></div>
+  ); // Ajusta el tamaño del contenedor del mapa aquí
 };
 
 export default MapComponent;

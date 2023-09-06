@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./SearchBar.module.css";
 import { Link } from "react-router-dom";
+import Header from "../Cart/cart";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const handleChange = (event) => {
@@ -17,11 +18,13 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         className={styles.searchInput}
       />
       <div className={styles.flexSpace}></div>
-      <Link to={"/login"} className={styles.link}>
+      <Link to={"/login"} className={styles.access}>
         ACCESO
       </Link>
 
-      <Link className={styles.link}>CARRITO</Link>
+      <Link className={styles.cart}>
+        <Header />
+      </Link>
     </div>
   );
 }

@@ -5,21 +5,28 @@ import NavBar from "../../Components/NavBar/navBar";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addFavorite,
+  addproductCart,
   getFavorites,
+  getproductCart,
   getUserByName,
   removeFromFavorites,
+  removeproductCart,
 } from "../../Redux/actions/productsActions";
 
 export default function Detail() {
+  //----ESTADOS
   const { id } = useParams();
   const [cardDetail, setCardDetail] = useState({});
   const [imageDetail, setImageDetail] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [productCart, setProductCart] = useState(false);
 
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const favorites = useSelector((state) => state.myFavorites);
+  const cart = useSelector((state) => state.myCart);
 
+  //----USER
   let userId = 0;
   if (user.length > 0) {
     userId = user[0].id;
@@ -27,10 +34,34 @@ export default function Detail() {
 
   const dispatch = useDispatch();
 
+  //----FUNCIONES
+  const handleCart = () => {
+    if (productCart) {
+      dispatch(removeproductCart(userId, id)); // Elimina del Carrito
+    } else {
+      dispatch(addproductCart(userId, id)); // Agrega al Carrito
+    }
+    // Actualiza el estado después de que la acción se haya completado
+    setProductCart(!productCart); // Cambia el estado para reflejar si es favorito o no
+  };
+
+  const handleToggleFavorites = () => {
+    if (isFavorite) {
+      dispatch(removeFromFavorites(userId, id)); // Elimina de favoritos
+    } else {
+      dispatch(addFavorite(userId, id)); // Agrega a favoritos
+    }
+    // Actualiza el estado después de que la acción se haya completado
+    setIsFavorite(!isFavorite); // Cambia el estado para reflejar si es favorito o no
+  };
+
+  //----USE_EFFECT
+
   useEffect(() => {
     dispatch(getUserByName(name));
     if (userId) {
       dispatch(getFavorites(userId));
+      dispatch(getproductCart(userId));
     }
   }, [dispatch, name, userId]);
 
@@ -60,20 +91,14 @@ export default function Detail() {
     fetchData();
   }, [id]);
 
-  const handleToggleFavorites = () => {
-    if (isFavorite) {
-      dispatch(removeFromFavorites(userId, id)); // Elimina de favoritos
-    } else {
-      dispatch(addFavorite(userId, id)); // Agrega a favoritos
-    }
-    // Actualiza el estado después de que la acción se haya completado
-    setIsFavorite(!isFavorite); // Cambia el estado para reflejar si es favorito o no
-  };
-
   useEffect(() => {
     if (user && user.length > 0 && favorites) {
       const favoriteProductIds = favorites.map((favorite) => favorite.id);
       setIsFavorite(favoriteProductIds.includes(parseInt(id)));
+    }
+    if (user && user.length > 0 && cart) {
+      const cartProductIds = cart.map((product) => product.id);
+      setProductCart(cartProductIds.includes(parseInt(id)));
     }
   }, [id, user]);
 
@@ -130,7 +155,9 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button className={styles.cartButton}>AGREGAR AL CARRITO</button>
+            <button className={styles.favButton} onClick={handleCart}>
+              {productCart ? "Eliminar de Carrito" : "Agregar al Carrito"}
+            </button>
           </div>
         </div>
       </div>
