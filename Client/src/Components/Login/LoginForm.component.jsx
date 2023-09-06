@@ -11,17 +11,20 @@ const LoginForm = () => {
     password: "",
   });
 
+  const [loginError, setLoginError] = useState({});
+
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value.toLowerCase() }); // Almacena el valor real (mayúsculas)
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`${back}/login`, {
+      console.log(JSON.stringify(formData));
+      const response = await fetch(`${back}login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,6 +33,7 @@ const LoginForm = () => {
       });
 
       const responseData = await response.json();
+      console.log(responseData);
 
       if (response.status === 200) {
         // Al inicio de sesión exitoso, guarda la información en localStorage
@@ -37,11 +41,11 @@ const LoginForm = () => {
         alert("Inicio de sesion exitoso!!");
         navigate("/");
       } else if (response.status === 404) {
-        alert(responseData.error);
+        setLoginError({ userNotFound: responseData.error });
       } else if (response.status === 401) {
-        alert(responseData.error);
+        setLoginError({ invalidPassword: responseData.error });
       } else if (response.status === 500) {
-        alert(responseData.error);
+        setLoginError({ serverError: responseData.error });
       }
     } catch (error) {
       alert("Algo salió mal.");
@@ -74,8 +78,12 @@ const LoginForm = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="nombre de usuario o email"
+              autoCapitalize="off"
             />
           </div>
+          {loginError.userNotFound ? (
+            <p className={styles.error}>{loginError.userNotFound}</p>
+          ) : null}
           <div>
             <label htmlFor="password">Contraseña</label>
             <input
@@ -86,6 +94,10 @@ const LoginForm = () => {
               placeholder="password"
             />
           </div>
+
+          {loginError.invalidPassword ? (
+            <p className={styles.error}>{loginError.invalidPassword}</p>
+          ) : null}
 
           <div className={styles.internalLogin}>
             <button type="submit">Iniciar Sesión</button>
@@ -99,9 +111,7 @@ const LoginForm = () => {
         </form>
         <p className={styles.registrate}>
           ¿No tienes una cuenta?
-          <Link to="/register">
-            <a>¡Regístrate!</a>
-          </Link>
+          <Link to="/register">¡Regístrate!</Link>
         </p>
       </div>
     </div>

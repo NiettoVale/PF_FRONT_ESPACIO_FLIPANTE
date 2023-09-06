@@ -157,21 +157,12 @@ export const getUserByName = (name) => {
 export const addFavorite = (userId, productId) => {
   return async () => {
     try {
-      const response = await fetch(
-        `${back}users/${userId}/products/${productId}/favorite`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.status === 200) {
-        alert(data.message);
-      }
+      await fetch(`${back}users/${userId}/products/${productId}/favorite`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     } catch (error) {
       alert("Algo salió mal con addFavorite!");
       console.log(error);
@@ -209,11 +200,6 @@ export const removeFromFavorites = (userId, productId) => {
 
       if (response.status === 404) {
         alert(data.message);
-      }
-
-      if (response.status === 200) {
-        alert(data.message);
-        window.location.href = "/userProfile";
       }
     } catch (error) {
       alert("Algo salió mal con removeFromFavorites!");
