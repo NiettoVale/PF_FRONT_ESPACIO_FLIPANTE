@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./CreateForm.module.css";
+import UploadImage from "../firebase/UploadImage";
+
 import {
   getCategory,
   getGenders,
   getSizes,
 } from "../../Redux/actions/productsActions";
 
-const CreateForm = () => {
+function CreateForm() {
   const [formData, setFormData] = useState({
+
+    
     name: "",
     gender: "Seleccionar",
     category: "Seleccionar",
     sizes: {},
     mainMaterial: "",
     description: "",
-    images: [""],
+    images: [],
     price: 0,
     stock: 0,
   });
 
-  const [isValidUrls, setIsValidUrls] = useState([true]);
+  const [isValidUrls, setIsValidUrls] = useState([]);
+  const back = process.env.REACT_APP_BACK;
 
   const dispatch = useDispatch();
   const sizesOptions = useSelector((state) => state.sizes);
@@ -46,7 +51,7 @@ const CreateForm = () => {
     });
   };
 
-  const calculatestock = () => {
+  const calculateStock = () => {
     const total = Object.values(formData.sizes).reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       0
@@ -63,16 +68,18 @@ const CreateForm = () => {
     dispatch(getCategory());
   }, [dispatch]);
 
-  const handleImageInputChange = (index, event) => {
+
+
+  const handleImageURLChange = (index, imageURL) => {
     const newImages = [...formData.images];
-    newImages[index] = event.target.value;
+    newImages[index] = imageURL;
     setFormData({
       ...formData,
       images: newImages,
     });
 
     const newIsValidUrls = [...isValidUrls];
-    newIsValidUrls[index] = isValidUrl(event.target.value);
+    newIsValidUrls[index] = isValidUrl(imageURL);
     setIsValidUrls(newIsValidUrls);
   };
 
@@ -81,14 +88,7 @@ const CreateForm = () => {
     return pattern.test(url);
   };
 
-  const handleAddImageInput = () => {
-    const newImages = [...formData.images, ""];
-    setFormData({
-      ...formData,
-      images: newImages,
-    });
-    setIsValidUrls([...isValidUrls, true]);
-  };
+
 
   const handleRemoveImageInput = (index) => {
     const newImages = [...formData.images];
@@ -107,18 +107,13 @@ const CreateForm = () => {
     event.preventDefault();
 
     try {
-      // Crear un objeto de opciones para la solicitud POST
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData), // Convertir el objeto formData a JSON
+        body: JSON.stringify(formData),
       };
 
-      // Realizar la solicitud POST al servidor
-      const response = await fetch(
-        "https://espacioflipante.onrender.com/products",
-        requestOptions
-      );
+      const response = await fetch(`${back}products`, requestOptions);
 
       const responseData = await response.json();
 
@@ -131,7 +126,7 @@ const CreateForm = () => {
       }
     } catch (error) {
       alert("Algo salió mal!!");
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -191,9 +186,9 @@ const CreateForm = () => {
             <input
               type="number"
               name={`sizes_${size}`}
-              value={formData.sizes[`sizes_${size}`] || 0} // Cambia formData.sizes[size] a formData.sizes[`sizes_${size}`]
+              value={formData.sizes[`sizes_${size}`] || 0}
               onChange={handleSizeChange}
-              onBlur={calculatestock}
+              onBlur={calculateStock}
             />
           </div>
         ))}
@@ -221,6 +216,10 @@ const CreateForm = () => {
       </div>
 
       <div>
+        <UploadImage
+          handleImageURLChange={handleImageURLChange}
+          imageURLs={formData.images}
+        />
         <label htmlFor="images">Imágenes (Ingrese una URL por línea)</label>
         {formData.images.map((image, index) => (
           <div key={index}>
@@ -228,24 +227,26 @@ const CreateForm = () => {
               type="text"
               name={`image_${index}`}
               value={image}
-              onChange={(event) => handleImageInputChange(index, event)}
+              onChange={(event) =>
+                handleImageURLChange(index, event.target.value)
+              }
             />
             {isValidUrls[index] ? null : (
               <span className={styles["error-message"]}>URL inválida</span>
             )}
-            {index > 0 && (
+            
               <button
                 type="button"
                 onClick={() => handleRemoveImageInput(index)}
               >
                 Eliminar
               </button>
-            )}
+            
           </div>
         ))}
-        <button type="button" onClick={handleAddImageInput}>
+        {/* <button type="button" onClick={handleAddImageInput}>
           Agregar Otra Imagen
-        </button>
+        </button> */}
       </div>
 
       <div>
@@ -265,6 +266,6 @@ const CreateForm = () => {
       </button>
     </form>
   );
-};
+}
 
 export default CreateForm;
