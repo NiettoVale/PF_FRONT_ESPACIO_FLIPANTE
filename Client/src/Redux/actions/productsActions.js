@@ -11,6 +11,7 @@ import {
   // GET_PRICES,
   GET_USER_NAME,
   FAVORITES,
+  CART,
 } from "./actionTypes";
 
 const back = process.env.REACT_APP_BACK;
@@ -179,6 +180,31 @@ export const addFavorite = (userId, productId) => {
   };
 };
 
+export const addproductCart = (userId, productId) => {
+  return async () => {
+    try {
+      const response = await fetch(
+        `${back}users/${userId}/products/${productId}/cart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.status === 200) {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Algo salió mal con addproductCart!");
+      console.log(error);
+    }
+  };
+};
+
 export const getFavorites = (userId) => {
   return async (dispatch) => {
     try {
@@ -191,6 +217,25 @@ export const getFavorites = (userId) => {
       }
 
       dispatch({ type: FAVORITES, payload: data });
+    } catch (error) {
+      alert("Algo salió mal con getFavorites!");
+      console.log(error);
+    }
+  };
+};
+
+export const getproductCart = (userId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`${back}cart/${userId}`);
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        alert(data.message);
+      }
+
+      dispatch({ type: CART, payload: data });
     } catch (error) {
       alert("Algo salió mal con getFavorites!");
       console.log(error);
@@ -222,9 +267,34 @@ export const removeFromFavorites = (userId, productId) => {
   };
 };
 
+export const removeproductCart = (userId, productId) => {
+  return async () => {
+    try {
+      const response = await fetch(`${back}cart/${userId}/${productId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        alert(data.message);
+      }
+
+      if (response.status === 200) {
+        alert(data.message);
+        window.location.href = "/userProfile";
+      }
+    } catch (error) {
+      alert("Algo salió mal con removeproductCart!");
+      console.log(error);
+    }
+  };
+};
+
 export const setOrderByName = (order) => {
   return { type: ORDER, payload: order };
 };
+
 // export const setOrderByPrice = (order) => {
 //   return { type: PRICE_ORDER, payload: order };
 // };
