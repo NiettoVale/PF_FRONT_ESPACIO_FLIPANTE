@@ -228,7 +228,7 @@ export const getproductCart = (userId) => {
 
       dispatch({ type: CART, payload: data });
     } catch (error) {
-      alert("Algo salió mal con getFavorites!");
+      alert("Algo salió mal con getProductCart!");
       console.log(error);
     }
   };
