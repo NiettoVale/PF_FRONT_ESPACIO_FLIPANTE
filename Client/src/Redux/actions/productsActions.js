@@ -51,7 +51,7 @@ export const postProduct = (productData) => {
 export const getSizes = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios(`${back}sizes`);
+      const { data } = await axios.get(`${back}sizes`);
 
       dispatch({ type: GET_SIZES, payload: data });
     } catch (error) {
