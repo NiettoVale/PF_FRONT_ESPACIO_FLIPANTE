@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./SearchBar.module.css";
 import { Link } from "react-router-dom";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import Header from "../Cart/cart";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const handleChange = (event) => {
@@ -23,7 +23,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
       </Link>
 
       <Link className={styles.cart}>
-        <AiOutlineShoppingCart />
+        <Header />
       </Link>
     </div>
   );

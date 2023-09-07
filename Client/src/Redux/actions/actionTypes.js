@@ -11,4 +11,6 @@ export const FILTER = "FILTER";
 export const ORDER = "ORDER";
 export const GET_USER_NAME = "GET_USER_NAME";
 export const FAVORITES = "FAVORITES";
+export const CART = "REMOVE_FROM_FAVORITES";
 export const REMOVE_FROM_FAVORITES = "REMOVE_FROM_FAVORITES";
+export const REMOVE_FROM_CART = "REMOVE_FROM_FAVORITES";

@@ -21,7 +21,7 @@ const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`${back}/login`, {
+      const response = await fetch(`${back}login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
