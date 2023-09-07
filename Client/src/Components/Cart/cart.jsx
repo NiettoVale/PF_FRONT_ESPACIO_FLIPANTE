@@ -11,6 +11,7 @@ const Header = () => {
       <Link to={"/cart"}>Carrito</Link>
     </header>
   );
+
 };
 
 export default Header;

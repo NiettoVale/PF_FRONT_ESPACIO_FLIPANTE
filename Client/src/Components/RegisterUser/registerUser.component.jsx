@@ -37,7 +37,6 @@ const Registro = () => {
 
   const handleSubmit = async () => {
     try {
-      console.log(JSON.stringify(newUser));
       const response = await fetch(`${back}register`, {
         method: "POST",
         headers: {
