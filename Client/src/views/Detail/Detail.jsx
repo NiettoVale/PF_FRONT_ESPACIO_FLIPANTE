@@ -14,7 +14,9 @@ import {
 } from "../../Redux/actions/productsActions";
 
 export default function Detail() {
+
   const back = process.env.REACT_APP_BACK;
+
   //----ESTADOS
   const { id } = useParams();
   const [cardDetail, setCardDetail] = useState({});

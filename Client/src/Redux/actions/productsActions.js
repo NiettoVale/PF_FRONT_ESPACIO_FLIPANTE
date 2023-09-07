@@ -158,8 +158,24 @@ export const getUserByName = (name) => {
 export const addFavorite = (userId, productId) => {
   return async () => {
     try {
+      await fetch(`${back}users/${userId}/products/${productId}/favorite`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      alert("Algo salió mal con addFavorite!");
+      console.log(error);
+    }
+  };
+};
+
+export const addproductCart = (userId, productId) => {
+  return async () => {
+    try {
       const response = await fetch(
-        `${back}users/${userId}/products/${productId}/favorite`,
+        `${back}users/${userId}/products/${productId}/cart`,
         {
           method: "POST",
           headers: {
@@ -174,7 +190,7 @@ export const addFavorite = (userId, productId) => {
         alert(data.message);
       }
     } catch (error) {
-      alert("Algo salió mal con addFavorite!");
+      alert("Algo salió mal con addproductCart!");
       console.log(error);
     }
   };
@@ -237,7 +253,10 @@ export const getproductCart = (userId) => {
 
       dispatch({ type: CART, payload: data });
     } catch (error) {
-      alert("Algo salió mal con getFavorites!");
+
+      alert("Algo salió mal con getProductCart!");
+
+
       console.log(error);
     }
   };
@@ -255,13 +274,32 @@ export const removeFromFavorites = (userId, productId) => {
       if (response.status === 404) {
         alert(data.message);
       }
+    } catch (error) {
+      alert("Algo salió mal con removeFromFavorites!");
+      console.log(error);
+    }
+  };
+};
+
+export const removeproductCart = (userId, productId) => {
+  return async () => {
+    try {
+      const response = await fetch(`${back}cart/${userId}/${productId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        alert(data.message);
+      }
 
       if (response.status === 200) {
         alert(data.message);
         window.location.href = "/userProfile";
       }
     } catch (error) {
-      alert("Algo salió mal con removeFromFavorites!");
+      alert("Algo salió mal con removeproductCart!");
       console.log(error);
     }
   };
