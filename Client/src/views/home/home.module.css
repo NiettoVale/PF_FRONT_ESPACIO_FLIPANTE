@@ -46,7 +46,9 @@
   padding: 0;
   margin-right: 10px;
 }
-
+.currentPageButton:hover {
+  background: #000;
+}
 .currentPageButton:focus {
   outline: #e100ff;
   color: #fff;

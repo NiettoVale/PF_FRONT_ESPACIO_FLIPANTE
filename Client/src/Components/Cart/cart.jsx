@@ -6,7 +6,12 @@ const Header = () => {
     const cartData = JSON.parse(localStorage.getItem("cartData")) || {};
   }, []);
 
-  return <header></header>;
+  return (
+    <header>
+      <Link to={"/cart"}>Carrito</Link>
+    </header>
+  );
+
 };
 
 export default Header;
