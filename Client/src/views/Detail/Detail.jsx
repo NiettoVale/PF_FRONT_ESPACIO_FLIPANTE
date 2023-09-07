@@ -14,6 +14,7 @@ import {
 } from "../../Redux/actions/productsActions";
 
 export default function Detail() {
+  const back = process.env.REACT_APP_BACK;
   //----ESTADOS
   const { id } = useParams();
   const [cardDetail, setCardDetail] = useState({});
@@ -68,9 +69,7 @@ export default function Detail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://espacioflipante.onrender.com/detail/${id}`
-        );
+        const response = await fetch(`${back}detail/${id}`);
 
         const data = await response.json();
 

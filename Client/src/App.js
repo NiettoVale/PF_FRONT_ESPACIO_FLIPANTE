@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Detail from "./views/detail/Detail";
+import Detail from "./views/Detail/Detail";
 import Home from "./views/home/home.component";
 import CartView from "./views/cart/cartView";
 import CreateProduct from "./views/create/create.view";
