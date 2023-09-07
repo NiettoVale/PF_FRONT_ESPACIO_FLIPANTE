@@ -23,9 +23,6 @@ const NavBar = () => {
         <Link to={"/"} className={styles.link}>
           CATALOGO
         </Link>
-        <Link to={"/"} className={styles.link}>
-          OFERTAS
-        </Link>
 
         {storedUsername ? (
           <div>
