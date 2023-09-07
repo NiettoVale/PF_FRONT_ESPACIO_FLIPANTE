@@ -122,13 +122,13 @@ export const getFilters = (dataFilter) => {
         body: JSON.stringify(dataFilter),
       });
 
-      const data = await response.json();
-
       if (response.status === 404) {
+        const data = await response.json(); // Espera la respuesta antes de procesarla
         alert(data.message);
+      } else {
+        const data = await response.json(); // Espera la respuesta antes de procesarla
+        dispatch({ type: FILTER, payload: data });
       }
-
-      dispatch({ type: FILTER, payload: data });
     } catch (error) {
       alert("Algo salió mal con getFilters!");
       console.log(error);
