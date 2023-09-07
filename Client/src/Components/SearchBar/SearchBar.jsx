@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import { Link } from "react-router-dom";
 
@@ -21,10 +21,19 @@ const logOut = () => {
 };
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
+  const [storedUsername, setStoredUsername] = useState(
+    localStorage.getItem("username")
+  );
+
   const handleChange = (event) => {
     setBusqueda(event.target.value);
     filterSearch(event.target.value);
   };
+
+  useEffect(() => {
+    // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
+    setStoredUsername(localStorage.getItem("username"));
+  }, []);
 
   return (
     <div className={styles.searchBarContainer}>
