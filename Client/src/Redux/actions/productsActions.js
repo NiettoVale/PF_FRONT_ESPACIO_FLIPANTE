@@ -171,30 +171,6 @@ export const addFavorite = (userId, productId) => {
   };
 };
 
-export const addproductCart = (userId, productId) => {
-  return async () => {
-    try {
-      const response = await fetch(
-        `${back}users/${userId}/products/${productId}/cart`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.status === 200) {
-        alert(data.message);
-      }
-    } catch (error) {
-      alert("Algo salió mal con addproductCart!");
-      console.log(error);
-    }
-  };
-};
 
 export const addproductCart = (userId, productId) => {
   return async () => {
@@ -305,29 +281,6 @@ export const removeproductCart = (userId, productId) => {
   };
 };
 
-export const removeproductCart = (userId, productId) => {
-  return async () => {
-    try {
-      const response = await fetch(`${back}cart/${userId}/${productId}`, {
-        method: "DELETE",
-      });
-
-      const data = await response.json();
-
-      if (response.status === 404) {
-        alert(data.message);
-      }
-
-      if (response.status === 200) {
-        alert(data.message);
-        window.location.href = "/userProfile";
-      }
-    } catch (error) {
-      alert("Algo salió mal con removeproductCart!");
-      console.log(error);
-    }
-  };
-};
 
 export const setOrderByName = (order) => {
   return { type: ORDER, payload: order };
