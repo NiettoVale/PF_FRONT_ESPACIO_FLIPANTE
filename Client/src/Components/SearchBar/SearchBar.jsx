@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import { Link } from "react-router-dom";
 
-
 import {
   HiOutlineShoppingCart,
   HiOutlineLogin,
@@ -46,12 +45,9 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         placeholder="BUSCAR"
       />
 
-
       <Link to={"/cart"} className={styles.cart}>
         <HiOutlineShoppingCart />
-
-      <Link className={styles.cart}>
-
+      </Link> {/* Aquí cerré el elemento Link */}
 
       <div className={styles.flexSpace}></div>
 
@@ -60,7 +56,6 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
           <Link to={"/userProfile"}>
             <HiOutlineUserCircle className={styles.userIcon} />
           </Link>
-
           <Link to={"/"}>
             <HiOutlineLogout className={styles.access} onClick={logOut} />
           </Link>
