@@ -2,18 +2,27 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./register.module.css";
 import validationRegister from "./validationRegister";
+import { createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+} from 'firebase/auth';
+
 const back = process.env.REACT_APP_BACK;
 
 const Registro = () => {
+  // Creamos un estado local para almacenar al nuevo usuario
   const [newUser, setNewUser] = useState({
+    // estas son las propiedades necesarias para crear al nuevo usuario
     name: "",
     email: "",
     password: "",
   });
 
+  // Creamos un estado local para almacenar los errores que surjan mediante la validación.
   const [registerErrors, setRegisterErrors] = useState({});
   const navigate = useNavigate();
 
+  // Creamos una función que maneja los cambios de los inputs
   const handleChange = (event) => {
     // Destructuramos dos valores de target -> (name, value)
     const { name, value } = event.target;
@@ -35,8 +44,10 @@ const Registro = () => {
     );
   };
 
+  // Creamos una función que se ejecuta cuando enviamos el formulario.
   const handleSubmit = async () => {
     try {
+      // Realizamos una petición al backend usando fetch y le pasamos el método y lo que le queremos enviar.
       const response = await fetch(`${back}register`, {
         method: "POST",
         headers: {
@@ -45,17 +56,40 @@ const Registro = () => {
         body: JSON.stringify(newUser),
       });
 
+      // Obtenemos los datos de la respuesta de la petición y los almacenamos
       const responseData = await response.json();
 
+      // Verificamos el estado de las posibles respuestas del servidor y mostramos adecuadamente los mensajes:
       if (response.status === 200) {
-        alert(responseData.message);
+        try {
+          const auth = getAuth();
+          const userCredentials = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);
+          // Enviar correo de verificación
+          
+          await sendEmailVerification(userCredentials.user);
+          
+        } catch (error) {
+          console.error('Error:', error.message);
+        }
+
+
+
+        alert("Usuario registrado exitosamente. Correo de verificación enviado.");
         navigate("/login");
+        // window.location.reload();
+     
+       
+
+
+
+
       } else if (response.status === 400) {
-        alert(responseData.message);
+        setRegisterErrors({ badRequest: responseData.message });
       } else if (response.status === 500) {
         setRegisterErrors({ serverError: responseData.message });
       }
     } catch (error) {
+      // Si hubo algún error que no es del servidor, lo mostramos
       alert("Algo salió mal.");
       console.log(error.message);
     }
@@ -99,8 +133,12 @@ const Registro = () => {
               onChange={handleChange}
               placeholder="Contraseña"
             />
-            {registerErrors.invalidPassword && (
-              <p className={styles.error}>{registerErrors.invalidPassword}</p>
+            {registerErrors.badRequest ? (
+              <p className={styles.error}>{registerErrors.badRequest}</p>
+            ) : (
+              registerErrors.invalidPassword && (
+                <p className={styles.error}>{registerErrors.invalidPassword}</p>
+              )
             )}
           </div>
 
@@ -109,7 +147,9 @@ const Registro = () => {
           </button>
 
           <Link to={"/login"}>
-            ¿Ya tienes una cuenta? <span>Inicia sesión</span>
+            <a>
+              ¿Ya tienes una cuenta? <span>Inicia sesión</span>
+            </a>
           </Link>
         </div>
       </div>
