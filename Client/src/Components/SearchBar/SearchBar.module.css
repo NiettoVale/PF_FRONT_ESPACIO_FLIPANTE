@@ -23,13 +23,20 @@
 
 .access {
   text-decoration: none;
-  margin: 0 16px;
+  font-size: 22px;
+  line-height: 0;
+
   /* Estilos para los enlaces "ACCESO" y "CARRITO" */
 }
 .cart {
-  font-size: 26px;
+  font-size: 22px;
   line-height: 0;
-  text-decoration: none;
+  margin: 0 16px;
 
   /* Estilos para los enlaces "ACCESO" y "CARRITO" */
+}
+.userIcon {
+  font-size: 22px;
+  margin: 6px 16px 0 0;
+  line-height: 0;
 }
