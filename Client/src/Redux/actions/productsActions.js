@@ -51,7 +51,7 @@ export const postProduct = (productData) => {
 export const getSizes = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios(`${back}sizes`);
+      const { data } = await axios.get(`${back}sizes`);
 
       dispatch({ type: GET_SIZES, payload: data });
     } catch (error) {
@@ -122,13 +122,13 @@ export const getFilters = (dataFilter) => {
         body: JSON.stringify(dataFilter),
       });
 
-      const data = await response.json();
-
       if (response.status === 404) {
+        const data = await response.json(); // Espera la respuesta antes de procesarla
         alert(data.message);
+      } else {
+        const data = await response.json(); // Espera la respuesta antes de procesarla
+        dispatch({ type: FILTER, payload: data });
       }
-
-      dispatch({ type: FILTER, payload: data });
     } catch (error) {
       alert("Algo salió mal con getFilters!");
       console.log(error);
@@ -196,6 +196,31 @@ export const addproductCart = (userId, productId) => {
   };
 };
 
+export const addproductCart = (userId, productId) => {
+  return async () => {
+    try {
+      const response = await fetch(
+        `${back}users/${userId}/products/${productId}/cart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.status === 200) {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Algo salió mal con addproductCart!");
+      console.log(error);
+    }
+  };
+};
+
 export const getFavorites = (userId) => {
   return async (dispatch) => {
     try {
@@ -228,7 +253,10 @@ export const getproductCart = (userId) => {
 
       dispatch({ type: CART, payload: data });
     } catch (error) {
+
       alert("Algo salió mal con getProductCart!");
+
+
       console.log(error);
     }
   };
@@ -248,6 +276,30 @@ export const removeFromFavorites = (userId, productId) => {
       }
     } catch (error) {
       alert("Algo salió mal con removeFromFavorites!");
+      console.log(error);
+    }
+  };
+};
+
+export const removeproductCart = (userId, productId) => {
+  return async () => {
+    try {
+      const response = await fetch(`${back}cart/${userId}/${productId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        alert(data.message);
+      }
+
+      if (response.status === 200) {
+        alert(data.message);
+        window.location.href = "/userProfile";
+      }
+    } catch (error) {
+      alert("Algo salió mal con removeproductCart!");
       console.log(error);
     }
   };
