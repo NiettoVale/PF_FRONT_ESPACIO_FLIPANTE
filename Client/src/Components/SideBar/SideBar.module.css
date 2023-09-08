@@ -1,0 +1,35 @@
+.sidebar {
+  background-color: #333; /* Color de fondo de la barra lateral */
+  color: #fff; /* Color de texto */
+  width: 200px; /* Ancho de la barra lateral */
+  height: 100%; /* Altura completa */
+  position: fixed; /* Fijar la posición para que se mantenga visible */
+  top: 0; /* Arriba */
+  left: 0; /* Izquierda */
+  display: flex; /* Utilizar flexbox */
+  flex-direction: column; /* Apilar elementos verticalmente */
+  padding: 20px; /* Espaciado interior */
+}
+
+/* Estilos para los elementos de la lista */
+.sidebar ul {
+  list-style: none; /* Quitar viñetas de la lista */
+  padding: 0;
+  flex-grow: 1; /* Distribuir espacio verticalmente uniformemente */
+}
+
+.sidebar ul li {
+  margin-bottom: 10px; /* Espacio entre elementos de la lista */
+  /* text-align: justify; */
+}
+
+/* Estilos para los enlaces */
+.sidebar ul li a {
+  text-decoration: none; /* Quitar subrayado de enlaces */
+  color: #fff; /* Color del texto de enlaces */
+  transition: color 0.3s; /* Transición de color al pasar el mouse */
+}
+
+.sidebar ul li a:hover {
+  color: #00bcd4; /* Cambiar el color al pasar el mouse */
+}
