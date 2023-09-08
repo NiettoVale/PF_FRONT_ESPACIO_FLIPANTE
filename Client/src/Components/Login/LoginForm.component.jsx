@@ -23,6 +23,8 @@ const LoginForm = () => {
     password: "",
   });
 
+  const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
+
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -32,8 +34,8 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
+      if (regex.test(formData.name)) {
       // Verifica si el usuario existe en Firebase antes de hacer la solicitud POST al servidor
       const auth = getAuth();
       const email = formData.name;
@@ -70,7 +72,8 @@ const LoginForm = () => {
           text: "El usuario no existe.",
         });
       }
-    } catch (error) {
+    }
+  } catch (error) {
       console.error("Ups!:", error.message);
       MySwal.fire({
         icon: "error",

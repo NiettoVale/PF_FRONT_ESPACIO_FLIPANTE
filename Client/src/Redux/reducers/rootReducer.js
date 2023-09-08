@@ -94,9 +94,6 @@ const rootReducer = (state = initialState, action) => {
         (product) => parseInt(product.id) !== parseInt(action.payload)
       );
 
-      console.log(`favas antiguos:`, state.myFavorites);
-      console.log(`favs:`, updatedFavorites);
-
       return {
         ...state,
         myFavorites: updatedFavorites,

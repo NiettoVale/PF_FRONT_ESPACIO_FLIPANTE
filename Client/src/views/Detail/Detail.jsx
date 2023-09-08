@@ -7,7 +7,6 @@ import {
   addFavorite,
   addproductCart,
   getFavorites,
-  getproductCart,
   getUserByName,
   removeFromFavorites,
   removeproductCart,
@@ -58,12 +57,10 @@ export default function Detail() {
   };
 
   //----USE_EFFECT
-
   useEffect(() => {
     dispatch(getUserByName(name));
     if (userId) {
       dispatch(getFavorites(userId));
-      dispatch(getproductCart(userId));
     }
   }, [dispatch, name, userId]);
 
@@ -89,7 +86,7 @@ export default function Detail() {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, back]);
 
   useEffect(() => {
     if (user && user.length > 0 && favorites) {
@@ -100,7 +97,7 @@ export default function Detail() {
       const cartProductIds = cart.map((product) => product.id);
       setProductCart(cartProductIds.includes(parseInt(id)));
     }
-  }, [id, user]);
+  }, [id, user, cart, favorites]);
 
   return (
     <div>
