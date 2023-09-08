@@ -43,6 +43,8 @@ const UserProfile = () => {
     }
   }, [user]);
 
+  console.log("favorites", favorites);
+
   return (
     <div className={styles.userView}>
       <NavBar />
