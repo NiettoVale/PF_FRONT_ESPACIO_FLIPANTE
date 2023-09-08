@@ -60,9 +60,10 @@ const CartView = () => {
 
   return (
     <div className="create-product">
-      <h2>Carrito</h2>
+      <h2>Carrito de Compra</h2>
       <p> Este es el carrito</p>
       <Cards products={cart} />
+      <button>Comprar</button>
     </div>
   );
 };
