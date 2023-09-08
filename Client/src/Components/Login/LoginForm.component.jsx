@@ -7,9 +7,15 @@ import {
   signInWithEmailAndPassword,
   getAuth,
   fetchSignInMethodsForEmail, // Importa esta función
-} from 'firebase/auth';
+} from "firebase/auth";
 import enviar from "./funcionEnviar";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const back = process.env.REACT_APP_BACK;
+
+const MySwal = withReactContent(Swal);
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -32,32 +38,46 @@ const LoginForm = () => {
       const auth = getAuth();
       const email = formData.name;
       const methods = await fetchSignInMethodsForEmail(auth, email);
-  
 
       if (methods && methods.length > 0) {
         // El usuario existe en Firebase, ahora intenta iniciar sesión
-        const userCredentials = await signInWithEmailAndPassword(auth, email, formData.password);
-         if(userCredentials.user.emailVerified){
-              // Al inicio de sesión exitoso, guarda la información en localStorage
-            localStorage.setItem("username", formData.name);
-            submitHandler(event);         
-            navigate("/");
-         } else {
-          alert("Debe verificar el correo");
-         }
-      
-     
-   
+        const userCredentials = await signInWithEmailAndPassword(
+          auth,
+          email,
+          formData.password
+        );
+        if (userCredentials.user.emailVerified) {
+          // Al inicio de sesión exitoso, guarda la información en localStorage
+          localStorage.setItem("username", formData.name);
+          submitHandler(event);
+          navigate("/");
+          MySwal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Inicio de sesión exitoso.",
+          });
+        } else {
+          MySwal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Debe verificar el correo.",
+          });
+        }
       } else {
-        alert("El usuario no existe");
+        MySwal.fire({
+          icon: "error",
+          title: "Error",
+          text: "El usuario no existe.",
+        });
       }
     } catch (error) {
-      console.error('Error:', error.message);
-      alert("Algo salió mal.");
-
-
+      console.error("Ups!:", error.message);
+      MySwal.fire({
+        icon: "error",
+        title: "Ups!",
+        text: "Algo salió mal.",
+      });
     }
-
   };
 
   useEffect(() => {
@@ -68,17 +88,15 @@ const LoginForm = () => {
       setFormData({ ...formData, name: storedUsername });
     }
   }, [formData]);
-  
-  function submitHandler(event){
+
+  function submitHandler(event) {
     event.preventDefault();
     let correo = formData.name;
     let asunto = "BIENVENIDO";
     let texto = "Hola bienvenido";
-    enviar(correo,asunto,texto);
+    enviar(correo, asunto, texto);
     correo = asunto = texto = "";
-}
-
-
+  }
 
   return (
     <div className={styles.loginView}>
@@ -111,13 +129,13 @@ const LoginForm = () => {
 
           <div className={styles.internalLogin}>
             <button type="submit">Iniciar Sesión</button>
-          </div>    
+          </div>
         </form>
         <div className={styles.externalLogin}>
-            <p>También puedes:</p>
-            <GoogleLogin />
-            <FacebookLogin />
-          </div>
+          <p>También puedes:</p>
+          <GoogleLogin />
+          <FacebookLogin />
+        </div>
 
         <p className={styles.registrate}>
           ¿No tienes una cuenta?
