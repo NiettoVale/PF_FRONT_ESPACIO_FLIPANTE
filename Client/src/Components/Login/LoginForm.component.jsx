@@ -3,6 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import FacebookLogin from "../firebase/LoginFacebook";
 import GoogleLogin from "../firebase/LoginGoogle";
 import styles from "./LoginForm.module.css";
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+  fetchSignInMethodsForEmail, // Importa esta función
+} from "firebase/auth";
+import enviar from "./funcionEnviar";
 const back = process.env.REACT_APP_BACK;
 
 const LoginForm = () => {
@@ -10,6 +16,8 @@ const LoginForm = () => {
     name: "",
     password: "",
   });
+
+  const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
 
   const navigate = useNavigate();
 
@@ -20,32 +28,52 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
+      if (regex.test(formData.name)) {
+        // Verifica si el usuario existe en Firebase antes de hacer la solicitud POST al servidor
+        const auth = getAuth();
+        const email = formData.name;
+        const methods = await fetchSignInMethodsForEmail(auth, email);
+
+        if (methods && methods.length > 0) {
+          // El usuario existe en Firebase, ahora intenta iniciar sesión
+          const userCredentials = await signInWithEmailAndPassword(
+            auth,
+            email,
+            formData.password
+          );
+          if (userCredentials.user.emailVerified) {
+            // Al inicio de sesión exitoso, guarda la información en localStorage
+            localStorage.setItem("username", formData.name);
+            submitHandler(event);
+            navigate("/");
+          } else {
+            alert("Debe verificar el correo");
+          }
+        } else {
+          alert("El usuario no existe");
+        }
+      }
+
       const response = await fetch(`${back}login`, {
-        method: "POST",
+        method: "POST", // Especifica que quieres realizar una solicitud POST
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Especifica el tipo de contenido del cuerpo de la solicitud
+          // Aquí puedes agregar otros encabezados si es necesario
         },
         body: JSON.stringify(formData),
       });
 
-      const responseData = await response.json();
-
       if (response.status === 200) {
-        // Al inicio de sesión exitoso, guarda la información en localStorage
         localStorage.setItem("username", formData.name);
-        alert("Inicio de sesion exitoso!!");
         navigate("/");
-      } else if (response.status === 404) {
-        alert(responseData.error);
-      } else if (response.status === 401) {
-        alert(responseData.error);
-      } else if (response.status === 500) {
-        alert(responseData.error);
       }
+
+      // El código para manejar la respuesta vendría a continuación...
     } catch (error) {
+      console.error("Error:", error.message);
       alert("Algo salió mal.");
-      console.log(error.message);
     }
   };
 
@@ -57,6 +85,15 @@ const LoginForm = () => {
       setFormData({ ...formData, name: storedUsername });
     }
   }, [formData]);
+
+  function submitHandler(event) {
+    event.preventDefault();
+    let correo = formData.name;
+    let asunto = "BIENVENIDO";
+    let texto = "Hola bienvenido";
+    enviar(correo, asunto, texto);
+    correo = asunto = texto = "";
+  }
 
   return (
     <div className={styles.loginView}>
@@ -90,13 +127,13 @@ const LoginForm = () => {
           <div className={styles.internalLogin}>
             <button type="submit">Iniciar Sesión</button>
           </div>
-
-          <div className={styles.externalLogin}>
-            <p>También puedes:</p>
-            <GoogleLogin />
-            <FacebookLogin />
-          </div>
         </form>
+        <div className={styles.externalLogin}>
+          <p>También puedes:</p>
+          <GoogleLogin />
+          <FacebookLogin />
+        </div>
+
         <p className={styles.registrate}>
           ¿No tienes una cuenta?
           <Link to="/register">

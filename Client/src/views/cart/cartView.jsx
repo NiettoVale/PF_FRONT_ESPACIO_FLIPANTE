@@ -1,6 +1,8 @@
 import React from "react";
 import Cards from "../../Components/cards/cards.component";
 import { useEffect, useState } from "react";
+
+
 import { useDispatch, useSelector } from "react-redux";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
@@ -13,16 +15,25 @@ import {
 
 const CartView = () => {
   const mercadoPagoKey = process.env.REACT_APP_MERCADO_PAGO_KEY;
-  const dispatch = useDispatch();
+ 
   // Informacion del Usuario
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const cart = useSelector((state) => state.myCart);
+  const dispatch = useDispatch();
+  //Informacion del Usuario
 
   let userId = 0;
   if (user.length > 0) {
     userId = user[0].id;
   }
+
+  useEffect(() => {
+    dispatch(getUserByName(name));
+    if (userId) {
+      dispatch(getproductCart(userId));
+    }
+  }, [dispatch, name, userId]);
 
   // Declaración de preferenceId y totalPrice como Estados Locales
   const [preferenceId, setPreferenceId] = useState(null);

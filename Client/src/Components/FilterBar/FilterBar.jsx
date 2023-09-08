@@ -59,10 +59,14 @@ const FilterBar = () => {
     const selectedOrder = event.target.value;
 
     if (selectedOrder === "asc" || selectedOrder === "desc") {
+      // Actualizar el estado en Redux utilizando la acción setOrderByName
       dispatch(setOrderByName(selectedOrder));
     } else {
+      // Restablecer el estado en Redux a null o el valor que corresponda
       dispatch(setOrderByName(null));
     }
+    const selectedValue = event.target.value;
+    setDataFilter({ ...dataFilter, order: selectedValue });
   };
 
   useEffect(() => {
@@ -165,7 +169,7 @@ const FilterBar = () => {
             <select
               id="SortSelect"
               onChange={handleSortChange}
-              value={dataFilter.order}
+              value={dataFilter.order || ""} // Establecer "ORDENAR" por defecto
             >
               <option value="" disabled>
                 ORDENAR

@@ -106,7 +106,7 @@ const Home = () => {
 
         {pageNumbers.map((number) => (
           <button
-            className={`${styles.unButton} ${
+            className={`${
               number === currentPage ? styles.currentPageButton : ""
             }`}
             key={number}

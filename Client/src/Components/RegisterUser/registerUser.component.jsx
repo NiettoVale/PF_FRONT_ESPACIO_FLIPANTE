@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./register.module.css";
 import validationRegister from "./validationRegister";
+import { createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+} from 'firebase/auth';
+
 const back = process.env.REACT_APP_BACK;
 
 const Registro = () => {
@@ -56,9 +61,28 @@ const Registro = () => {
 
       // Verificamos el estado de las posibles respuestas del servidor y mostramos adecuadamente los mensajes:
       if (response.status === 200) {
-        alert(responseData.message);
+        try {
+          const auth = getAuth();
+          const userCredentials = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);
+          // Enviar correo de verificación
+          
+          await sendEmailVerification(userCredentials.user);
+          
+        } catch (error) {
+          console.error('Error:', error.message);
+        }
+
+
+
+        alert("Usuario registrado exitosamente. Correo de verificación enviado.");
         navigate("/login");
         // window.location.reload();
+     
+       
+
+
+
+
       } else if (response.status === 400) {
         setRegisterErrors({ badRequest: responseData.message });
       } else if (response.status === 500) {
