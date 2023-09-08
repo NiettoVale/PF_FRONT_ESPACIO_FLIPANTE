@@ -9,7 +9,13 @@ import {
   fetchSignInMethodsForEmail, // Importa esta función
 } from "firebase/auth";
 import enviar from "./funcionEnviar";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const back = process.env.REACT_APP_BACK;
+
+const MySwal = withReactContent(Swal);
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -28,52 +34,52 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       if (regex.test(formData.name)) {
-        // Verifica si el usuario existe en Firebase antes de hacer la solicitud POST al servidor
-        const auth = getAuth();
-        const email = formData.name;
-        const methods = await fetchSignInMethodsForEmail(auth, email);
+      // Verifica si el usuario existe en Firebase antes de hacer la solicitud POST al servidor
+      const auth = getAuth();
+      const email = formData.name;
+      const methods = await fetchSignInMethodsForEmail(auth, email);
 
-        if (methods && methods.length > 0) {
-          // El usuario existe en Firebase, ahora intenta iniciar sesión
-          const userCredentials = await signInWithEmailAndPassword(
-            auth,
-            email,
-            formData.password
-          );
-          if (userCredentials.user.emailVerified) {
-            // Al inicio de sesión exitoso, guarda la información en localStorage
-            localStorage.setItem("username", formData.name);
-            submitHandler(event);
-            navigate("/");
-          } else {
-            alert("Debe verificar el correo");
-          }
+      if (methods && methods.length > 0) {
+        // El usuario existe en Firebase, ahora intenta iniciar sesión
+        const userCredentials = await signInWithEmailAndPassword(
+          auth,
+          email,
+          formData.password
+        );
+        if (userCredentials.user.emailVerified) {
+          // Al inicio de sesión exitoso, guarda la información en localStorage
+          localStorage.setItem("username", formData.name);
+          submitHandler(event);
+          navigate("/");
+          MySwal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Inicio de sesión exitoso.",
+          });
         } else {
-          alert("El usuario no existe");
+          MySwal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Debe verificar el correo.",
+          });
         }
+      } else {
+        MySwal.fire({
+          icon: "error",
+          title: "Error",
+          text: "El usuario no existe.",
+        });
       }
-
-      const response = await fetch(`${back}login`, {
-        method: "POST", // Especifica que quieres realizar una solicitud POST
-        headers: {
-          "Content-Type": "application/json", // Especifica el tipo de contenido del cuerpo de la solicitud
-          // Aquí puedes agregar otros encabezados si es necesario
-        },
-        body: JSON.stringify(formData),
+    }
+  } catch (error) {
+      console.error("Ups!:", error.message);
+      MySwal.fire({
+        icon: "error",
+        title: "Ups!",
+        text: "Algo salió mal.",
       });
-
-      if (response.status === 200) {
-        localStorage.setItem("username", formData.name);
-        navigate("/");
-      }
-
-      // El código para manejar la respuesta vendría a continuación...
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert("Algo salió mal.");
     }
   };
 
