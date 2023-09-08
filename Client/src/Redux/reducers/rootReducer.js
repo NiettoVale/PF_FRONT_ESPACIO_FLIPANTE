@@ -5,7 +5,7 @@ import {
   FILTER,
   GET_CATEGORY,
   GET_GENDER,
-  // GET_PRICES,
+  GET_PRICES,
   ORDER,
   GET_USER_NAME,
   FAVORITES,
@@ -24,6 +24,7 @@ const initialState = {
   order: "asc",
   myFavorites: [],
   myCart: [],
+  pricesFiltered: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -62,11 +63,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         sizes: action.payload,
       };
-    // case GET_PRICES:
-    //   return {
-    //     ...state,
-    //     prices: action.payload,
-    //   };
+    case GET_PRICES:
+      return {
+        ...state,
+        prices: action.payload,
+      };
 
     case ORDER:
       return {

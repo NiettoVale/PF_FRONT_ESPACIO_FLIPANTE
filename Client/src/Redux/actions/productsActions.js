@@ -8,7 +8,7 @@ import {
   GET_GENDER,
   ORDER,
   // PRICE_ORDER,
-  // GET_PRICES,
+  GET_PRICES,
   GET_USER_NAME,
   FAVORITES,
   CART,
@@ -56,6 +56,25 @@ export const getSizes = () => {
       dispatch({ type: GET_SIZES, payload: data });
     } catch (error) {
       console.log("Algo salió mal con getSizes!");
+      console.error(error);
+    }
+  };
+};
+export const getPrices = (desde, hasta) => {
+  return async (dispatch) => {
+    console.log(desde, hasta);
+    try {
+      const response = await fetch(`${back}filter/${desde}/${hasta}`);
+
+      if (!response.ok) {
+        throw new Error(`Error de red: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      dispatch({ type: GET_PRICES, payload: data });
+    } catch (error) {
+      console.log("Algo salió mal con getPrices!");
       console.error(error);
     }
   };

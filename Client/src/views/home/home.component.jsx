@@ -17,6 +17,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const productsFiltered = useSelector((state) => state.productsFiltered);
+  const priceFiltered = useSelector((state) => state.pricesFiltered);
+  console.log("este es el estado global ", priceFiltered);
 
   const [busqueda, setBusqueda] = useState("");
   const [productsByName, setProductsByName] = useState([]);

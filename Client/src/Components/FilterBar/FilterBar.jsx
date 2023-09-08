@@ -5,7 +5,7 @@ import styles from "./FilterBar.module.css";
 import {
   getFilters,
   getSizes,
-  // getPrices,
+  getPrices,
   // setOrderByPrice,
   setOrderByName,
 } from "../../Redux/actions/productsActions";
@@ -14,13 +14,12 @@ const initialState = {
   category: "",
   size: "",
   gender: "",
-  minPrice: "",
-  maxPrice: "",
 };
 
 const FilterBar = () => {
   const dispatch = useDispatch();
 
+  const [priceData, setPriceData] = useState({ desde: 0, hasta: 0 });
   const [dataFilter, setDataFilter] = useState(initialState);
   const sizes = useSelector((state) => state.sizes);
 
@@ -41,6 +40,18 @@ const FilterBar = () => {
 
   const handleClearFilters = () => {
     setDataFilter(initialState);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(getPrices(priceData.desde, priceData.hasta));
+  };
+  const handleChangePrice = (event) => {
+    const { name, value } = event.target;
+    setPriceData({
+      ...priceData,
+      [name]: value,
+    });
   };
 
   // const handleSortChange = (event) => {
@@ -111,28 +122,23 @@ const FilterBar = () => {
           </div>
 
           <div className={styles.priceSelect}>
-            <input
-              type="number"
-              placeholder="Precio mínimo"
-              value={dataFilter.minPrice}
-              onChange={(e) =>
-                setDataFilter((prevData) => ({
-                  ...prevData,
-                  minPrice: e.target.value,
-                }))
-              }
-            />
-            <input
-              type="number"
-              placeholder="Precio máximo"
-              value={dataFilter.maxPrice}
-              onChange={(e) =>
-                setDataFilter((prevData) => ({
-                  ...prevData,
-                  maxPrice: e.target.value,
-                }))
-              }
-            />
+            <form action="">
+              <input
+                type="number"
+                placeholder="Precio mínimo"
+                name="desde"
+                value={priceData.desde}
+                onChange={handleChangePrice}
+              />
+              <input
+                type="number"
+                placeholder="Precio máximo"
+                name="hasta"
+                value={priceData.hasta}
+                onChange={handleChangePrice}
+              />
+              <button onClick={handleSubmit}>Filtrar</button>
+            </form>
           </div>
 
           <div className={styles.categorySelect}>
