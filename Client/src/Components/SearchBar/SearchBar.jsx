@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import { Link } from "react-router-dom";
-
 import {
   HiOutlineShoppingCart,
   HiOutlineLogin,
@@ -9,31 +8,34 @@ import {
   HiOutlineUserCircle,
 } from "react-icons/hi";
 
-const storedUsername = localStorage.getItem("username");
-
-const logOut = () => {
-  // Elimina la clave "username" del localStorage
-  localStorage.removeItem("username");
-  window.location.reload();
-
-  // También puedes redirigir al usuario a una página de inicio de sesión o a donde sea necesario después de cerrar sesión.
-  // window.location.href = "/login"; // Por ejemplo, redirige a la página de inicio de sesión
-};
-
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
+  // const storedUsername = localStorage.getItem("username");
+  const googleName = localStorage.getItem("googleName");
+  const googleImage = localStorage.getItem("googleImage");
   const [storedUsername, setStoredUsername] = useState(
     localStorage.getItem("username")
   );
+
+  useEffect(() => {
+    // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
+    setStoredUsername(localStorage.getItem("username"));
+  }, []);
+
+  const logOut = () => {
+    localStorage.removeItem("username");
+    window.location.reload();
+  };
 
   const handleChange = (event) => {
     setBusqueda(event.target.value);
     filterSearch(event.target.value);
   };
 
-  useEffect(() => {
-    // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
-    setStoredUsername(localStorage.getItem("username"));
-  }, []);
+  const logOutGoogle = () => {
+    localStorage.removeItem("googleName");
+    localStorage.removeItem("googleImage");
+    window.location.reload();
+  };
 
   return (
     <div className={styles.searchBarContainer}>
@@ -47,7 +49,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
 
       <Link to={"/cart"} className={styles.cart}>
         <HiOutlineShoppingCart />
-      </Link> {/* Aquí cerré el elemento Link */}
+      </Link>
 
       <div className={styles.flexSpace}></div>
 
@@ -56,8 +58,21 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
           <Link to={"/userProfile"}>
             <HiOutlineUserCircle className={styles.userIcon} />
           </Link>
+
           <Link to={"/"}>
-            <HiOutlineLogout className={styles.access} onClick={logOut} />
+            <HiOutlineLogout className={styles.logOutIcon} onClick={logOut} />
+          </Link>
+        </div>
+      ) : googleName ? (
+        <div>
+          <Link to={"/userProfile"}>
+            <img src={googleImage} alt="profile" className={styles.userImage} />
+          </Link>
+          <Link to={"/"}>
+            <HiOutlineLogout
+              className={styles.logOutIcon}
+              onClick={logOutGoogle}
+            />
           </Link>
         </div>
       ) : (
