@@ -40,3 +40,17 @@
   margin: 6px 16px 0 0;
   line-height: 0;
 }
+
+.userImage {
+  margin: 6px 16px 0 0;
+  height: 35px;
+  width: 35px;
+  border-radius: 50px;
+  border: solid 1px #000;
+}
+.logOutIcon {
+  text-decoration: none;
+  font-size: 22px;
+  line-height: 0;
+  margin-bottom: 6px;
+}
