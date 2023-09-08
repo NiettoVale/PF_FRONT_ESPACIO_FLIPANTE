@@ -6,16 +6,10 @@ import styles from "./LoginForm.module.css";
 import {
   signInWithEmailAndPassword,
   getAuth,
-  fetchSignInMethodsForEmail, // Importa esta función
+  fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import enviar from "./funcionEnviar";
-
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
 const back = process.env.REACT_APP_BACK;
-
-const MySwal = withReactContent(Swal);
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +18,6 @@ const LoginForm = () => {
   });
 
   const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
-
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -34,63 +27,56 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
       if (regex.test(formData.name)) {
-      // Verifica si el usuario existe en Firebase antes de hacer la solicitud POST al servidor
-      const auth = getAuth();
-      const email = formData.name;
-      const methods = await fetchSignInMethodsForEmail(auth, email);
+        const auth = getAuth();
+        const email = formData.name;
+        const methods = await fetchSignInMethodsForEmail(auth, email);
 
-      if (methods && methods.length > 0) {
-        // El usuario existe en Firebase, ahora intenta iniciar sesión
-        const userCredentials = await signInWithEmailAndPassword(
-          auth,
-          email,
-          formData.password
-        );
-        if (userCredentials.user.emailVerified) {
-          // Al inicio de sesión exitoso, guarda la información en localStorage
-          localStorage.setItem("username", formData.name);
-          submitHandler(event);
-          navigate("/");
-          MySwal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Inicio de sesión exitoso.",
-          });
+        if (methods && methods.length > 0) {
+          const userCredentials = await signInWithEmailAndPassword(
+            auth,
+            email,
+            formData.password
+          );
+          if (userCredentials.user.emailVerified) {
+            localStorage.setItem("username", formData.name);
+            submitHandler(event);
+            navigate("/");
+          } else {
+            alert("Debe verificar el correo");
+          }
         } else {
-          MySwal.fire({
-            icon: "warning",
-            title: "Advertencia",
-            text: "Debe verificar el correo.",
-          });
+          alert("El usuario no existe");
         }
       } else {
-        MySwal.fire({
-          icon: "error",
-          title: "Error",
-          text: "El usuario no existe.",
+        const response = await fetch(`${back}login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         });
+
+        if (response.status === 200) {
+          localStorage.setItem("username", formData.name);
+          navigate("/");
+        }
       }
-    }
-  } catch (error) {
-      console.error("Ups!:", error.message);
-      MySwal.fire({
-        icon: "error",
-        title: "Ups!",
-        text: "Algo salió mal.",
-      });
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Algo salió mal.");
     }
   };
 
+  // Mover la recuperación de datos de localStorage fuera del efecto
   useEffect(() => {
-    // Verificar si hay información de usuario almacenada en localStorage
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
-      // Si hay información, puedes usarla como necesites, por ejemplo, para llenar un campo de formulario
       setFormData({ ...formData, name: storedUsername });
     }
-  }, [formData]);
+  }, [formData]); // Se ejecutará una vez al montar el componente
 
   function submitHandler(event) {
     event.preventDefault();
@@ -142,9 +128,7 @@ const LoginForm = () => {
 
         <p className={styles.registrate}>
           ¿No tienes una cuenta?
-          <Link to="/register">
-            <a>¡Regístrate!</a>
-          </Link>
+          <Link to="/register">¡Regístrate!</Link>
         </p>
       </div>
     </div>
