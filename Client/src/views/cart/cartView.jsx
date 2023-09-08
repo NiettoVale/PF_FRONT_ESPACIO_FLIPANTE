@@ -1,6 +1,6 @@
 import React from "react";
 import Cards from "../../Components/cards/cards.component";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
@@ -12,8 +12,9 @@ import {
 } from "../../Redux/actions/productsActions";
 
 const CartView = () => {
+  const mercadoPagoKey = process.env.REACT_APP_MERCADO_PAGO_KEY;
   const dispatch = useDispatch();
-  //Informacion del Usuario
+  // Informacion del Usuario
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const cart = useSelector((state) => state.myCart);
@@ -23,26 +24,19 @@ const CartView = () => {
     userId = user[0].id;
   }
 
-  useEffect(() => {
-    dispatch(getUserByName(name));
-    if (userId) {
-      dispatch(getproductCart(userId));
-    }
-  }, [dispatch, name, userId]);
+  // Declaración de preferenceId y totalPrice como Estados Locales
+  const [preferenceId, setPreferenceId] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0); // Inicialmente 0
 
-  console.log(name);
-  console.log(user);
-  console.log(cart);
+  initMercadoPago(mercadoPagoKey);
 
-  initMercadoPago("TEST-094640c0-b9d9-4c28-89d9-1b7ac766e62c");
-
-  const createPreference = async () => {
+  const createPreference = async (totalPrice) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/create_preference",
+        "http://localhost:3001/create_preference",
         {
           description: "Indumentaria",
-          price: 1000,
+          price: totalPrice,
           quantity: 1,
         }
       );
@@ -55,15 +49,43 @@ const CartView = () => {
   };
 
   const handleBuy = async () => {
-    const id = await createPreference();
+    const calculatePrice = cart.reduce((total, product) => {
+      return total + product.price * product.cantidad;
+    }, 0);
+    setTotalPrice(calculatePrice); // Actualizar el precio total
+
+    const id = await createPreference(calculatePrice);
+
+    if (id) {
+      setPreferenceId(id); // Establecer preferenceId en el estado
+    }
   };
+
+  useEffect(() => {
+    // Calcular el precio total y actualizar el estado
+    const calculatePrice = cart.reduce((total, product) => {
+      return total + product.price * product.cantidad;
+    }, 0);
+    setTotalPrice(calculatePrice);
+  }, [cart]);
+
+  useEffect(() => {
+    dispatch(getUserByName(name));
+    if (userId) {
+      dispatch(getproductCart(userId));
+    }
+  }, [dispatch, name, userId]);
 
   return (
     <div className="create-product">
       <h2>Carrito de Compra</h2>
       <p> Este es el carrito</p>
       <Cards products={cart} />
-      <button>Comprar</button>
+      <h2>Precio Total : ${totalPrice}</h2> {/* Mostrar el precio total */}
+      <button className="btn-clear-all" onClick={handleBuy}>
+        Comprar
+      </button>
+      {preferenceId && <Wallet initialization={{ preferenceId }} />}
     </div>
   );
 };
