@@ -8,6 +8,9 @@ import Registro from "./Components/RegisterUser/registerUser.component";
 import LoginForm from "./Components/Login/LoginForm.component";
 import "./App.css";
 import UserProfile from "./Components/userProfile/userProfile";
+import Orders from "./Components/Orders/Orders";
+import Favorites from "./Components/Favorites/Favorites";
+import ChangePassword from "./Components/ChangePassword/ChangePassword";
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
       <Route path="/register" element={<Registro />} />
       <Route path="/userProfile" element={<UserProfile />} />
       <Route path="/cart" element={<CartView />} />
+      <Route path="/favorites" element={<Favorites />} />
+      <Route path="/orders" element={<Orders />} />
+      <Route path="/change-password" element={<ChangePassword />} />
     </Routes>
   );
 }
