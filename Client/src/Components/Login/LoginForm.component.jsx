@@ -6,7 +6,7 @@ import styles from "./LoginForm.module.css";
 import {
   signInWithEmailAndPassword,
   getAuth,
-  fetchSignInMethodsForEmail, // Importa esta función
+  fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import enviar from "./funcionEnviar";
 const back = process.env.REACT_APP_BACK;
@@ -18,7 +18,6 @@ const LoginForm = () => {
   });
 
   const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
-
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -31,20 +30,17 @@ const LoginForm = () => {
 
     try {
       if (regex.test(formData.name)) {
-        // Verifica si el usuario existe en Firebase antes de hacer la solicitud POST al servidor
         const auth = getAuth();
         const email = formData.name;
         const methods = await fetchSignInMethodsForEmail(auth, email);
 
         if (methods && methods.length > 0) {
-          // El usuario existe en Firebase, ahora intenta iniciar sesión
           const userCredentials = await signInWithEmailAndPassword(
             auth,
             email,
             formData.password
           );
           if (userCredentials.user.emailVerified) {
-            // Al inicio de sesión exitoso, guarda la información en localStorage
             localStorage.setItem("username", formData.name);
             submitHandler(event);
             navigate("/");
@@ -54,37 +50,33 @@ const LoginForm = () => {
         } else {
           alert("El usuario no existe");
         }
+      } else {
+        const response = await fetch(`${back}login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.status === 200) {
+          localStorage.setItem("username", formData.name);
+          navigate("/");
+        }
       }
-
-      const response = await fetch(`${back}login`, {
-        method: "POST", // Especifica que quieres realizar una solicitud POST
-        headers: {
-          "Content-Type": "application/json", // Especifica el tipo de contenido del cuerpo de la solicitud
-          // Aquí puedes agregar otros encabezados si es necesario
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.status === 200) {
-        localStorage.setItem("username", formData.name);
-        navigate("/");
-      }
-
-      // El código para manejar la respuesta vendría a continuación...
     } catch (error) {
       console.error("Error:", error.message);
       alert("Algo salió mal.");
     }
   };
 
+  // Mover la recuperación de datos de localStorage fuera del efecto
   useEffect(() => {
-    // Verificar si hay información de usuario almacenada en localStorage
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
-      // Si hay información, puedes usarla como necesites, por ejemplo, para llenar un campo de formulario
       setFormData({ ...formData, name: storedUsername });
     }
-  }, [formData]);
+  }, [formData]); // Se ejecutará una vez al montar el componente
 
   function submitHandler(event) {
     event.preventDefault();
@@ -136,9 +128,7 @@ const LoginForm = () => {
 
         <p className={styles.registrate}>
           ¿No tienes una cuenta?
-          <Link to="/register">
-            <a>¡Regístrate!</a>
-          </Link>
+          <Link to="/register">¡Regístrate!</Link>
         </p>
       </div>
     </div>

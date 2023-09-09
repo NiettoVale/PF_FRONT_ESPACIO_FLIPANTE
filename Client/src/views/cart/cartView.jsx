@@ -8,11 +8,14 @@ import {
   getUserByName,
   removeproductCart,
 } from "../../Redux/actions/productsActions";
+import { Link } from "react-router-dom";
+import styles from "../Detail/Detail.module.css";
+
+const back = process.env.REACT_APP_BACK;
 
 const CartView = () => {
   const mercadoPagoKey = process.env.REACT_APP_MERCADO_PAGO_KEY;
 
-  // Información del Usuario
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const cart = useSelector((state) => state.myCart);
@@ -67,14 +70,11 @@ const CartView = () => {
   // Función para crear la preferencia de Mercado Pago
   const createPreference = async (totalPrice) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/create_preference",
-        {
-          description: "Indumentaria",
-          price: totalPrice,
-          quantity: 1,
-        }
-      );
+      const response = await axios.post(`${back}create_preference`, {
+        description: "Indumentaria",
+        price: totalPrice,
+        quantity: 1,
+      });
 
       const { id } = response.data;
       return id;
@@ -100,12 +100,14 @@ const CartView = () => {
   return (
     <div className="create-product">
       <h2>Carrito de Compra</h2>
-      <p> Este es el carrito</p>
       <Cards products={cart} />
       <h2>Precio Total : ${totalPrice}</h2>
       <button className="btn-clear-all" onClick={handleBuy}>
         Comprar
       </button>
+      <Link to={"/"}>
+        <button className={styles.backButton}>⬅</button>
+      </Link>
       {preferenceId && <Wallet initialization={{ preferenceId }} />}
     </div>
   );

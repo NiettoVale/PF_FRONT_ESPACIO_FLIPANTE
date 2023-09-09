@@ -11,8 +11,6 @@ import {
 
 function CreateForm() {
   const [formData, setFormData] = useState({
-
-    
     name: "",
     gender: "Seleccionar",
     category: "Seleccionar",
@@ -68,8 +66,6 @@ function CreateForm() {
     dispatch(getCategory());
   }, [dispatch]);
 
-
-
   const handleImageURLChange = (index, imageURL) => {
     const newImages = [...formData.images];
     newImages[index] = imageURL;
@@ -87,8 +83,6 @@ function CreateForm() {
     const pattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
     return pattern.test(url);
   };
-
-
 
   const handleRemoveImageInput = (index) => {
     const newImages = [...formData.images];
@@ -118,14 +112,14 @@ function CreateForm() {
       const responseData = await response.json();
 
       if (response.status === 200) {
-        alert(responseData.message);
+        console.log(responseData.message);
       } else if (response.status === 400) {
-        alert(responseData.error);
+        console.log(responseData.error);
       } else if (response.status === 500) {
-        alert(responseData.error);
+        console.log(responseData.error);
       }
     } catch (error) {
-      alert("Algo salió mal!!");
+      console.log("Algo salió mal!!");
       console.error(error);
     }
   };
@@ -234,14 +228,10 @@ function CreateForm() {
             {isValidUrls[index] ? null : (
               <span className={styles["error-message"]}>URL inválida</span>
             )}
-            
-              <button
-                type="button"
-                onClick={() => handleRemoveImageInput(index)}
-              >
-                Eliminar
-              </button>
-            
+
+            <button type="button" onClick={() => handleRemoveImageInput(index)}>
+              Eliminar
+            </button>
           </div>
         ))}
         {/* <button type="button" onClick={handleAddImageInput}>

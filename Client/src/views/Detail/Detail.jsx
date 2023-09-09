@@ -75,12 +75,12 @@ export default function Detail() {
           setCardDetail(data);
           setImageDetail(data.images);
         } else if (response.status === 400) {
-          alert(data.error);
+          console.log(data.error);
         } else if (response.status === 500) {
-          alert(data.error);
+          console.log(data.error);
         }
       } catch (error) {
-        alert("Algo salió mal!!!");
+        console.log("Algo salió mal!!!");
         console.log(error.message);
       }
     };
