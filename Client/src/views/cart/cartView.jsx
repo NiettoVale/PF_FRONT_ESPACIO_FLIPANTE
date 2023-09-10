@@ -1,12 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Cards from "../../Components/cards/cards.component";
-import { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
 import {
-  addproductCart,
   getproductCart,
   getUserByName,
   removeproductCart,
@@ -19,12 +16,11 @@ const back = process.env.REACT_APP_BACK;
 const CartView = () => {
   const mercadoPagoKey = process.env.REACT_APP_MERCADO_PAGO_KEY;
 
-  // Informacion del Usuario
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const cart = useSelector((state) => state.myCart);
   const dispatch = useDispatch();
-  //Informacion del Usuario
+  // Información del Usuario
 
   let userId = 0;
   if (user.length > 0) {
@@ -42,8 +38,36 @@ const CartView = () => {
   const [preferenceId, setPreferenceId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0); // Inicialmente 0
 
-  initMercadoPago(mercadoPagoKey);
+  // Inicializar Mercado Pago
+  useEffect(() => {
+    initMercadoPago(mercadoPagoKey);
+  }, [mercadoPagoKey]);
 
+  useEffect(() => {
+    // Función para verificar el estado del pago
+    const checkPaymentStatus = async () => {
+      try {
+        // Obtén el ID de pago de la URL actual (puedes analizar la URL o usar window.location)
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get("payment_id");
+
+        // Realiza una solicitud al servidor para verificar el estado del pago
+        //const response = await axios.get(
+        //  `http://localhost:3001/check_payment_status?payment_id=${paymentId}`
+        //);
+
+        // Aquí puedes procesar la respuesta y mostrar el resultado al usuario
+        console.log("Estado de la compra:", urlParams, paymentId);
+      } catch (error) {
+        console.error("Error al verificar el estado de la compra:", error);
+      }
+    };
+
+    // Verifica el estado del pago cuando se carga la página
+    checkPaymentStatus();
+  }, []);
+
+  // Función para crear la preferencia de Mercado Pago
   const createPreference = async (totalPrice) => {
     try {
       const response = await axios.post(`${back}create_preference`, {
@@ -59,6 +83,7 @@ const CartView = () => {
     }
   };
 
+  // Maneja el proceso de compra
   const handleBuy = async () => {
     const calculatePrice = cart.reduce((total, product) => {
       return total + product.price * product.cantidad;
@@ -72,26 +97,11 @@ const CartView = () => {
     }
   };
 
-  useEffect(() => {
-    // Calcular el precio total y actualizar el estado
-    const calculatePrice = cart.reduce((total, product) => {
-      return total + product.price * product.cantidad;
-    }, 0);
-    setTotalPrice(calculatePrice);
-  }, [cart]);
-
-  useEffect(() => {
-    dispatch(getUserByName(name));
-    if (userId) {
-      dispatch(getproductCart(userId));
-    }
-  }, [dispatch, name, userId]);
-
   return (
     <div className="create-product">
       <h2>Carrito de Compra</h2>
       <Cards products={cart} />
-      <h2>Precio Total : ${totalPrice}</h2> {/* Mostrar el precio total */}
+      <h2>Precio Total : ${totalPrice}</h2>
       <button className="btn-clear-all" onClick={handleBuy}>
         Comprar
       </button>
