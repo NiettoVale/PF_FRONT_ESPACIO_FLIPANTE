@@ -21,10 +21,10 @@ export default function Detail() {
   const [imageDetail, setImageDetail] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [productCart, setProductCart] = useState(false);
+  const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
-
   const user = useSelector((state) => state.infoUser);
   const favorites = useSelector((state) => state.myFavorites);
   const cart = useSelector((state) => state.myCart);
@@ -85,6 +85,7 @@ export default function Detail() {
           const sizesWithStock = data.Sizes.filter(
             (size) => size.Stock.quantity > 0
           );
+          setAvailableSizes(sizesWithStock);
         } else if (response.status === 400) {
           console.log(data.error);
         } else if (response.status === 500) {
@@ -136,12 +137,17 @@ export default function Detail() {
         <div className={styles.detailInfo}>
           <p className={styles.detailName}>{cardDetail.name}</p>
 
-          <div className={styles.sizesButtons}>
-            <button key="S">S</button>
-            <button key="M">M</button>
-            <button key="L">L</button>
-            <button key="XL">XL</button>
-            <button key="XXL">XXL</button>
+          <div className={styles.sizesInfo}>
+            <p className={styles.sizesLabel}>Tallas Disponibles:</p>
+            <div className={styles.sizesButtons}>
+              {availableSizes.length > 0 ? (
+                availableSizes.map((size) => (
+                  <button key={size.id}>{size.name}</button>
+                ))
+              ) : (
+                <p>No hay talles disponibles</p>
+              )}
+            </div>
           </div>
 
           <div>
