@@ -9,6 +9,7 @@ const back = process.env.REACT_APP_BACK;
 const UserProfile = () => {
   const dispatch = useDispatch();
   const name = localStorage.getItem("username");
+  const googleName = localStorage.getItem("googleName");
   const user = useSelector((state) => state.infoUser);
   const userInfo = user.length > 0 ? user[0] : null;
 
@@ -16,7 +17,6 @@ const UserProfile = () => {
     name: "",
     address: "",
     phone: "",
-    DNI: "",
   });
 
   const [imageURL, setImageURL] = useState("https://acortar.link/9rBdMA"); // URL de imagen de perfil inicial
@@ -28,7 +28,6 @@ const UserProfile = () => {
         name: userInfo.name,
         address: userInfo.address,
         phone: userInfo.phone,
-        DNI: userInfo.dni, // Cambiado a minúsculas
       });
       setImageURL(
         typeof userInfo.imageProfile === "string"
@@ -87,10 +86,12 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserByName(name));
-  }, [dispatch, name]);
-
-  console.log(user);
+    if (!googleName) {
+      dispatch(getUserByName(name));
+    } else {
+      dispatch(getUserByName(googleName));
+    }
+  }, [dispatch, name, googleName]);
 
   return (
     <div className={styles.userView}>
@@ -126,18 +127,17 @@ const UserProfile = () => {
               onChange={handleChange}
             />
             <br />
-            <label htmlFor="DNI">DNI:</label> <br />
-            <input
-              type="text"
-              name="DNI"
-              value={formData.DNI}
-              onChange={handleChange}
-            />
-            <br />
-            <UploadImageProfile
-              handleImageURLChange={handleImageURLChange}
-              imageURLs={[imageURL]}
-            />
+            {googleName ? (
+              ""
+            ) : (
+              <div>
+                <br />
+                <UploadImageProfile
+                  handleImageURLChange={handleImageURLChange}
+                  imageURLs={[imageURL]}
+                />
+              </div>
+            )}
             <br />
             <button type="submit" className={styles.updateButton}>
               Actualizar Perfil

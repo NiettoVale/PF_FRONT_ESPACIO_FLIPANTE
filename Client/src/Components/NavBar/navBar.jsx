@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserByName } from "../../Redux/actions/productsActions";
+import React from "react";
 import styles from "./NavBar.module.css";
 import { Link } from "react-router-dom";
 
@@ -59,34 +57,12 @@ const NavBar = () => {
         </Link>
 
         {storedUsername ? (
-          <div>
-            <Link to={"/userProfile"}>
-              <HiOutlineUserCircle className={styles.userIcon} />
-            </Link>
-
-            <Link to={"/"}>
-              <HiOutlineLogout className={styles.logOutIcon} onClick={logOut} />
-            </Link>
-          </div>
-        ) : googleName ? (
-          <div>
-            <Link to={"/userProfile"}>
-              <img
-                src={googleImage}
-                alt="profile"
-                className={styles.userImage}
-              />
-            </Link>
-            <Link to={"/"}>
-              <HiOutlineLogout
-                className={styles.logOutGoogleIcon}
-                onClick={logOutGoogle}
-              />
-            </Link>
-          </div>
+          <Link to={"/userProfile"}>
+            <p>{storedUsername}</p>
+          </Link>
         ) : (
-          <Link to={"/login"} className={styles.access}>
-            <HiOutlineLogin />
+          <Link to={"/userProfile"}>
+            <p>{googleName}</p>
           </Link>
         )}
       </div>

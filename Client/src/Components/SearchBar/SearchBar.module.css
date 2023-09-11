@@ -39,6 +39,9 @@
   font-size: 22px;
   margin: 6px 16px 0 0;
   line-height: 0;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }
 
 .userImage {
