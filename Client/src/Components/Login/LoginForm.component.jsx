@@ -9,6 +9,12 @@ import {
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import enviarMail from "./funcionEnviar";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
+
 const back = process.env.REACT_APP_BACK;
 
 const LoginForm = () => {
@@ -44,11 +50,25 @@ const LoginForm = () => {
             localStorage.setItem("username", formData.name);
             submitHandler(event);
             navigate("/");
+
+            MySwal.fire({
+              icon: "success",
+              title: "Éxito",
+              text: "Inicio de sesión exitoso.",
+            });
           } else {
-            alert("Debe verificar el correo");
+            MySwal.fire({
+              icon: "warning",
+              title: "Advertencia",
+              text: "Debe verificar el correo.",
+            });
           }
         } else {
-          alert("El usuario no existe");
+          MySwal.fire({
+            icon: "error",
+            title: "Error",
+            text: "El usuario no existe.",
+          });
         }
       } else {
         const response = await fetch(`${back}login`, {
@@ -63,10 +83,21 @@ const LoginForm = () => {
           localStorage.setItem("username", formData.name);
           navigate("/");
         }
+        if (response.status === 404) {
+          MySwal.fire({
+            icon: "error",
+            title: "Error:",
+            text: "Usuario no encontrado.",
+          });
+        }
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Algo salió mal.");
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Algo salió mal.",
+      });
     }
   };
 

@@ -4,8 +4,11 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { AiFillGoogleCircle } from "react-icons/ai";
-import styles from "./LoginButtons.module.css";
 import enviar from "../Login/funcionEnviar";
+
+import styles from "./LoginButtons.module.css";
+import Swal from "sweetalert2";
+
 const back = process.env.REACT_APP_BACK;
 
 // Funcion para postear un usuario de firebase a la base de datos:
