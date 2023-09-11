@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+import styles from "./UploadImage.module.css";
+
 function UploadImageProfile({ handleImageURLChange }) {
   const [image, setImage] = useState("");
 
@@ -36,8 +38,12 @@ function UploadImageProfile({ handleImageURLChange }) {
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleImageChange} />
+    <div className={styles.inputContainer}>
+      <input
+        type="file"
+        onChange={handleImageChange}
+        className={styles.imageInput}
+      />
       <button type="button" onClick={handleImageUpload}>
         Subir Imagen
       </button>

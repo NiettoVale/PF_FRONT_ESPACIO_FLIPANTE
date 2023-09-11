@@ -2,17 +2,57 @@ import React from "react";
 import styles from "./NavBar.module.css";
 import { Link } from "react-router-dom";
 
+import {
+  HiOutlineShoppingCart,
+  HiOutlineLogin,
+  HiOutlineLogout,
+  HiOutlineUserCircle,
+} from "react-icons/hi";
+
 const NavBar = () => {
-  const storedUsername = localStorage.getItem("username");
+  const user = useSelector((state) => state.infoUser);
+  const userInfo = user.length > 0 ? user[0] : null;
+  const dispatch = useDispatch();
+
   const googleName = localStorage.getItem("googleName");
+  const googleImage = localStorage.getItem("googleImage");
+  const [storedUsername, setStoredUsername] = useState(
+    localStorage.getItem("username")
+  );
+
+  useEffect(() => {
+    // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
+    setStoredUsername(localStorage.getItem("username"));
+  }, []);
+
+  const logOut = () => {
+    localStorage.removeItem("username");
+    window.location.reload();
+  };
+
+  const logOutGoogle = () => {
+    localStorage.removeItem("googleName");
+    localStorage.removeItem("googleImage");
+    window.location.reload();
+  };
+
+  const handleClickScroll = () => {
+    window.scrollTo({ top: 1600, behavior: "smooth" });
+  };
 
   return (
     <div className={styles.navContainer}>
       <div className={styles.navBar}>
+        <div className={styles.logo}>
+          <h2>
+            <span>ESPACIO</span>
+          </h2>
+          <h2> FLIPANTE</h2>
+        </div>
         <Link to={"/"} className={styles.link}>
           INICIO
         </Link>
-        <Link to={"/"} className={styles.link}>
+        <Link to={"/"} className={styles.link} onClick={handleClickScroll}>
           CATALOGO
         </Link>
 
@@ -31,35 +71,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-/*
-        {isLoading && (storedUsername || googleName) ? (
-          <div>
-            <img
-              className={styles.image}
-              src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
-              alt="Cargando..."
-            />
-          </div>
-        ) : storedUsername ? (
-          <div>
-            <Link to={"/userProfile"}>{storedUsername.toUpperCase()}</Link>
-            <Link to={"/userProfile"}>
-              {userInfo && userInfo.imageProfile && (
-                <img
-                  className={styles.image}
-                  src={userInfo.imageProfile}
-                  alt="profile"
-                />
-              )}
-            </Link>
-          </div>
-        ) : googleName ? (
-          <div>
-            <Link to={"/userProfile"}>{googleName.toUpperCase()}</Link>
-            <Link to={"/userProfile"}>
-              {googleImage && <img src={googleImage} alt="profile" />}
-            </Link>
-          </div>
-        ) : null}
-*/
