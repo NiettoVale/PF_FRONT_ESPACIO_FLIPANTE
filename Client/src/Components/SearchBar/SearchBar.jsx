@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   HiOutlineShoppingCart,
   HiOutlineLogin,
   HiOutlineLogout,
-  HiOutlineUserCircle,
 } from "react-icons/hi";
+import { getUserByName } from "../../Redux/actions/productsActions";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   // const storedUsername = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
   const googleImage = localStorage.getItem("googleImage");
+  const name = localStorage.getItem("username");
+  const user = useSelector((state) => state.infoUser);
+  const userInfo = user.length > 0 ? user[0] : "";
+  const imageProfile = userInfo.imageProfile
+    ? userInfo.imageProfile
+    : "https://acortar.link/9rBdMA";
+  const dispatch = useDispatch();
+
   const [storedUsername, setStoredUsername] = useState(
     localStorage.getItem("username")
   );
@@ -19,7 +28,8 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   useEffect(() => {
     // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
     setStoredUsername(localStorage.getItem("username"));
-  }, []);
+    dispatch(getUserByName(name));
+  }, [dispatch, name]);
 
   const logOut = () => {
     localStorage.removeItem("username");
@@ -56,7 +66,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
       {storedUsername ? (
         <div>
           <Link to={"/userProfile"}>
-            <HiOutlineUserCircle className={styles.userIcon} />
+            <img src={imageProfile} className={styles.userIcon} alt="profile" />
           </Link>
 
           <Link to={"/"}>
@@ -68,6 +78,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
           <Link to={"/userProfile"}>
             <img src={googleImage} alt="profile" className={styles.userImage} />
           </Link>
+
           <Link to={"/"}>
             <HiOutlineLogout
               className={styles.logOutIcon}

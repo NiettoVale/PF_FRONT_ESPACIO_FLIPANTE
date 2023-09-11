@@ -3,13 +3,12 @@ import { Link } from "react-router-dom";
 import styles from "./SideBar.module.css";
 
 const SideBar = () => {
+  const googleName = localStorage.getItem("googleName");
   const logOut = () => {
     // Elimina la clave "username" del localStorage
     localStorage.removeItem("username");
+    localStorage.removeItem("googleName");
     window.location.href = "/";
-
-    // También puedes redirigir al usuario a una página de inicio de sesión o a donde sea necesario después de cerrar sesión.
-    // window.location.href = "/login"; // Por ejemplo, redirige a la página de inicio de sesión
   };
   return (
     <div className={styles.sidebar}>
@@ -23,14 +22,20 @@ const SideBar = () => {
         <li>
           <Link to="/orders">Mis Pedidos</Link>
         </li>
+
         <li>
-          <Link onClick={logOut}>Cerrar Sesión</Link>
+          <Link to="/cart">Tu carrito</Link>
         </li>
         <li>
           <Link to="/">Volver al Inicio</Link>
         </li>
+        {googleName ? null : (
+          <li>
+            <Link to="/change-password">Cambiar Contraseña</Link>
+          </li>
+        )}
         <li>
-          <Link to="/change-password">Cambiar Contraseña</Link>
+          <Link onClick={logOut}>Cerrar Sesión</Link>
         </li>
       </ul>
     </div>
