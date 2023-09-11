@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import styles from "./FilterBar.module.css";
 import {
@@ -42,18 +43,6 @@ const FilterBar = () => {
   const handleClearFilters = () => {
     setDataFilter(initialState);
   };
-
-  // const handleSortChange = (event) => {
-  //   const selectedOrder = event.target.value;
-
-  //   if (selectedOrder === "asc" || selectedOrder === "desc") {
-  //     dispatch(setOrderByName(selectedOrder));
-  //     dispatch(setOrderByPrice(null));
-  //   } else if (selectedOrder === "priceAsc" || selectedOrder === "priceDesc") {
-  //     dispatch(setOrderByPrice(selectedOrder));
-  //     dispatch(setOrderByName(null));
-  //   }
-  // };
 
   const handleSortChange = (event) => {
     const selectedOrder = event.target.value;
@@ -133,6 +122,8 @@ const FilterBar = () => {
                 }))
               }
             />
+
+            <button>Buscar</button>
           </div>
 
           <div className={styles.categorySelect}>

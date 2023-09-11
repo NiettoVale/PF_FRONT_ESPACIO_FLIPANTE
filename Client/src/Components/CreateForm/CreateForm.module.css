@@ -1,4 +1,103 @@
+/* Estilos generales para el formulario */
 .create-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los campos de entrada de texto y select */
+input[type="text"],
+select,
+textarea,
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Estilos para los mensajes de error */
+.error-message {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Estilos para el botón de envío */
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo especial para textarea */
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  /* Evita que el texto se vuelva blanco en fondo blanco */
+  color: #333;
+  background-color: #fff;
+}
+
+/* Estilo para el mensaje de éxito */
+.success-message {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* Estilos para las miniaturas de imágenes */
+.image-thumbnail {
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+}
+
+.image-thumbnail img {
+  max-width: 100px;
+  max-height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Estilos para el botón de eliminación de imagen */
+.delete-image-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-image-button:hover {
+  background-color: #dd0000;
+}
+/* .create-form {
   text-align: left;
   width: 320px;
   margin: 0 auto;
@@ -85,4 +184,4 @@
   font-weight: bold;
   margin-right: 10px;
   width: 40px;
-}
+} */
