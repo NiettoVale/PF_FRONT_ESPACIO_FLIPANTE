@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Cards from "../../Components/cards/cards.component";
+import CartCards from "./CartCards/CartCards.component";
 import { useDispatch, useSelector } from "react-redux";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import axios from "axios";
@@ -8,7 +8,7 @@ import {
   getUserByName,
 } from "../../Redux/actions/productsActions";
 import { Link } from "react-router-dom";
-import styles from "../Detail/Detail.module.css";
+import styles from "./CartView.module.css";
 
 const back = process.env.REACT_APP_BACK;
 
@@ -87,11 +87,12 @@ const CartView = () => {
   };
 
   return (
-    <div className="create-product">
+    <div className={styles.cartContainer}>
       <h2>Carrito de Compra</h2>
-      <Cards products={cart} />
+
+      <CartCards products={cart} />
       <h2>Precio Total : ${totalPrice}</h2>
-      <button className="btn-clear-all" onClick={handleBuy}>
+      <button className={styles.buyButton} onClick={handleBuy}>
         Comprar
       </button>
       <Link to={"/"}>
