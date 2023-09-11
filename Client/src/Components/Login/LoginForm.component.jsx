@@ -83,6 +83,13 @@ const LoginForm = () => {
           localStorage.setItem("username", formData.name);
           navigate("/");
         }
+        if (response.status === 404) {
+          MySwal.fire({
+            icon: "error",
+            title: "Error:",
+            text: "Usuario no encontrado.",
+          });
+        }
       }
     } catch (error) {
       console.error("Error:", error.message);
@@ -156,9 +163,6 @@ const LoginForm = () => {
           <Link to="/register">¡Regístrate!</Link>
         </p>
       </div>
-      <Link to={"/"}>
-        <button className={styles.backButton}>⬅</button>
-      </Link>
     </div>
   );
 };
