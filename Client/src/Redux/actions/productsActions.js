@@ -249,11 +249,6 @@ export const removeproductCart = (userId, productId) => {
       if (response.status === 404) {
         console.log(data.message);
       }
-
-      if (response.status === 200) {
-        window.location.href = "/cart";
-        console.log(data.message);
-      }
     } catch (error) {
       console.log("Algo salió mal con removeproductCart!");
       console.log(error);
