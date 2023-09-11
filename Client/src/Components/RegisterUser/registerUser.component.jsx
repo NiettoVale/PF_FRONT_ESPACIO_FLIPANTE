@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./register.module.css";
 import validationRegister from "./validationRegister";
-import { createUserWithEmailAndPassword,
+import navBar from "../NavBar/navBar";
+import {
+  createUserWithEmailAndPassword,
   getAuth,
   sendEmailVerification,
-} from 'firebase/auth';
+} from "firebase/auth";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const back = process.env.REACT_APP_BACK;
 
@@ -63,26 +70,25 @@ const Registro = () => {
       if (response.status === 200) {
         try {
           const auth = getAuth();
-          const userCredentials = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);
+          const userCredentials = await createUserWithEmailAndPassword(
+            auth,
+            newUser.email,
+            newUser.password
+          );
           // Enviar correo de verificación
-          
+
           await sendEmailVerification(userCredentials.user);
-          
         } catch (error) {
-          console.error('Error:', error.message);
+          console.error("Error:", error.message);
         }
 
-
-
-        alert("Usuario registrado exitosamente. Correo de verificación enviado.");
+        MySwal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Usuario registrado exitosamente. Correo de verificación enviado.",
+        });
         navigate("/login");
         // window.location.reload();
-     
-       
-
-
-
-
       } else if (response.status === 400) {
         setRegisterErrors({ badRequest: responseData.message });
       } else if (response.status === 500) {
@@ -90,7 +96,11 @@ const Registro = () => {
       }
     } catch (error) {
       // Si hubo algún error que no es del servidor, lo mostramos
-      alert("Algo salió mal.");
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Algo salió mal.",
+      });
       console.log(error.message);
     }
   };
@@ -98,6 +108,7 @@ const Registro = () => {
   return (
     <div className={styles.registerContainer}>
       <div className={styles.registerImage}></div>
+
       <div className={styles.formContainer}>
         <div className={styles.form}>
           <h2 className={styles.title}>Registro</h2>
@@ -153,6 +164,9 @@ const Registro = () => {
           </Link>
         </div>
       </div>
+      <Link to={"/"}>
+        <button className={styles.backButton}>⬅</button>
+      </Link>
     </div>
   );
 };
