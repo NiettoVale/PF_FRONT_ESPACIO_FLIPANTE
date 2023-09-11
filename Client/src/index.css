@@ -105,7 +105,6 @@ input {
   font-weight: 500;
 
   font-size: 14px;
-  text-transform: capitalize;
   letter-spacing: 0.05rem;
 }
 input:focus {
@@ -114,8 +113,10 @@ input:focus {
 textarea {
   border: solid 1px #000;
   background-color: #fff;
+  color: #000;
   height: 35px;
   padding-inline: 10px;
+  resize: vertical;
 }
 
 label {

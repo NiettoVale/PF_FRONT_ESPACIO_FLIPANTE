@@ -30,7 +30,6 @@
 }
 .loginContainer input {
   margin: 0;
-  text-transform: lowercase;
 }
 .loginContainer button {
   width: 100%;
