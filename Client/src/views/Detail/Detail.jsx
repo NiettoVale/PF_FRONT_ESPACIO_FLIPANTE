@@ -21,10 +21,10 @@ export default function Detail() {
   const [imageDetail, setImageDetail] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [productCart, setProductCart] = useState(false);
-  //const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
-  //const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
 
   const name = localStorage.getItem("username");
+  const googleName = localStorage.getItem("googleName");
+
   const user = useSelector((state) => state.infoUser);
   const favorites = useSelector((state) => state.myFavorites);
   const cart = useSelector((state) => state.myCart);
@@ -44,7 +44,8 @@ export default function Detail() {
     } else {
       dispatch(addproductCart(userId, id)); // Agrega al Carrito
     }
-    setProductCart(!productCart);
+    // Actualiza el estado después de que la acción se haya completado
+    setProductCart(!productCart); // Cambia el estado para reflejar si es favorito o no
   };
 
   const handleToggleFavorites = () => {
@@ -57,18 +58,18 @@ export default function Detail() {
     setIsFavorite(!isFavorite); // Cambia el estado para reflejar si es favorito o no
   };
 
-  // Función para manejar la selección de talla
-  //const handleSizeSelect = (selectedSize) => {
-  //  setSelectedSize(selectedSize);
-  //};
-
   //----USE_EFFECT
   useEffect(() => {
-    dispatch(getUserByName(name));
+    if (!googleName) {
+      dispatch(getUserByName(name));
+    } else {
+      dispatch(getUserByName(googleName));
+    }
+
     if (userId) {
       dispatch(getFavorites(userId));
     }
-  }, [dispatch, name, userId]);
+  }, [dispatch, name, userId, googleName]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,7 +85,6 @@ export default function Detail() {
           const sizesWithStock = data.Sizes.filter(
             (size) => size.Stock.quantity > 0
           );
-          
         } else if (response.status === 400) {
           console.log(data.error);
         } else if (response.status === 500) {
