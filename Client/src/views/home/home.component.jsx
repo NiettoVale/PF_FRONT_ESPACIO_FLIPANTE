@@ -81,7 +81,6 @@ const Home = () => {
       <Hero />
       <ProductSlider products={products} />
 
-      <h1>ESPACIO FLIPANTE</h1>
       <div className={styles.navBarWithSearch}>
         <NavBar />
         <div className={styles.spaceBetween}></div>

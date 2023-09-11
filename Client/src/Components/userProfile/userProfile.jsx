@@ -97,7 +97,7 @@ const UserProfile = () => {
       <SideBar />
 
       {userInfo && userInfo.name ? (
-        <div>
+        <div className={styles.userContainer}>
           <div className={styles.userImage}>
             <img src={imageURL} alt="Foto de perfil" />
           </div>
@@ -139,7 +139,9 @@ const UserProfile = () => {
               imageURLs={[imageURL]}
             />
             <br />
-            <button type="submit">Actualizar Perfil</button>
+            <button type="submit" className={styles.updateButton}>
+              Actualizar Perfil
+            </button>
           </form>
         </div>
       ) : null}

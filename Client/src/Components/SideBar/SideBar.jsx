@@ -13,6 +13,12 @@ const SideBar = () => {
   };
   return (
     <div className={styles.sidebar}>
+      <div className={styles.logo}>
+        <h2>
+          <span>ESPACIO</span>
+        </h2>
+        <h2> FLIPANTE</h2>
+      </div>
       <ul>
         <li>
           <Link to="/userProfile">Perfil</Link>
@@ -33,6 +39,9 @@ const SideBar = () => {
           <Link to="/change-password">Cambiar Contraseña</Link>
         </li>
       </ul>
+      <Link to={"/"}>
+        <button className={styles.backButton}>⬅</button>
+      </Link>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import {
   getUserByName,
 } from "../../Redux/actions/productsActions";
 import Cards from "../cards/cards.component";
-import "./Favorites.module.css";
+import styles from "./Favorites.module.css";
 import { Link } from "react-router-dom";
 
 const Favorites = () => {
@@ -34,7 +34,7 @@ const Favorites = () => {
       {favorites.length > 0 ? (
         <Cards products={favorites} />
       ) : (
-        <div>
+        <div className={styles.favoritesTitle}>
           <h1>No tienes favoritos</h1>
           <Link to="/">
             <button>Ir al catálogo</button>
