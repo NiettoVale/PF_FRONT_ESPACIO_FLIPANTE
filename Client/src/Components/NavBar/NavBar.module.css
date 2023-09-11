@@ -1,6 +1,7 @@
 .navBar {
   display: flex;
   gap: 16px; /* Espacio entre los elementos */
+  align-items: center;
 }
 
 .navBar a {
@@ -25,8 +26,56 @@
   background-color: #fff;
 }
 
+.access {
+  text-decoration: none;
+  font-size: 22px;
+  line-height: 0;
+}
+
 .image {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+}
+.userIcon {
+  font-size: 22px;
+  line-height: 0;
+}
+
+.userImage {
+  height: 30px;
+  width: 30px;
+  border-radius: 50px;
+  border: solid 1px #000;
+  margin-top: 5px;
+}
+.logOutIcon {
+  text-decoration: none;
+  font-size: 22px;
+  line-height: 0;
+  margin-left: 16px;
+}
+.logOutGoogleIcon {
+  text-decoration: none;
+  font-size: 22px;
+  line-height: 0;
+  margin-left: 16px;
+  margin-bottom: 4px;
+}
+
+.logo {
+  display: block;
+  line-height: 15px;
+  font-size: 12px;
+  padding: 3px;
+  border: solid 1px #000;
+}
+
+.logo h2 {
+  color: #000;
+  letter-spacing: -1px;
+}
+.logo span {
+  letter-spacing: 0;
+  color: #000;
 }

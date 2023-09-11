@@ -10,32 +10,32 @@ import {
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   // const storedUsername = localStorage.getItem("username");
-  const googleName = localStorage.getItem("googleName");
-  const googleImage = localStorage.getItem("googleImage");
-  const [storedUsername, setStoredUsername] = useState(
-    localStorage.getItem("username")
-  );
+  // const googleName = localStorage.getItem("googleName");
+  // const googleImage = localStorage.getItem("googleImage");
+  // const [storedUsername, setStoredUsername] = useState(
+  //   localStorage.getItem("username")
+  // );
 
-  useEffect(() => {
-    // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
-    setStoredUsername(localStorage.getItem("username"));
-  }, []);
+  // useEffect(() => {
+  //   // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
+  //   setStoredUsername(localStorage.getItem("username"));
+  // }, []);
 
-  const logOut = () => {
-    localStorage.removeItem("username");
-    window.location.reload();
-  };
+  // const logOut = () => {
+  //   localStorage.removeItem("username");
+  //   window.location.reload();
+  // };
 
   const handleChange = (event) => {
     setBusqueda(event.target.value);
     filterSearch(event.target.value);
   };
 
-  const logOutGoogle = () => {
-    localStorage.removeItem("googleName");
-    localStorage.removeItem("googleImage");
-    window.location.reload();
-  };
+  // const logOutGoogle = () => {
+  //   localStorage.removeItem("googleName");
+  //   localStorage.removeItem("googleImage");
+  //   window.location.reload();
+  // };
 
   return (
     <div className={styles.searchBarContainer}>
@@ -53,7 +53,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
 
       <div className={styles.flexSpace}></div>
 
-      {storedUsername ? (
+      {/* {storedUsername ? (
         <div>
           <Link to={"/userProfile"}>
             <HiOutlineUserCircle className={styles.userIcon} />
@@ -70,7 +70,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
           </Link>
           <Link to={"/"}>
             <HiOutlineLogout
-              className={styles.logOutIcon}
+              className={styles.logOutGoogleIcon}
               onClick={logOutGoogle}
             />
           </Link>
@@ -79,7 +79,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         <Link to={"/login"} className={styles.access}>
           <HiOutlineLogin />
         </Link>
-      )}
+      )} */}
     </div>
   );
 }
