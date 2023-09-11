@@ -6,8 +6,8 @@ const Orders = () => {
   return (
     <div>
       <SideBar />
+      <h2 className={styles.purchaseTitle}>HISTORIAL DE COMPRAS</h2>
       <div className={styles.purchaseContainer}>
-        <h2>HISTORIAL DE COMPRAS</h2>
         <p className={styles.singlePurchase}>COMPRA 1</p>
         <p className={styles.singlePurchase}>COMPRA 2</p>
         <p className={styles.singlePurchase}>COMPRA 3</p>

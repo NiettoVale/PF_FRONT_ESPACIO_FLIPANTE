@@ -17,11 +17,12 @@
 .sidebar ul {
   list-style: none; /* Quitar viñetas de la lista */
   padding: 0;
-  flex-grow: 1; /* Distribuir espacio verticalmente uniformemente */
+  flex-grow: 0.95; /* Distribuir espacio verticalmente uniformemente */
 }
 
 .sidebar ul li {
   margin-bottom: 10px; /* Espacio entre elementos de la lista */
+  text-transform: uppercase;
 }
 
 /* Estilos para los enlaces */
