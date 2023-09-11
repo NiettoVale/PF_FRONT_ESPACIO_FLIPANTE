@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styles from "./NavBar.module.css";
 import { Link } from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux"
 
 import {
   HiOutlineShoppingCart,
