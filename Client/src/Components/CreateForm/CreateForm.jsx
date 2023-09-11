@@ -14,12 +14,11 @@ function CreateForm() {
     name: "",
     gender: "Seleccionar",
     category: "Seleccionar",
-    sizes: {},
     mainMaterial: "",
     description: "",
     images: [],
     price: 0,
-    stock: 0,
+    sizes: {}, // Cambio: Usar un objeto para tallas y stock
   });
 
   const [isValidUrls, setIsValidUrls] = useState([]);
@@ -38,25 +37,15 @@ function CreateForm() {
     });
   };
 
-  const handleSizeChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      sizes: {
-        ...formData.sizes,
-        [name]: Number(value),
-      },
-    });
-  };
+  const handleSizeChange = (event, sizeName) => {
+    const { value } = event.target;
+    const sizes = { ...formData.sizes };
 
-  const calculateStock = () => {
-    const total = Object.values(formData.sizes).reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      0
-    );
+    sizes[sizeName] = Number(value);
+
     setFormData({
       ...formData,
-      stock: total,
+      sizes,
     });
   };
 
@@ -180,9 +169,8 @@ function CreateForm() {
             <input
               type="number"
               name={`sizes_${size}`}
-              value={formData.sizes[`sizes_${size}`] || 0}
-              onChange={handleSizeChange}
-              onBlur={calculateStock}
+              value={formData.sizes[size]}
+              onChange={(event) => handleSizeChange(event, size)}
             />
           </div>
         ))}
@@ -214,7 +202,7 @@ function CreateForm() {
           handleImageURLChange={handleImageURLChange}
           imageURLs={formData.images}
         />
-        <label htmlFor="images">Imágenes (Ingrese una URL por línea)</label>
+        <label htmlFor="images">Imágenes (carga una imagen)</label>
         {formData.images.map((image, index) => (
           <div key={index}>
             <input
@@ -234,9 +222,6 @@ function CreateForm() {
             </button>
           </div>
         ))}
-        {/* <button type="button" onClick={handleAddImageInput}>
-          Agregar Otra Imagen
-        </button> */}
       </div>
 
       <div>

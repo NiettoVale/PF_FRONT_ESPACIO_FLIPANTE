@@ -21,6 +21,8 @@ export default function Detail() {
   const [imageDetail, setImageDetail] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [productCart, setProductCart] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
+  const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
 
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
@@ -37,13 +39,17 @@ export default function Detail() {
 
   //----FUNCIONES
   const handleCart = () => {
-    if (productCart) {
-      dispatch(removeproductCart(userId, id)); // Elimina del Carrito
+    if (selectedSize) {
+      // Agregar al carrito solo si se ha seleccionado una talla
+      const productToAdd = {
+        productId: id,
+        size: selectedSize,
+      };
+      dispatch(addproductCart(userId, productToAdd)); // Agrega al Carrito
+      setProductCart(true); // Establece el producto como agregado al carrito
     } else {
-      dispatch(addproductCart(userId, id)); // Agrega al Carrito
+      alert("Selecciona una talla antes de agregar al carrito.");
     }
-    // Actualiza el estado después de que la acción se haya completado
-    setProductCart(!productCart); // Cambia el estado para reflejar si es favorito o no
   };
 
   const handleToggleFavorites = () => {
@@ -54,6 +60,11 @@ export default function Detail() {
     }
     // Actualiza el estado después de que la acción se haya completado
     setIsFavorite(!isFavorite); // Cambia el estado para reflejar si es favorito o no
+  };
+
+  // Función para manejar la selección de talla
+  const handleSizeSelect = (selectedSize) => {
+    setSelectedSize(selectedSize);
   };
 
   //----USE_EFFECT
@@ -74,6 +85,11 @@ export default function Detail() {
         if (response.status === 200) {
           setCardDetail(data);
           setImageDetail(data.images);
+          // Obtener tallas disponibles del producto
+          const sizesWithStock = data.Sizes.filter(
+            (size) => size.Stock.quantity > 0
+          );
+          setAvailableSizes(sizesWithStock);
         } else if (response.status === 400) {
           console.log(data.error);
         } else if (response.status === 500) {
@@ -101,7 +117,9 @@ export default function Detail() {
 
   return (
     <div>
-      <NavBar />
+      <div className={styles.navBarDetail}>
+        <NavBar />
+      </div>
       <Link to={"/"}>
         <button className={styles.backButton}>⬅</button>
       </Link>
@@ -124,11 +142,15 @@ export default function Detail() {
           <p className={styles.detailName}>{cardDetail.name}</p>
 
           <div className={styles.sizesButtons}>
-            <button key="S">S</button>
-            <button key="M">M</button>
-            <button key="L">L</button>
-            <button key="XL">XL</button>
-            <button key="XXL">XXL</button>
+            {availableSizes.map((size) => (
+              <button
+                key={size.id}
+                onClick={() => handleSizeSelect(size)}
+                className={selectedSize === size ? styles.selectedSize : ""}
+              >
+                {size.name}
+              </button>
+            ))}
           </div>
 
           <div>
@@ -152,7 +174,7 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button className={styles.favButton} onClick={handleCart}>
+            <button className={styles.cartButton} onClick={handleCart}>
               {productCart ? "Eliminar de Carrito" : "Agregar al Carrito"}
             </button>
           </div>
