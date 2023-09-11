@@ -21,8 +21,9 @@
 }
 
 .sidebar ul li {
-  margin-bottom: 10px; /* Espacio entre elementos de la lista */
+  margin-bottom: 18px; /* Espacio entre elementos de la lista */
   text-transform: uppercase;
+  line-height: 18px;
 }
 
 /* Estilos para los enlaces */
