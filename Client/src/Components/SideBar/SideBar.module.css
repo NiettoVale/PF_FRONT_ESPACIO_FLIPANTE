@@ -1,5 +1,5 @@
 .sidebar {
-  background-color: #333; /* Color de fondo de la barra lateral */
+  background-color: #000; /* Color de fondo de la barra lateral */
   color: #fff; /* Color de texto */
   width: 200px; /* Ancho de la barra lateral */
   height: 100%; /* Altura completa */
@@ -8,6 +8,8 @@
   left: 0; /* Izquierda */
   display: flex; /* Utilizar flexbox */
   flex-direction: column; /* Apilar elementos verticalmente */
+  align-items: center;
+  justify-content: center;
   padding: 20px; /* Espaciado interior */
 }
 
@@ -20,7 +22,6 @@
 
 .sidebar ul li {
   margin-bottom: 10px; /* Espacio entre elementos de la lista */
-  /* text-align: justify; */
 }
 
 /* Estilos para los enlaces */
@@ -31,5 +32,40 @@
 }
 
 .sidebar ul li a:hover {
-  color: #00bcd4; /* Cambiar el color al pasar el mouse */
+  color: #f948ff; /* Cambiar el color al pasar el mouse */
+}
+.logo {
+  margin: auto;
+  margin-bottom: 50px;
+  width: 100px;
+  display: block;
+  line-height: 15px;
+  font-size: 12px;
+  padding: 10px 3px;
+  border: solid 1px #fff;
+}
+
+.logo h2 {
+  color: #fff;
+  letter-spacing: -1px;
+}
+.logo span {
+  letter-spacing: 0;
+  color: #fff;
+}
+.backButton {
+  position: absolute;
+  bottom: 70px;
+  left: 90px;
+  border-radius: 50px;
+
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  font-size: 40px;
+  line-height: 0;
+  letter-spacing: 0;
+
+  background-color: #fff;
+  color: #000;
 }
