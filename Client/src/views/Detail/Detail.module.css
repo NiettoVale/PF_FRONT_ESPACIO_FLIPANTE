@@ -1,7 +1,7 @@
 .backButton {
   position: absolute;
-  top: 70px;
-  left: 20px;
+  bottom: 30px;
+  left: 30px;
   border-radius: 50px;
 
   width: 60px;
@@ -10,6 +10,10 @@
   font-size: 40px;
   line-height: 0;
   letter-spacing: 0;
+}
+.navBarDetail {
+  position: absolute;
+  left: 0;
 }
 
 .detailContainer {
@@ -20,6 +24,7 @@
   justify-content: space-between;
   align-items: flex-start;
 
+  padding-top: 80px;
   margin: auto;
 }
 
@@ -33,7 +38,7 @@
 /* Estilos para la imagen principal (grande) */
 .mainImage {
   width: 350px;
-  height: 500px;
+  height: 450px;
 
   object-fit: cover;
   object-position: center;

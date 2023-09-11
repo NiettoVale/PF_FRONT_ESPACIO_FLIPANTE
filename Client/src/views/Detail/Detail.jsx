@@ -84,6 +84,7 @@ export default function Detail() {
           const sizesWithStock = data.Sizes.filter(
             (size) => size.Stock.quantity > 0
           );
+          
         } else if (response.status === 400) {
           console.log(data.error);
         } else if (response.status === 500) {
@@ -111,7 +112,9 @@ export default function Detail() {
 
   return (
     <div>
-      <NavBar />
+      <div className={styles.navBarDetail}>
+        <NavBar />
+      </div>
       <Link to={"/"}>
         <button className={styles.backButton}>⬅</button>
       </Link>
@@ -162,7 +165,7 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button className={styles.favButton} onClick={handleCart}>
+            <button className={styles.cartButton} onClick={handleCart}>
               {productCart ? "Eliminar de Carrito" : "Agregar al Carrito"}
             </button>
           </div>
