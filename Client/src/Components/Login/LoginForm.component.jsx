@@ -8,7 +8,7 @@ import {
   getAuth,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
-import enviar from "./funcionEnviar";
+import enviarMail from "./funcionEnviar";
 const back = process.env.REACT_APP_BACK;
 
 const LoginForm = () => {
@@ -80,10 +80,11 @@ const LoginForm = () => {
 
   function submitHandler(event) {
     event.preventDefault();
+    console.log(formData.name);
     let correo = formData.name;
     let asunto = "BIENVENIDO";
     let texto = "Hola bienvenido";
-    enviar(correo, asunto, texto);
+    enviarMail(correo, asunto, texto);
     correo = asunto = texto = "";
   }
 
