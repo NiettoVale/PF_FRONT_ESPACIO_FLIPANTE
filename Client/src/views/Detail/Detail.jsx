@@ -86,7 +86,9 @@ export default function Detail() {
           setCardDetail(data);
           setImageDetail(data.images);
           // Obtener tallas disponibles del producto
-          const sizesWithStock = data.Sizes.filter((size) => size.Stock.quantity > 0);
+          const sizesWithStock = data.Sizes.filter(
+            (size) => size.Stock.quantity > 0
+          );
           setAvailableSizes(sizesWithStock);
         } else if (response.status === 400) {
           console.log(data.error);
@@ -115,7 +117,9 @@ export default function Detail() {
 
   return (
     <div>
-      <NavBar />
+      <div className={styles.navBarDetail}>
+        <NavBar />
+      </div>
       <Link to={"/"}>
         <button className={styles.backButton}>⬅</button>
       </Link>
@@ -170,7 +174,7 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button className={styles.favButton} onClick={handleCart}>
+            <button className={styles.cartButton} onClick={handleCart}>
               {productCart ? "Eliminar de Carrito" : "Agregar al Carrito"}
             </button>
           </div>
