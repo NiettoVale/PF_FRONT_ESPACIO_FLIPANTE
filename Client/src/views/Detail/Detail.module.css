@@ -1,6 +1,6 @@
 .backButton {
   position: absolute;
-  bottom: 30px;
+  bottom: 15px;
   left: 30px;
   border-radius: 50px;
 
@@ -99,6 +99,10 @@
   outline: #e100ff;
   color: #fff;
   background-color: #000;
+}
+
+.sizesButtons p {
+  color: rgb(0, 0, 0);
 }
 
 .detailPrice {
