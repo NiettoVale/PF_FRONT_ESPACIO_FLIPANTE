@@ -12,6 +12,7 @@ import {
   GET_USER_NAME,
   FAVORITES,
   CART,
+  GET_USER_MAIL,
 } from "./actionTypes";
 
 const back = process.env.REACT_APP_BACK;
@@ -133,6 +134,25 @@ export const getUserByName = (name) => {
       }
 
       dispatch({ type: GET_USER_NAME, payload: data });
+    } catch (error) {
+      console.log("Algo salió mal con getUserByName!");
+      console.log(error);
+    }
+  };
+};
+
+export const getUserByMail = (mail) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`${back}user/${mail}`);
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+
+      dispatch({ type: GET_USER_MAIL, payload: data });
     } catch (error) {
       console.log("Algo salió mal con getUserByName!");
       console.log(error);
