@@ -23,7 +23,8 @@ const Vista = () => {
           timerProgressBar: true,
         });
         setTimeout(() => {
-          window.location.href = "http://localhost:3000/login";
+          window.location.href =
+            "https://pf-front-denuevo.vercel.app/login";
         }, 3 * 1000);
         // Redirige a otra página después de verificar el correo
         // Reemplaza '/tu-otra-pagina' con la URL a la que deseas redirigir
