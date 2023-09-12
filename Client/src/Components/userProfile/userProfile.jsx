@@ -4,6 +4,12 @@ import styles from "./userProfile.module.css";
 import SideBar from "../SideBar/SideBar";
 import { getUserByName } from "../../Redux/actions/productsActions";
 import UploadImageProfile from "../firebase/UploadImageProfile";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
+
 const back = process.env.REACT_APP_BACK;
 
 const UserProfile = () => {
@@ -77,11 +83,27 @@ const UserProfile = () => {
 
       if (response.status === 200) {
         console.log("Datos de usuario actualizados con éxito.");
+        MySwal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Datos de usuario actualizados con éxito.",
+        });
       } else {
         console.error("Error al actualizar los datos del usuario.");
+        MySwal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Error al actualizar los datos del usuario.",
+        });
       }
     } catch (error) {
       console.error("Error al enviar la solicitud:", error);
+      MySwal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Error al enviar la solicitud: ",
+        error,
+      });
     }
   };
 
@@ -102,7 +124,7 @@ const UserProfile = () => {
           <div className={styles.userImage}>
             <img src={imageURL} alt="Foto de perfil" />
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className={styles.userForm}>
             <label htmlFor="name">Nombre:</label> <br />
             <input
               type="text"
