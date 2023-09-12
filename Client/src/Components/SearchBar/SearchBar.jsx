@@ -10,7 +10,6 @@ import {
 import { getUserByName } from "../../Redux/actions/productsActions";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
-  // const storedUsername = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
   const googleImage = localStorage.getItem("googleImage");
   const name = localStorage.getItem("username");
@@ -46,7 +45,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
     localStorage.removeItem("googleImage");
     window.location.reload();
   };
-
+  console.log(imageProfile);
   return (
     <div className={styles.searchBarContainer}>
       <input
@@ -66,7 +65,19 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
       {storedUsername ? (
         <div>
           <Link to={"/userProfile"}>
-            <img src={imageProfile} className={styles.userIcon} alt="profile" />
+            {imageProfile ? (
+              <img
+                src={imageProfile}
+                className={styles.userIcon}
+                alt="profile"
+              />
+            ) : (
+              <img
+                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif" // Reemplaza con la URL del GIF de carga
+                alt="Cargando..."
+                className={styles.loadingIcon}
+              />
+            )}
           </Link>
 
           <Link to={"/"}>
@@ -75,8 +86,20 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         </div>
       ) : googleName ? (
         <div>
+          {console.log(googleImage)}
           <Link to={"/userProfile"}>
-            <img src={googleImage} alt="profile" className={styles.userImage} />
+            {googleImage ? (
+              <img
+                src={googleImage}
+                alt="profile"
+                className={styles.userImage}
+              />
+            ) : (
+              <img
+                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif" // Reemplaza con la URL del GIF de carga
+                alt="Cargando..."
+              />
+            )}
           </Link>
 
           <Link to={"/"}>
