@@ -22,6 +22,7 @@ export default function Detail() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [productCart, setProductCart] = useState(false);
   const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
+  const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
@@ -39,13 +40,22 @@ export default function Detail() {
 
   //----FUNCIONES
   const handleCart = () => {
-    if (productCart) {
-      dispatch(removeproductCart(userId, id)); // Elimina del Carrito
-    } else {
-      dispatch(addproductCart(userId, id)); // Agrega al Carrito
+    if (!selectedSize) {
+      alert("Selecciona una talla antes de agregar al carrito.");
+      return;
     }
-    // Actualiza el estado después de que la acción se haya completado
-    setProductCart(!productCart); // Cambia el estado para reflejar si es favorito o no
+
+    const isProductInCart = cart.some(
+      (product) => product.productId === id && product.sizeId === selectedSize
+    );
+
+    if (isProductInCart) {
+      // Si el producto con el mismo ID y tamaño ya está en el carrito, elimínalo
+      dispatch(removeproductCart(userId, id, selectedSize));
+    } else {
+      // Agregar al carrito solo si no está ya en el carrito
+      dispatch(addproductCart(userId, id, selectedSize));
+    }
   };
 
   const handleToggleFavorites = () => {
