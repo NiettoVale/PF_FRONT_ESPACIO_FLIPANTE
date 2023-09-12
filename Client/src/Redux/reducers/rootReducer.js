@@ -12,6 +12,7 @@ import {
   REMOVE_FROM_FAVORITES,
   CART,
   REMOVE_FROM_CART,
+  PRICE_CART,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
   order: "asc",
   myFavorites: [],
   myCart: [],
+  totalPrice: 0,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -109,6 +111,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         myCart: updatedCart,
+      };
+    case PRICE_CART:
+      return {
+        ...state,
+        totalPrice: action.payload, // Actualiza el precio total con el nuevo valor
       };
     default:
       return state;
