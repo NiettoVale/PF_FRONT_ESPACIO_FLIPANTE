@@ -11,7 +11,7 @@ import UserProfile from "./Components/userProfile/userProfile";
 import Orders from "./Components/Orders/Orders";
 import Favorites from "./Components/Favorites/Favorites";
 import ChangePassword from "./Components/ChangePassword/ChangePassword";
-
+import Vista from "./Components/firebase/Autentication";
 
 function App() {
   return (
@@ -26,6 +26,7 @@ function App() {
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/orders" element={<Orders />} />
       <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/view" element={<Vista />} />
     </Routes>
   );
 }
