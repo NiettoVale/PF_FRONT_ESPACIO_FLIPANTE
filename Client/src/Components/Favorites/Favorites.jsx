@@ -29,7 +29,7 @@ const Favorites = () => {
   }, [dispatch, name, userId]);
 
   return (
-    <div>
+    <div className={styles.favoritesContainer}>
       <SideBar />
       {favorites.length > 0 ? (
         <Cards products={favorites} />
@@ -37,7 +37,7 @@ const Favorites = () => {
         <div className={styles.favoritesTitle}>
           <h1>No tienes favoritos</h1>
           <Link to="/">
-            <button>Ir al catálogo</button>
+            <button className={styles.catalogoButton}>Ir al catálogo</button>
           </Link>
         </div>
       )}

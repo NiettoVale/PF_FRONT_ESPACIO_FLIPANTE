@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import SideBar from "../SideBar/SideBar";
 import { useSelector } from "react-redux";
+
+import styles from "./ChangePassword.module.css";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
+
 const back = process.env.REACT_APP_BACK;
 
 const ChangePassword = () => {
@@ -82,6 +90,11 @@ const ChangePassword = () => {
       if (response.status === 200) {
         // Cambio de contraseña exitoso
         console.log("Cambio de contraseña exitoso.");
+        MySwal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Cambio de contraseña exitoso.",
+        });
         // Puedes redirigir al usuario a otra página o mostrar un mensaje de éxito aquí
       } else {
         // Manejar errores en caso de una respuesta no exitosa
@@ -95,16 +108,21 @@ const ChangePassword = () => {
       }
     } catch (error) {
       // Manejar errores de red u otros errores
-      console.error("Error al cambiar la contraseña:", error);
+      console.error("Error al cambiar la contraseña: ", error);
+      MySwal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: ("Error al cambiar la contraseña: ", error),
+      });
     }
   };
 
   return (
-    <div>
+    <div className={styles.passwordContainer}>
       <SideBar />
-      <h2>Cambiar Contraseña</h2>
+      <h2 className={styles.passwordTitle}>Cambiar Contraseña</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className={styles.passwordInputs}>
           <label htmlFor="currentPassword">Contraseña Actual:</label>
           <input
             type="password"
@@ -113,10 +131,10 @@ const ChangePassword = () => {
             onChange={handleChange}
           />
           {errors.currentPassword && (
-            <p className="error">{errors.currentPassword}</p>
+            <p className={styles.error}>{errors.currentPassword}</p>
           )}
         </div>
-        <div>
+        <div className={styles.passwordInputs}>
           <label htmlFor="newPassword">Nueva Contraseña:</label>
           <input
             type="password"
@@ -124,9 +142,11 @@ const ChangePassword = () => {
             value={passwordData.newPassword}
             onChange={handleChange}
           />
-          {errors.newPassword && <p className="error">{errors.newPassword}</p>}
+          {errors.newPassword && (
+            <p className={styles.error}>{errors.newPassword}</p>
+          )}
         </div>
-        <div>
+        <div className={styles.passwordInputs}>
           <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
           <input
             type="password"
@@ -135,10 +155,12 @@ const ChangePassword = () => {
             onChange={handleChange}
           />
           {errors.confirmPassword && (
-            <p className="error">{errors.confirmPassword}</p>
+            <p className={styles.error}>{errors.confirmPassword}</p>
           )}
         </div>
-        <button type="submit">Cambiar Contraseña</button>
+        <button type="submit" className={styles.passwordButton}>
+          Cambiar Contraseña
+        </button>
       </form>
     </div>
   );

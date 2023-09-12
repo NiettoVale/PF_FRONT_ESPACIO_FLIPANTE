@@ -16,27 +16,46 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  gap: 100px;
+  gap: 120px;
+}
+.userForm {
+  width: 300px;
+  text-align: left;
+}
+.userForm label {
+  font-weight: 600;
+}
+.userForm input {
+  width: 300px;
+  height: 25px;
+  margin: 2px 0 25px 0;
+}
+.updateButton {
+  width: 322px;
 }
 
 .userImage img {
-  height: 230px;
-  width: 230px;
+  height: 250px;
+  width: 250px;
   background-position: center;
   background-size: cover;
   border-radius: 500px;
   border: solid 2px #000;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 /* HISTORIAL DE COMPRAS */
 .purchaseContainer {
-  width: 500px;
-  height: 500px;
+  width: 60vw;
+  height: 60vh;
   border: solid 1px #ddd;
   padding: 30px;
+  margin-left: 250px;
 
   overflow-y: scroll;
+}
+.purchaseTitle {
+  margin: 0 0 50px 250px;
 }
 .purchaseContainer p {
   text-align: left;
@@ -49,7 +68,4 @@
 /* FAVORITOS */
 .favoritesContainer h2 {
   margin: 20px 0;
-}
-.updateButton {
-  width: 100%;
 }
