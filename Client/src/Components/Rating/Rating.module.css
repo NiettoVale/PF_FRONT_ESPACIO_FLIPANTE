@@ -1,0 +1,14 @@
+/* Rating.css */
+.rating {
+  font-size: 24px;
+}
+
+.starfilled {
+  color: gold;
+  cursor: pointer;
+}
+
+.starempty {
+  color: gray;
+  cursor: pointer;
+}

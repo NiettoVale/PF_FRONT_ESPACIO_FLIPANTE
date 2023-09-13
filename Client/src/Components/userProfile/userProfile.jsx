@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./userProfile.module.css";
 import SideBar from "../SideBar/SideBar";
-import { getUserByName } from "../../Redux/actions/productsActions";
+import {
+  getUserByMail,
+  getUserByName,
+} from "../../Redux/actions/productsActions";
 import UploadImageProfile from "../firebase/UploadImageProfile";
 
 import Swal from "sweetalert2";
@@ -106,14 +109,23 @@ const UserProfile = () => {
       });
     }
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!googleName) {
-      dispatch(getUserByName(name));
+    const regexEmail = /[^@]+@[^@]+.[a-zA-Z]{2,}$/;
+    if (regexEmail.test(name) && !googleName) {
+      dispatch(getUserByMail(name));
+    } else if (regexEmail.test(name) && googleName) {
+      dispatch(getUserByMail(googleName));
     } else {
-      dispatch(getUserByName(googleName));
+      if (!googleName) {
+        dispatch(getUserByName(name));
+      } else {
+        dispatch(getUserByName(googleName));
+      }
     }
   }, [dispatch, name, googleName]);
+  console.log(name);
 
   return (
     <div className={styles.userView}>

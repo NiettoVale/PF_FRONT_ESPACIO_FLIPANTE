@@ -14,6 +14,7 @@ import {
   CART,
   PRICE_CART,
   REMOVE_FROM_CART,
+  GET_USER_MAIL,
 } from "./actionTypes";
 import Swal from "sweetalert2";
 
@@ -140,6 +141,25 @@ export const getUserByName = (name) => {
       }
 
       dispatch({ type: GET_USER_NAME, payload: data });
+    } catch (error) {
+      console.log("Algo salió mal con getUserByName!");
+      console.log(error);
+    }
+  };
+};
+
+export const getUserByMail = (mail) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`${back}user/${mail}`);
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+
+      dispatch({ type: GET_USER_MAIL, payload: data });
     } catch (error) {
       console.log("Algo salió mal con getUserByName!");
       console.log(error);

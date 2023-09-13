@@ -11,7 +11,11 @@ import {
   FAVORITES,
   REMOVE_FROM_FAVORITES,
   CART,
+
   PRICE_CART,
+
+  GET_USER_MAIL,
+  REMOVE_FROM_CART,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -80,6 +84,13 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         infoUser: [action.payload],
       };
+
+    case GET_USER_MAIL:
+      return {
+        ...state,
+        infoUser: [action.payload],
+      };
+
     case FAVORITES:
       return {
         ...state,
