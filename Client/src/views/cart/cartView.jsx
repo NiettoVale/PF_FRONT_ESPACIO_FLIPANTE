@@ -21,7 +21,6 @@ const CartView = () => {
   const user = useSelector((state) => state.infoUser);
   const cart = useSelector((state) => state.myCart);
   const dispatch = useDispatch();
-
   // Declaración de preferenceId y totalPrice como Estados Locales
   const [preferenceId, setPreferenceId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0); // Inicialmente 0

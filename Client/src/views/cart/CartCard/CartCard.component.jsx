@@ -7,6 +7,7 @@ import {
   removeproductCart,
   getproductCart,
   getUserByName,
+  removeallproductCart,
 } from "../../../Redux/actions/productsActions";
 
 const Card = ({
@@ -28,6 +29,7 @@ const Card = ({
 
   const [quantity, setQuantity] = useState(cantidad);
   const [productSize, setProductSize] = useState(null);
+  const [isRemoved, setIsRemoved] = useState(false); // Estado para controlar si el producto se ha eliminado
 
   // Información del Usuario
   let userId = 0;
@@ -41,7 +43,7 @@ const Card = ({
   const handleIncrement = () => {
     if (cartItem && quantity < cartItem.stock) {
       // Comprobar si la cantidad es menor que el stock
-      dispatch(addproductCart(userId, id, cartItem.sizeId));
+      dispatch(addproductCart(userId, cartItem.productId, cartItem.sizeId));
       setQuantity(quantity + 1);
       setTotalPrice((prevTotalPrice) => prevTotalPrice + cartItem.price);
     }
@@ -50,10 +52,29 @@ const Card = ({
   const handleDecrement = () => {
     if (quantity > 1) {
       // Comprobar si la cantidad es mayor que 1
-      dispatch(removeproductCart(userId, id, cartItem.sizeId));
+      dispatch(removeproductCart(userId, cartItem.productId, cartItem.sizeId));
       setQuantity(quantity - 1);
       setTotalPrice((prevTotalPrice) => prevTotalPrice - cartItem.price);
     }
+  };
+
+  const handledelete = () => {
+    // Llamar a la acción para eliminar el producto del carrito
+    dispatch(removeallproductCart(userId, cartItem.productId, cartItem.sizeId));
+
+    // Calcular el precio total después de eliminar el producto
+    const productToDelete = cart.find(
+      (product) =>
+        product.productId === cartItem.productId &&
+        product.sizeId === cartItem.sizeId
+    );
+
+    if (productToDelete) {
+      const productPrice = productToDelete.price * productToDelete.cantidad;
+      const newTotalPrice = price * quantity - productPrice;
+      setTotalPrice(newTotalPrice);
+    }
+    setIsRemoved(true);
   };
 
   useEffect(() => {
@@ -71,7 +92,7 @@ const Card = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${back}detail/${id}`);
+        const response = await fetch(`${back}detail/${cartItem.sizeId}`);
         const data = await response.json();
         // Obtener el tamaño correspondiente al sizeId
         const sizeData = data.Sizes.find(
@@ -87,8 +108,14 @@ const Card = ({
     fetchData();
   }, [id, back, cartItem.sizeId]);
 
+  // Renderizado condicional basado en si el producto se ha eliminado o no
+  if (isRemoved) {
+    return null; // No renderizar la tarjeta si se ha eliminado
+  }
+
   return (
     <div className={styles.cardContainer}>
+      <button onClick={handledelete}>X</button>
       <Link to={`/detail/${id}`}>
         <div className={styles.cardImageContainer}>
           {/* Mostrar la imagen */}

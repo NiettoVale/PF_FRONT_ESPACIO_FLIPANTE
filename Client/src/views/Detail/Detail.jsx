@@ -4,6 +4,7 @@ import styles from "./Detail.module.css";
 import NavBar from "../../Components/NavBar/navBar";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getproductCart,
   addFavorite,
   addproductCart,
   getFavorites,
@@ -24,6 +25,8 @@ export default function Detail() {
   const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
   const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
   const [isSizeSelected, setIsSizeSelected] = useState(false);
+  const [cartQuantity, setCartQuantity] = useState(0);
+  const [cartproduct, setCartProduct] = useState(null);
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
@@ -45,20 +48,10 @@ export default function Detail() {
       alert("Selecciona una talla antes de agregar al carrito.");
       return;
     }
-
-    const isProductInCart = cart.some(
-      (product) => product.productId === id && product.sizeId === selectedSize
-    );
-
-    if (isProductInCart) {
-      // Si el producto con el mismo ID y tamaño ya está en el carrito, elimínalo
-      dispatch(removeproductCart(userId, id, selectedSize));
-      window.alert("Producto Eliminado");
-    } else {
-      // Agregar al carrito solo si no está ya en el carrito
-      dispatch(addproductCart(userId, id, selectedSize));
-      window.alert("Producto Agregado");
-    }
+    // Agregar al carrito
+    dispatch(addproductCart(userId, id, selectedSize));
+    setIsSizeSelected(false);
+    window.alert("Producto Agregado");
   };
 
   // Función para manejar la selección de tamaño
@@ -88,7 +81,10 @@ export default function Detail() {
     if (userId) {
       dispatch(getFavorites(userId));
     }
-  }, [dispatch, name, userId, googleName]);
+    if (userId) {
+      dispatch(getproductCart(userId));
+    }
+  }, [dispatch, name, userId, googleName, isSizeSelected]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,15 +116,21 @@ export default function Detail() {
   }, [id, back]);
 
   useEffect(() => {
-    if (user && user.length > 0 && favorites) {
-      const favoriteProductIds = favorites.map((favorite) => favorite.id);
-      setIsFavorite(favoriteProductIds.includes(parseInt(id)));
+    if (user && user.length > 0 && cart && isSizeSelected) {
+      const cartProduct = cart.find(
+        (product) =>
+          product.productId === parseInt(id) && product.sizeId === selectedSize
+      );
+      if (cartProduct) {
+        setCartQuantity(cartProduct.cantidad);
+        setCartProduct(cartProduct.stock);
+      } else {
+        setCartQuantity(0);
+      }
+    } else {
+      setCartQuantity(null);
     }
-    if (user && user.length > 0 && cart) {
-      const cartProductIds = cart.map((product) => product.id);
-      setProductCart(cartProductIds.includes(parseInt(id)));
-    }
-  }, [id, user, cart, favorites]);
+  }, [id, user, cart, selectedSize, isSizeSelected]);
 
   return (
     <div>
@@ -186,6 +188,14 @@ export default function Detail() {
             <p className={styles.detailMaterial}>
               Material Principal: {cardDetail.mainMaterial}
             </p>
+            <p className={styles.detailMaterial}>
+              Cantidad en el Carrito:{" "}
+              {isSizeSelected
+                ? cartQuantity !== null
+                  ? cartQuantity
+                  : "Selecciona un Talle"
+                : "Selecciona un Talle"}
+            </p>
           </div>
 
           <p className={styles.detailPrice}>${cardDetail.price}</p>
@@ -201,10 +211,12 @@ export default function Detail() {
             <button
               className={styles.cartButton}
               onClick={handleCart}
-              disabled={!isSizeSelected} // Deshabilitar el botón si no se ha seleccionado un tamaño
+              disabled={!isSizeSelected || cartQuantity === cartproduct}
             >
               {isSizeSelected
-                ? productCart
+                ? cartQuantity === cartproduct
+                  ? "Stock No Disponible"
+                  : productCart
                   ? "Eliminar del Carrito"
                   : "Agregar al Carrito"
                 : "Selecciona un Talle"}
