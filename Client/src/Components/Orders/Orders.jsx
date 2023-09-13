@@ -1,12 +1,15 @@
 import React from "react";
 import styles from "../userProfile/userProfile.module.css";
 import SideBar from "../SideBar/SideBar";
-
+import { useParams } from "react-router-dom";
 const Orders = () => {
+  const { preferenceId } = useParams();
+  console.log(preferenceId);
   return (
     <div>
       <SideBar />
       <h2 className={styles.purchaseTitle}>HISTORIAL DE COMPRAS</h2>
+      <div>{preferenceId}</div>
       <div className={styles.purchaseContainer}>
         <p className={styles.singlePurchase}>COMPRA 1</p>
         <p className={styles.singlePurchase}>COMPRA 2</p>

@@ -304,7 +304,7 @@ export const removeCart = (userId) => {
     }
   };
 };
-  
+
 export const removeallproductCart = (userId, productId, sizeId) => {
   return async (dispatch) => {
     try {

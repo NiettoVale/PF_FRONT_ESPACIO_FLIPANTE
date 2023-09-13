@@ -134,7 +134,6 @@ export default function Detail() {
       }
     };
 
-    console.log("");
     fetchData();
   }, [id, back]);
 
