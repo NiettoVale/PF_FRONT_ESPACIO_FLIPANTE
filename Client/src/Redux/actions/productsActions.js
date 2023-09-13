@@ -14,6 +14,7 @@ import {
   CART,
   GET_USER_MAIL,
 } from "./actionTypes";
+import Swal from "sweetalert2";
 
 const back = process.env.REACT_APP_BACK;
 
@@ -110,7 +111,11 @@ export const getFilters = (dataFilter) => {
 
       if (response.status === 404) {
         const data = await response.json(); // Espera la respuesta antes de procesarla
-        console.log(data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message,
+        });
       } else {
         const data = await response.json(); // Espera la respuesta antes de procesarla
         dispatch({ type: FILTER, payload: data });
@@ -276,7 +281,7 @@ export const removeproductCart = (userId, productId) => {
   };
 };
 
-export const setOrderByName = (order) => {
+export const setOrder = (order) => {
   return { type: ORDER, payload: order };
 };
 
