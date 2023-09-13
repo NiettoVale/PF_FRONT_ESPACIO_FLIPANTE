@@ -43,6 +43,7 @@ function GoogleLogin() {
       const name = result.user.displayName;
       const image = result.user.photoURL;
       const email = result.user.email;
+      console.log(result.user.photoURL);
 
       localStorage.setItem("googleName", name);
       localStorage.setItem("googleImage", image);

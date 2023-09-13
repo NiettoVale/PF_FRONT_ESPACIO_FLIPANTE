@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../../Redux/actions/productsActions";
@@ -22,31 +21,34 @@ const Home = () => {
   const [productsByName, setProductsByName] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const productsPerPage = 10;
+  useEffect(() => {
+    if (busqueda === "" || busqueda === null) {
+      dispatch(getProducts());
+    } else {
+      filterSearch(busqueda);
+    }
+    // Reiniciar la página actual cuando se aplica una búsqueda
+    setCurrentPage(1);
+  }, [busqueda, dispatch]);
 
-  const filterSearch = useCallback(
-    (searchTerm) => {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(lowerCaseSearchTerm)
-      );
-      setProductsByName(filteredProducts);
-    },
-    [products]
-  );
+  const productsPerPage = 10;
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts =
-    busqueda === ""
-      ? products.slice(indexOfFirstProduct, indexOfLastProduct)
-      : productsByName.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalFilteredProducts = productsFiltered.length;
+
+  const totalAllProducts =
+    busqueda === "" ? products.length : productsByName.length;
 
   const totalPages = Math.ceil(
-    (busqueda === "" ? products.length : productsByName.length) /
-      productsPerPage
+    totalFilteredProducts > 0
+      ? totalFilteredProducts / productsPerPage
+      : totalAllProducts / productsPerPage
   );
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
@@ -64,23 +66,42 @@ const Home = () => {
     }
   };
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const filterSearch = useCallback(
+    (searchTerm) => {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(lowerCaseSearchTerm)
+      );
+      setProductsByName(filteredProducts);
+    },
+    [products]
+  );
 
-  useEffect(() => {
-    if (busqueda === "" || busqueda === null) {
-      dispatch(getProducts());
-    } else {
-      filterSearch(busqueda);
-    }
-  }, [busqueda, dispatch]);
+  let currentProducts = [];
+
+  if (totalFilteredProducts > 0) {
+    currentProducts = productsFiltered.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
+    );
+  } else {
+    currentProducts =
+      busqueda === ""
+        ? products.slice(indexOfFirstProduct, indexOfLastProduct)
+        : productsByName.slice(indexOfFirstProduct, indexOfLastProduct);
+  }
+
+  const resetPage = () => {
+    console.log("Resetting page to 1");
+    setCurrentPage(1); // Reiniciar la página a 1
+  };
 
   return (
     <div>
       <Hero />
       <ProductSlider products={products} />
 
+      <h1>ESPACIO FLIPANTE</h1>
       <div className={styles.navBarWithSearch}>
         <NavBar />
         <div className={styles.spaceBetween}></div>
@@ -92,7 +113,7 @@ const Home = () => {
         />
       </div>
 
-      <FilterBar />
+      <FilterBar resetPage={resetPage} />
 
       <div className={styles.paginationButtons}>
         <button
@@ -118,38 +139,31 @@ const Home = () => {
         <button
           className={styles.unButton}
           onClick={next}
-          disabled={currentPage === pageNumbers.length}
+          disabled={currentPage === totalPages}
         >
           <MdArrowForwardIos />
         </button>
       </div>
 
-      <div className="cards-container">
-        {productsFiltered.length > 0 ? (
+      <div className="">
+        {busqueda === "" ? (
           <>
-            <h2>Productos seleccionados</h2>
-            <Cards products={productsFiltered} />
+            <h1>Catalogo</h1>
+            <Cards products={currentProducts} />
           </>
-        ) : null}
-      </div>
-
-      {busqueda === "" ? (
-        <>
-          <h1>Catalogo</h1>
-          <Cards products={currentProducts} />
-        </>
-      ) : (
-        <>
-          {currentProducts.length > 0 ? (
-            <>
+        ) : currentProducts.length > 0 ? (
+          <>
+            {totalFilteredProducts > 0 ? (
+              <h2>Productos seleccionados</h2>
+            ) : (
               <h1>Resultado de búsqueda</h1>
-              <Cards products={currentProducts} />
-            </>
-          ) : (
-            <p>No se encontraron productos.</p>
-          )}
-        </>
-      )}
+            )}
+            <Cards products={currentProducts} />
+          </>
+        ) : (
+          <p>No se encontraron productos.</p>
+        )}
+      </div>
 
       <Footer />
     </div>

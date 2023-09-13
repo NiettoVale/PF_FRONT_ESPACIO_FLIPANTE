@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import styles from "./FilterBar.module.css";
 import {
   getFilters,
   getSizes,
-  // getPrices,
-  // setOrderByPrice,
+  setOrder,
   setOrderByName,
 } from "../../Redux/actions/productsActions";
 
@@ -19,54 +17,69 @@ const initialState = {
   maxPrice: "",
 };
 
-const FilterBar = () => {
+const FilterBar = ({ resetPage }) => {
   const dispatch = useDispatch();
 
   const [dataFilter, setDataFilter] = useState(initialState);
-  const sizes = useSelector((state) => state.sizes);
+  const [priceFilter, setPriceFilter] = useState(""); // Nueva pieza de estado para el precio
 
   const handleGenderChange = (event) => {
     const { name, value } = event.target;
     setDataFilter((prevData) => ({ ...prevData, [name]: value }));
+    resetPage();
   };
 
   const handleCategoryChange = (event) => {
     const { name, value } = event.target;
     setDataFilter((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSizes = (event) => {
-    const { name, value } = event.target;
-    setDataFilter((prevData) => ({ ...prevData, [name]: value }));
+    resetPage();
   };
 
   const handleClearFilters = () => {
     setDataFilter(initialState);
+    setPriceFilter(""); // Restablecer la pieza de estado del precio
   };
 
   const handleSortChange = (event) => {
     const selectedOrder = event.target.value;
 
-    if (selectedOrder === "asc" || selectedOrder === "desc") {
-      // Actualizar el estado en Redux utilizando la acción setOrderByName
-      dispatch(setOrderByName(selectedOrder));
+    if (
+      selectedOrder === "asc" ||
+      selectedOrder === "desc" ||
+      selectedOrder === "priceAsc" ||
+      selectedOrder === "priceDesc"
+    ) {
+      console.log("Este es el slec: ", selectedOrder);
+      dispatch(setOrder(selectedOrder));
     } else {
-      // Restablecer el estado en Redux a null o el valor que corresponda
-      dispatch(setOrderByName(null));
+      dispatch(setOrder(null));
     }
     const selectedValue = event.target.value;
     setDataFilter({ ...dataFilter, order: selectedValue });
+    resetPage();
+  };
+
+  const handlePriceChange = (event) => {
+    const selectedValue = event.target.value;
+
+    if (selectedValue === "priceAsc" || selectedValue === "priceDesc") {
+      console.log("object", selectedValue);
+      dispatch(setOrder(selectedValue));
+    } else {
+      dispatch(setOrder(null));
+    }
+
+    setPriceFilter(selectedValue); // Actualizar la pieza de estado para el precio
+    resetPage();
   };
 
   useEffect(() => {
     dispatch(getFilters(dataFilter));
     dispatch(getSizes());
-    // dispatch(getPrices(dataFilter.minPrice, dataFilter.maxPrice));
   }, [dataFilter, dispatch]);
 
   const [filtersBar, setFiltersBar] = useState(false);
   const handleClick = () => setFiltersBar(!filtersBar);
-  // const handleClose = () => setFiltersBar(!filtersBar);
 
   return (
     <div className={!filtersBar ? styles.hidden : styles.shown}>
@@ -99,33 +112,6 @@ const FilterBar = () => {
             </select>
           </div>
 
-          <div className={styles.priceSelect}>
-            <input
-              type="number"
-              placeholder="Precio mínimo"
-              value={dataFilter.minPrice}
-              onChange={(e) =>
-                setDataFilter((prevData) => ({
-                  ...prevData,
-                  minPrice: e.target.value,
-                }))
-              }
-            />
-            <input
-              type="number"
-              placeholder="Precio máximo"
-              value={dataFilter.maxPrice}
-              onChange={(e) =>
-                setDataFilter((prevData) => ({
-                  ...prevData,
-                  maxPrice: e.target.value,
-                }))
-              }
-            />
-
-            <button>Buscar</button>
-          </div>
-
           <div className={styles.categorySelect}>
             <select
               onChange={handleCategoryChange}
@@ -145,14 +131,17 @@ const FilterBar = () => {
             </select>
           </div>
 
-          <div className={styles.sizesSelect}>
-            <select name="sizes" value={dataFilter.size} onChange={handleSizes}>
-              <option value="">Seleccionar talless</option>
-              {sizes.map((size, index) => (
-                <option key={index} value={size}>
-                  {size}
-                </option>
-              ))}
+          <div className={styles.orderSelect}>
+            <select
+              id="PriceSelect"
+              onChange={handlePriceChange}
+              value={priceFilter} // Usar la pieza de estado para el precio como valor
+            >
+              <option value="" disabled>
+                SELECCIONAR PRECIO
+              </option>
+              <option value="priceAsc">MENOR PRECIO</option>
+              <option value="priceDesc">MAYOR PRECIO</option>
             </select>
           </div>
 
@@ -160,15 +149,13 @@ const FilterBar = () => {
             <select
               id="SortSelect"
               onChange={handleSortChange}
-              value={dataFilter.order || ""} // Establecer "ORDENAR" por defecto
+              value={dataFilter.order || ""}
             >
               <option value="" disabled>
-                ORDENAR
+                SELECCIONAR ORDEN
               </option>
               <option value="asc">A-Z</option>
               <option value="desc">Z-A</option>
-              <option value="priceAsc">MENOR PRECIO</option>
-              <option value="priceDesc">MAYOR PRECIO</option>
             </select>
           </div>
 

@@ -15,6 +15,7 @@ import {
   PRICE_CART,
   REMOVE_FROM_CART,
 } from "./actionTypes";
+import Swal from "sweetalert2";
 
 const back = process.env.REACT_APP_BACK;
 
@@ -111,7 +112,11 @@ export const getFilters = (dataFilter) => {
 
       if (response.status === 404) {
         const data = await response.json(); // Espera la respuesta antes de procesarla
-        console.log(data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message,
+        });
       } else {
         const data = await response.json(); // Espera la respuesta antes de procesarla
         dispatch({ type: FILTER, payload: data });
@@ -254,32 +259,6 @@ export const removeproductCart = (userId, productId, sizeId) => {
   };
 };
 
-export const removeallproductCart = (userId, productId, sizeId) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(
-        `${back}all/${userId}/${productId}/${sizeId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.status === 404) {
-        console.log(data.message);
-      }
-    } catch (error) {
-      console.log("Algo salió mal con removeallproductCart!");
-      console.log(error);
-    }
-  };
-};
-
-export const setOrderByName = (order) => {
-  return { type: ORDER, payload: order };
-};
-
 export const updateTotalPrice = (newTotalPrice) => {
   return {
     type: PRICE_CART,
@@ -305,7 +284,29 @@ export const removeCart = (userId) => {
     }
   };
 };
+  
+export const removeallproductCart = (userId, productId, sizeId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${back}all/${userId}/${productId}/${sizeId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-// export const setOrderByPrice = (order) => {
-//   return { type: PRICE_ORDER, payload: order };
-// };
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log("Algo salió mal con removeallproductCart!");
+      console.log(error);
+    }
+  };
+};
+
+export const setOrder = (order) => {
+  return { type: ORDER, payload: order };
+};
