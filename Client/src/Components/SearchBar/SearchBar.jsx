@@ -45,7 +45,6 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
     localStorage.removeItem("googleImage");
     window.location.reload();
   };
-  console.log(imageProfile);
   return (
     <div className={styles.searchBarContainer}>
       <input

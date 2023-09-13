@@ -12,8 +12,11 @@ import {
   GET_USER_NAME,
   FAVORITES,
   CART,
+  PRICE_CART,
+  REMOVE_FROM_CART,
   GET_USER_MAIL,
 } from "./actionTypes";
+import Swal from "sweetalert2";
 
 const back = process.env.REACT_APP_BACK;
 
@@ -110,7 +113,11 @@ export const getFilters = (dataFilter) => {
 
       if (response.status === 404) {
         const data = await response.json(); // Espera la respuesta antes de procesarla
-        console.log(data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message,
+        });
       } else {
         const data = await response.json(); // Espera la respuesta antes de procesarla
         dispatch({ type: FILTER, payload: data });
@@ -179,7 +186,7 @@ export const addFavorite = (userId, productId) => {
 export const removeFromFavorites = (userId, productId) => {
   return async () => {
     try {
-      const response = await fetch(`${back}favorites/${userId}/${productId}`, {
+      const response = await fetch(`${back}/favorites/${userId}/${productId}`, {
         method: "DELETE",
       });
 
@@ -204,11 +211,7 @@ export const getFavorites = (userId) => {
     try {
       const response = await fetch(`${back}favorites/${userId}`);
 
-      console.log("Este es el response: ", response);
-
       const data = await response.json();
-
-      console.log("Este es el response: ", data);
 
       if (response.status === 404) {
         console.log(data.message);
@@ -222,10 +225,10 @@ export const getFavorites = (userId) => {
   };
 };
 
-export const addproductCart = (userId, productId) => {
+export const addproductCart = (userId, productId, sizeId) => {
   return async () => {
     try {
-      await fetch(`${back}users/${userId}/products/${productId}/cart`, {
+      await fetch(`${back}${userId}/${productId}/${sizeId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -257,10 +260,10 @@ export const getproductCart = (userId) => {
   };
 };
 
-export const removeproductCart = (userId, productId) => {
-  return async () => {
+export const removeproductCart = (userId, productId, sizeId) => {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${back}cart/${userId}/${productId}`, {
+      const response = await fetch(`${back}${userId}/${productId}/${sizeId}`, {
         method: "DELETE",
       });
 
@@ -276,10 +279,54 @@ export const removeproductCart = (userId, productId) => {
   };
 };
 
-export const setOrderByName = (order) => {
-  return { type: ORDER, payload: order };
+export const updateTotalPrice = (newTotalPrice) => {
+  return {
+    type: PRICE_CART,
+    payload: newTotalPrice,
+  };
 };
 
-// export const setOrderByPrice = (order) => {
-//   return { type: PRICE_ORDER, payload: order };
-// };
+export const removeCart = (userId) => {
+  return async () => {
+    try {
+      const response = await fetch(`${back}cart/${userId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log("Algo salió mal con removeproductCart!");
+      console.log(error);
+    }
+  };
+};
+  
+export const removeallproductCart = (userId, productId, sizeId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${back}all/${userId}/${productId}/${sizeId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log("Algo salió mal con removeallproductCart!");
+      console.log(error);
+    }
+  };
+};
+
+export const setOrder = (order) => {
+  return { type: ORDER, payload: order };
+};

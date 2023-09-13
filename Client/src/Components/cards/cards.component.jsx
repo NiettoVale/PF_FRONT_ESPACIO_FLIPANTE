@@ -3,18 +3,24 @@ import styles from "./cards.module.css";
 import { useSelector } from "react-redux";
 
 const Cards = ({ products }) => {
-  const orderByName = useSelector((state) => state.order);
-  let sortedProducts = []; // Inicializa la variable fuera del condicional
+  const order = useSelector((state) => state.order);
+  console.log(order);
+  let sortedProducts = [];
 
   if (products.length > 0) {
-    sortedProducts = [...products].sort((a, b) => {
-      if (orderByName === "asc") {
-        return a.name.localeCompare(b.name);
-      } else if (orderByName === "desc") {
-        return b.name.localeCompare(a.name);
-      }
-      return 0;
-    });
+    if (order === "asc" || order === "desc") {
+      sortedProducts = [...products].sort((a, b) => {
+        return order === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      });
+    } else if (order === "priceAsc" || order === "priceDesc") {
+      sortedProducts = [...products].sort((a, b) => {
+        const priceA = a.price;
+        const priceB = b.price;
+        return order === "priceAsc" ? priceA - priceB : priceB - priceA;
+      });
+    }
   }
 
   return (
