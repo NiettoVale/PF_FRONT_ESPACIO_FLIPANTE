@@ -11,6 +11,7 @@ import {
   removeFromFavorites,
   removeproductCart,
 } from "../../Redux/actions/productsActions";
+import Swal from "sweetalert2"; // Importa SweetAlert2
 
 export default function Detail() {
   const back = process.env.REACT_APP_BACK;
@@ -39,23 +40,37 @@ export default function Detail() {
 
   //----FUNCIONES
   const handleCart = () => {
-    if (productCart) {
-      dispatch(removeproductCart(userId, id)); // Elimina del Carrito
+    if (!googleName || !name) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debes iniciar sesión o registrarte para agregar al carrito",
+      });
     } else {
-      dispatch(addproductCart(userId, id)); // Agrega al Carrito
+      if (productCart) {
+        dispatch(removeproductCart(userId, id));
+      } else {
+        dispatch(addproductCart(userId, id));
+      }
+      setProductCart(!productCart);
     }
-    // Actualiza el estado después de que la acción se haya completado
-    setProductCart(!productCart); // Cambia el estado para reflejar si es favorito o no
   };
 
   const handleToggleFavorites = () => {
-    if (isFavorite) {
-      dispatch(removeFromFavorites(userId, id)); // Elimina de favoritos
+    if (!googleName || !name) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debes iniciar sesión o registrarte para agregar a favoritos",
+      });
     } else {
-      dispatch(addFavorite(userId, id)); // Agrega a favoritos
+      if (isFavorite) {
+        dispatch(removeFromFavorites(userId, id));
+      } else {
+        dispatch(addFavorite(userId, id));
+      }
+      setIsFavorite(!isFavorite);
     }
-    // Actualiza el estado después de que la acción se haya completado
-    setIsFavorite(!isFavorite); // Cambia el estado para reflejar si es favorito o no
   };
 
   //----USE_EFFECT
