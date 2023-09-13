@@ -23,6 +23,7 @@ export default function Detail() {
   const [productCart, setProductCart] = useState(false);
   const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
   const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
+  const [isSizeSelected, setIsSizeSelected] = useState(false);
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
@@ -52,10 +53,18 @@ export default function Detail() {
     if (isProductInCart) {
       // Si el producto con el mismo ID y tamaño ya está en el carrito, elimínalo
       dispatch(removeproductCart(userId, id, selectedSize));
+      window.alert("Producto Eliminado");
     } else {
       // Agregar al carrito solo si no está ya en el carrito
       dispatch(addproductCart(userId, id, selectedSize));
+      window.alert("Producto Agregado");
     }
+  };
+
+  // Función para manejar la selección de tamaño
+  const handleSizeSelection = (sizeId) => {
+    setSelectedSize(sizeId);
+    setIsSizeSelected(true); // Marcar que se ha seleccionado un tamaño
   };
 
   const handleToggleFavorites = () => {
@@ -152,7 +161,15 @@ export default function Detail() {
             <div className={styles.sizesButtons}>
               {availableSizes.length > 0 ? (
                 availableSizes.map((size) => (
-                  <button key={size.id}>{size.name}</button>
+                  <button
+                    key={size.id}
+                    onClick={() => handleSizeSelection(size.id)} // Llama a la función de manejo de selección de tamaño
+                    className={
+                      selectedSize === size.id ? styles.selectedSize : ""
+                    }
+                  >
+                    {size.name}
+                  </button>
                 ))
               ) : (
                 <p>No hay talles disponibles</p>
@@ -181,8 +198,16 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button className={styles.cartButton} onClick={handleCart}>
-              {productCart ? "Eliminar de Carrito" : "Agregar al Carrito"}
+            <button
+              className={styles.cartButton}
+              onClick={handleCart}
+              disabled={!isSizeSelected} // Deshabilitar el botón si no se ha seleccionado un tamaño
+            >
+              {isSizeSelected
+                ? productCart
+                  ? "Eliminar del Carrito"
+                  : "Agregar al Carrito"
+                : "Selecciona un Talle"}
             </button>
           </div>
         </div>

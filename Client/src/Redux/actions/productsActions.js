@@ -264,6 +264,25 @@ export const updateTotalPrice = (newTotalPrice) => {
   };
 };
 
+export const removeCart = (userId) => {
+  return async () => {
+    try {
+      const response = await fetch(`${back}cart/${userId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log("Algo salió mal con removeproductCart!");
+      console.log(error);
+    }
+  };
+};
+
 // export const setOrderByPrice = (order) => {
 //   return { type: PRICE_ORDER, payload: order };
 // };

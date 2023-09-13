@@ -17,7 +17,9 @@ const Card = ({
   id,
   cantidad,
   setTotalPrice,
+  size,
 }) => {
+  const back = process.env.REACT_APP_BACK;
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.myCart);
   const user = useSelector((state) => state.infoUser);
@@ -25,6 +27,7 @@ const Card = ({
   const googleName = localStorage.getItem("googleName");
 
   const [quantity, setQuantity] = useState(cantidad);
+  const [productSize, setProductSize] = useState(null);
 
   // Información del Usuario
   let userId = 0;
@@ -32,21 +35,24 @@ const Card = ({
     userId = user[0].id;
   }
 
+  // Buscar el producto correspondiente en el carrito
+  const cartItem = cart.find((item) => item.id === id);
+
   const handleIncrement = () => {
-    if (quantity < cart[0].stock) {
+    if (cartItem && quantity < cartItem.stock) {
       // Comprobar si la cantidad es menor que el stock
-      dispatch(addproductCart(userId, id, cart[0].sizeId));
+      dispatch(addproductCart(userId, id, cartItem.sizeId));
       setQuantity(quantity + 1);
-      setTotalPrice((prevTotalPrice) => prevTotalPrice + cart[0].price);
+      setTotalPrice((prevTotalPrice) => prevTotalPrice + cartItem.price);
     }
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
       // Comprobar si la cantidad es mayor que 1
-      dispatch(removeproductCart(userId, id, cart[0].sizeId));
+      dispatch(removeproductCart(userId, id, cartItem.sizeId));
       setQuantity(quantity - 1);
-      setTotalPrice((prevTotalPrice) => prevTotalPrice - cart[0].price);
+      setTotalPrice((prevTotalPrice) => prevTotalPrice - cartItem.price);
     }
   };
 
@@ -61,6 +67,25 @@ const Card = ({
       dispatch(getproductCart(userId));
     }
   }, [dispatch, name, userId, googleName]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${back}detail/${id}`);
+        const data = await response.json();
+        // Obtener el tamaño correspondiente al sizeId
+        const sizeData = data.Sizes.find(
+          (sizeItem) => sizeItem.id === cartItem.sizeId
+        );
+        setProductSize(sizeData); // Almacenar el tamaño en el estado local
+      } catch (error) {
+        console.log("Algo salió mal!!!");
+        console.log(error.message);
+      }
+    };
+
+    fetchData();
+  }, [id, back, cartItem.sizeId]);
 
   return (
     <div className={styles.cardContainer}>
@@ -77,17 +102,17 @@ const Card = ({
           )}
         </div>
       </Link>
-      {/* Información relevante */}
       <div className={styles.cardInfo}>
         <p className={styles.cardName}>
-          {nameProduct}, Cantidad: {quantity}
+          {nameProduct}, Cantidad: {quantity}, Size:{" "}
+          {productSize ? productSize.name : "Cargando..."}
         </p>
         <p className={styles.cardCategory}>{category}</p>
         <p className={styles.cardPrice}>${price * quantity}</p>
       </div>
       <div>
         {quantity > 1 && <button onClick={handleDecrement}>-</button>}
-        {quantity < cart[0].stock && (
+        {quantity < cartItem.stock && (
           <button onClick={handleIncrement}>+</button>
         )}
       </div>
