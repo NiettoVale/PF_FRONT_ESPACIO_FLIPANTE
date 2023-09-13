@@ -11,7 +11,7 @@ import {
   FAVORITES,
   REMOVE_FROM_FAVORITES,
   CART,
-  REMOVE_FROM_CART,
+  PRICE_CART,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -24,6 +24,7 @@ const initialState = {
   order: "asc",
   myFavorites: [],
   myCart: [],
+  totalPrice: 0,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -98,17 +99,10 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         myFavorites: updatedFavorites,
       };
-    case REMOVE_FROM_CART:
-      const updatedCart = state.myCart.filter(
-        (product) => parseInt(product.id) !== parseInt(action.payload)
-      );
-
-      console.log(`Cart antiguo:`, state.myCart);
-      console.log(`Cart:`, updatedCart);
-
+    case PRICE_CART:
       return {
         ...state,
-        myCart: updatedCart,
+        totalPrice: action.payload, // Actualiza el precio total con el nuevo valor
       };
     default:
       return state;

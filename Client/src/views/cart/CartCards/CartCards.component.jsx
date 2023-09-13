@@ -2,7 +2,7 @@ import CartCard from "../CartCard/CartCard.component";
 import styles from "./CartCards.module.css";
 import { useSelector } from "react-redux";
 
-const Cards = ({ products }) => {
+const Cards = ({ products, setTotalPrice }) => {
   const orderByName = useSelector((state) => state.order);
   let sortedProducts = []; // Inicializa la variable fuera del condicional
 
@@ -22,13 +22,16 @@ const Cards = ({ products }) => {
       {sortedProducts.map((product) => (
         <CartCard
           key={product.id}
+          size={product.sizeId}
           id={product.id}
-          name={product.name}
+          nameProduct={product.name}
           gender={product.gender}
           category={product.category}
           mainMaterial={product.mainMaterial}
           images={product.images}
           price={product.price}
+          cantidad={product.cantidad}
+          setTotalPrice={setTotalPrice}
         />
       ))}
     </div>

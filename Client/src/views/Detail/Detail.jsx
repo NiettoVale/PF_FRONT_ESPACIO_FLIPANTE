@@ -4,6 +4,7 @@ import styles from "./Detail.module.css";
 import NavBar from "../../Components/NavBar/navBar";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getproductCart,
   addFavorite,
   addproductCart,
   getFavorites,
@@ -23,6 +24,10 @@ export default function Detail() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [productCart, setProductCart] = useState(false);
   const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
+  const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
+  const [isSizeSelected, setIsSizeSelected] = useState(false);
+  const [cartQuantity, setCartQuantity] = useState(0);
+  const [cartproduct, setCartProduct] = useState(null);
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
@@ -54,6 +59,20 @@ export default function Detail() {
       }
       setProductCart(!productCart);
     }
+    if (!selectedSize) {
+      alert("Selecciona una talla antes de agregar al carrito.");
+      return;
+    }
+    // Agregar al carrito
+    dispatch(addproductCart(userId, id, selectedSize));
+    setIsSizeSelected(false);
+    window.alert("Producto Agregado");
+  };
+
+  // Función para manejar la selección de tamaño
+  const handleSizeSelection = (sizeId) => {
+    setSelectedSize(sizeId);
+    setIsSizeSelected(true); // Marcar que se ha seleccionado un tamaño
   };
 
   const handleToggleFavorites = () => {
@@ -84,7 +103,10 @@ export default function Detail() {
     if (userId) {
       dispatch(getFavorites(userId));
     }
-  }, [dispatch, name, userId, googleName]);
+    if (userId) {
+      dispatch(getproductCart(userId));
+    }
+  }, [dispatch, name, userId, googleName, isSizeSelected]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,15 +139,21 @@ export default function Detail() {
   }, [id, back]);
 
   useEffect(() => {
-    if (user && user.length > 0 && favorites) {
-      const favoriteProductIds = favorites.map((favorite) => favorite.id);
-      setIsFavorite(favoriteProductIds.includes(parseInt(id)));
+    if (user && user.length > 0 && cart && isSizeSelected) {
+      const cartProduct = cart.find(
+        (product) =>
+          product.productId === parseInt(id) && product.sizeId === selectedSize
+      );
+      if (cartProduct) {
+        setCartQuantity(cartProduct.cantidad);
+        setCartProduct(cartProduct.stock);
+      } else {
+        setCartQuantity(0);
+      }
+    } else {
+      setCartQuantity(null);
     }
-    if (user && user.length > 0 && cart) {
-      const cartProductIds = cart.map((product) => product.id);
-      setProductCart(cartProductIds.includes(parseInt(id)));
-    }
-  }, [id, user, cart, favorites]);
+  }, [id, user, cart, selectedSize, isSizeSelected]);
 
   return (
     <div>
@@ -158,7 +186,15 @@ export default function Detail() {
             <div className={styles.sizesButtons}>
               {availableSizes.length > 0 ? (
                 availableSizes.map((size) => (
-                  <button key={size.id}>{size.name}</button>
+                  <button
+                    key={size.id}
+                    onClick={() => handleSizeSelection(size.id)} // Llama a la función de manejo de selección de tamaño
+                    className={
+                      selectedSize === size.id ? styles.selectedSize : ""
+                    }
+                  >
+                    {size.name}
+                  </button>
                 ))
               ) : (
                 <p>No hay talles disponibles</p>
@@ -175,6 +211,14 @@ export default function Detail() {
             <p className={styles.detailMaterial}>
               Material Principal: {cardDetail.mainMaterial}
             </p>
+            <p className={styles.detailMaterial}>
+              Cantidad en el Carrito:{" "}
+              {isSizeSelected
+                ? cartQuantity !== null
+                  ? cartQuantity
+                  : "Selecciona un Talle"
+                : "Selecciona un Talle"}
+            </p>
           </div>
 
           <p className={styles.detailPrice}>${cardDetail.price}</p>
@@ -187,8 +231,18 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button className={styles.cartButton} onClick={handleCart}>
-              {productCart ? "Eliminar de Carrito" : "Agregar al Carrito"}
+            <button
+              className={styles.cartButton}
+              onClick={handleCart}
+              disabled={!isSizeSelected || cartQuantity === cartproduct}
+            >
+              {isSizeSelected
+                ? cartQuantity === cartproduct
+                  ? "Stock No Disponible"
+                  : productCart
+                  ? "Eliminar del Carrito"
+                  : "Agregar al Carrito"
+                : "Selecciona un Talle"}
             </button>
           </div>
         </div>
