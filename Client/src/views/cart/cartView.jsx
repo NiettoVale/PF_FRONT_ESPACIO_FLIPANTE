@@ -6,6 +6,7 @@ import axios from "axios";
 import {
   getproductCart,
   getUserByName,
+  removeCart,
 } from "../../Redux/actions/productsActions";
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
@@ -20,7 +21,6 @@ const CartView = () => {
   const user = useSelector((state) => state.infoUser);
   const cart = useSelector((state) => state.myCart);
   const dispatch = useDispatch();
-
   // Declaración de preferenceId y totalPrice como Estados Locales
   const [preferenceId, setPreferenceId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0); // Inicialmente 0
@@ -30,7 +30,6 @@ const CartView = () => {
   if (user.length > 0) {
     userId = user[0].id;
   }
-
   //UseEffects:
   //Busco el Usuario
   useEffect(() => {
@@ -82,9 +81,25 @@ const CartView = () => {
     }
   };
 
+  const handleDelete = async (userId) => {
+    try {
+      // Llamar a la acción para eliminar el carrito completo
+      dispatch(removeCart(userId));
+
+      // Después de eliminar el carrito, puedes redirigir al usuario a la página de inicio u otra página
+      // Reemplaza '/home' con la ruta a la página a la que deseas redirigir al usuario
+      window.location.href = "/cart";
+    } catch (error) {
+      console.error("Error al eliminar el carrito:", error);
+    }
+  };
+
   return (
     <div className={styles.cartContainer}>
       <h2>Carrito de Compra</h2>
+      <button onClick={() => handleDelete(user[0].id)}>
+        Eliminar Carrito Completo
+      </button>
 
       <CartCards products={cart} setTotalPrice={setTotalPrice} />
       <h2>Precio Total : ${totalPrice}</h2>

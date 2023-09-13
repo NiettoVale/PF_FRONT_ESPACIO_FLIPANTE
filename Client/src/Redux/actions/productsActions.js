@@ -13,6 +13,7 @@ import {
   FAVORITES,
   CART,
   PRICE_CART,
+  REMOVE_FROM_CART,
 } from "./actionTypes";
 
 const back = process.env.REACT_APP_BACK;
@@ -235,7 +236,7 @@ export const getproductCart = (userId) => {
 };
 
 export const removeproductCart = (userId, productId, sizeId) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       const response = await fetch(`${back}${userId}/${productId}/${sizeId}`, {
         method: "DELETE",
@@ -253,6 +254,28 @@ export const removeproductCart = (userId, productId, sizeId) => {
   };
 };
 
+export const removeallproductCart = (userId, productId, sizeId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${back}all/${userId}/${productId}/${sizeId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log("Algo salió mal con removeallproductCart!");
+      console.log(error);
+    }
+  };
+};
+
 export const setOrderByName = (order) => {
   return { type: ORDER, payload: order };
 };
@@ -261,6 +284,25 @@ export const updateTotalPrice = (newTotalPrice) => {
   return {
     type: PRICE_CART,
     payload: newTotalPrice,
+  };
+};
+
+export const removeCart = (userId) => {
+  return async () => {
+    try {
+      const response = await fetch(`${back}cart/${userId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (response.status === 404) {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log("Algo salió mal con removeproductCart!");
+      console.log(error);
+    }
   };
 };
 

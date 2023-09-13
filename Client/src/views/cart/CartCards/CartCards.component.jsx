@@ -22,6 +22,7 @@ const Cards = ({ products, setTotalPrice }) => {
       {sortedProducts.map((product) => (
         <CartCard
           key={product.id}
+          size={product.sizeId}
           id={product.id}
           nameProduct={product.name}
           gender={product.gender}
