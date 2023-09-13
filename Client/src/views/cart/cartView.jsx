@@ -101,7 +101,11 @@ const CartView = () => {
         Eliminar Carrito Completo
       </button>
 
-      <CartCards products={cart} setTotalPrice={setTotalPrice} />
+      <CartCards
+        products={cart}
+        setTotalPrice={setTotalPrice}
+        totalPrice={totalPrice}
+      />
       <h2>Precio Total : ${totalPrice}</h2>
       <button className={styles.buyButton} onClick={handleBuy}>
         Comprar
