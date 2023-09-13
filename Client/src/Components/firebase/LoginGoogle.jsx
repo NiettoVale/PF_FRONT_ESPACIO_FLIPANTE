@@ -1,17 +1,15 @@
-// GoogleLogin.js
 import React from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { AiFillGoogleCircle } from "react-icons/ai";
-import enviar from "../Login/funcionEnviar";
+import enviarMail from "../Login/funcionEnviar";
 
 import styles from "./LoginButtons.module.css";
 import Swal from "sweetalert2";
 
 const back = process.env.REACT_APP_BACK;
 
-// Funcion para postear un usuario de firebase a la base de datos:
 const postUser = async (name, email, imageProfile) => {
   try {
     const userData = {
@@ -20,7 +18,6 @@ const postUser = async (name, email, imageProfile) => {
       imageProfile: imageProfile,
     };
 
-    // Realizar la solicitud POST al servidor
     await fetch(`${back}register-google`, {
       method: "POST",
       headers: {
@@ -43,27 +40,32 @@ function GoogleLogin() {
       const name = result.user.displayName;
       const image = result.user.photoURL;
       const email = result.user.email;
-      console.log(result.user.photoURL);
 
       localStorage.setItem("googleName", name);
       localStorage.setItem("googleImage", image);
       localStorage.setItem("googleEmail", email);
 
       postUser(name, email, image);
-      submitHandler(email);
+
+      // Aumenta el contador de sesiones de Google en 1
+      const googleSessionCount =
+        parseInt(localStorage.getItem("googleSessionCount") || "0", 10) + 1;
+      localStorage.setItem("googleSessionCount", googleSessionCount.toString());
+
+      // Comprueba si el contador de sesiones de Google es 1 o un múltiplo de 10 para enviar el correo de bienvenida
+      if (googleSessionCount === 1 || googleSessionCount % 10 === 0) {
+        // Almacena la dirección de correo electrónico de Google
+        const googleEmail = localStorage.getItem("googleEmail");
+
+        // Envía el correo electrónico cuando se inicia sesión con éxito
+        enviarMail(googleEmail, "BIENVENIDO", "Hola bienvenido");
+      }
+
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
-
-  function submitHandler(email) {
-    let correo = email;
-    let asunto = "BIENVENIDO";
-    let texto = "Hola bienvenido";
-    enviar(correo, asunto, texto);
-    correo = asunto = texto = "";
-  }
 
   return (
     <button onClick={handleGoogleLogin} className={styles.loginButtons}>
