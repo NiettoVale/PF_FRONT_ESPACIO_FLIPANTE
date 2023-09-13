@@ -26,6 +26,18 @@ const LoginForm = () => {
   const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Almacena una bandera para verificar si el correo de bienvenida se ha enviado
+    if (!localStorage.getItem("welcomeEmailSent")) {
+      localStorage.setItem("welcomeEmailSent", "false");
+    }
+
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setFormData({ ...formData, name: storedUsername });
+    }
+  }, [formData]);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -35,7 +47,10 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
+      console.log(regex.test(formData.name));
       if (regex.test(formData.name)) {
+        console.log("Soy el email de usuario");
+
         const auth = getAuth();
         const email = formData.name;
         console.log(formData.name);
@@ -50,17 +65,10 @@ const LoginForm = () => {
           if (userCredentials.user.emailVerified) {
             localStorage.setItem("username", formData.name);
 
-            // Aumenta el contador de sesiones de correo electrónico en 1
-            const emailSessionCount =
-              parseInt(localStorage.getItem("emailSessionCount") || "0", 10) +
-              1;
-            localStorage.setItem(
-              "emailSessionCount",
-              emailSessionCount.toString()
-            );
+            // Comprueba si el correo de bienvenida ya se ha enviado
+            const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
 
-            // Comprueba si el contador de sesiones de correo electrónico es 1 o un múltiplo de 10 para enviar el correo de bienvenida
-            if (emailSessionCount === 1 || emailSessionCount % 10 === 0) {
+            if (welcomeEmailSent === "false") {
               // Almacena el nombre de usuario
               localStorage.setItem("username", formData.name);
 
@@ -69,6 +77,9 @@ const LoginForm = () => {
 
               // Envía el correo electrónico cuando se inicia sesión con éxito
               enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+
+              // Establece la bandera en "true" para que no se envíe nuevamente
+              localStorage.setItem("welcomeEmailSent", "true");
             }
 
             navigate("/");
@@ -93,6 +104,7 @@ const LoginForm = () => {
           });
         }
       } else {
+        console.log("Soy el nombre de usuario");
         const response = await fetch(`${back}login`, {
           method: "POST",
           headers: {
@@ -104,24 +116,21 @@ const LoginForm = () => {
         if (response.status === 200) {
           localStorage.setItem("username", formData.name);
 
-          // Aumenta el contador de sesiones de correo electrónico en 1
-          const emailSessionCount =
-            parseInt(localStorage.getItem("emailSessionCount") || "0", 10) + 1;
-          localStorage.setItem(
-            "emailSessionCount",
-            emailSessionCount.toString()
-          );
+          const name = localStorage.getItem("username");
+          const response = await fetch(`${back}profile/${name}`);
 
-          // Comprueba si el contador de sesiones de correo electrónico es 1 o un múltiplo de 10 para enviar el correo de bienvenida
-          if (emailSessionCount === 1 || emailSessionCount % 10 === 0) {
-            // Almacena el nombre de usuario
-            localStorage.setItem("username", formData.name);
+          const data = await response.json();
+          const email = data.email;
 
-            // Cambia formData.name a la dirección de correo electrónico
-            const email = formData.name;
+          // Comprueba si el correo de bienvenida ya se ha enviado
+          const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
 
+          if (welcomeEmailSent === "false") {
             // Envía el correo electrónico cuando se inicia sesión con éxito
             enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+
+            // Establece la bandera en "true" para que no se envíe nuevamente
+            localStorage.setItem("welcomeEmailSent", "true");
           }
 
           navigate("/");
@@ -148,22 +157,6 @@ const LoginForm = () => {
       });
     }
   };
-
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setFormData({ ...formData, name: storedUsername });
-    }
-  }, [formData]);
-
-  // function submitHandler(event) {
-  //   event.preventDefault();
-  //   let correo = formData.name;
-  //   let asunto = "BIENVENIDO";
-  //   let texto = "Hola bienvenido";
-  //   enviarMail(correo, asunto, texto);
-  //   correo = asunto = texto = "";
-  // }
 
   return (
     <div className={styles.loginView}>

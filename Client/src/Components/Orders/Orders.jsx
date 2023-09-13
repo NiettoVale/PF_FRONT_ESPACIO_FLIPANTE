@@ -1,30 +1,62 @@
 import React from "react";
-import styles from "../userProfile/userProfile.module.css";
-import SideBar from "../SideBar/SideBar";
+import { useParams } from "react-router-dom"; // Importa el hook useParams de React Router
 
 const Orders = () => {
+  // Usa el hook useParams para acceder a todos los parámetros de la URL
+  const {
+    collection_id,
+    collection_status,
+    payment_id,
+    status,
+    external_reference,
+    payment_type,
+    merchant_order_id,
+    preference_id,
+    site_id,
+    processing_mode,
+    merchant_account_id,
+  } = useParams();
+
+  // Verifica si alguno de los parámetros es undefined o nulo
+  if (
+    !collection_id ||
+    !collection_status ||
+    !payment_id ||
+    !status ||
+    !external_reference ||
+    !payment_type ||
+    !merchant_order_id ||
+    !preference_id ||
+    !site_id ||
+    !processing_mode ||
+    !merchant_account_id
+  ) {
+    return (
+      <div>
+        <h2>HISTORIAL DE COMPRAS</h2>
+        <p>
+          Lo sentimos, algunos parámetros de la URL son nulos o están
+          indefinidos.
+        </p>
+      </div>
+    );
+  }
+
+  // Si todos los parámetros están presentes, muestra la información
   return (
     <div>
-      <SideBar />
-      <h2 className={styles.purchaseTitle}>HISTORIAL DE COMPRAS</h2>
-      <div className={styles.purchaseContainer}>
-        <p className={styles.singlePurchase}>COMPRA 1</p>
-        <p className={styles.singlePurchase}>COMPRA 2</p>
-        <p className={styles.singlePurchase}>COMPRA 3</p>
-        <p className={styles.singlePurchase}>COMPRA 4</p>
-        <p className={styles.singlePurchase}>COMPRA 5</p>
-        <p className={styles.singlePurchase}>COMPRA 6</p>
-        <p className={styles.singlePurchase}>COMPRA 7</p>
-        <p className={styles.singlePurchase}>COMPRA 8</p>
-        <p className={styles.singlePurchase}>COMPRA 9</p>
-        <p className={styles.singlePurchase}>COMPRA 10</p>
-        <p className={styles.singlePurchase}>COMPRA 11</p>
-        <p className={styles.singlePurchase}>COMPRA 12</p>
-        <p className={styles.singlePurchase}>COMPRA 13</p>
-        <p className={styles.singlePurchase}>COMPRA 14</p>
-        <p className={styles.singlePurchase}>COMPRA 15</p>
-        <p className={styles.singlePurchase}>COMPRA 16</p>
-      </div>
+      <h2>HISTORIAL DE COMPRAS</h2>
+      <p>collection_id: {collection_id}</p>
+      <p>collection_status: {collection_status}</p>
+      <p>payment_id: {payment_id}</p>
+      <p>status: {status}</p>
+      <p>external_reference: {external_reference}</p>
+      <p>payment_type: {payment_type}</p>
+      <p>merchant_order_id: {merchant_order_id}</p>
+      <p>preference_id: {preference_id}</p>
+      <p>site_id: {site_id}</p>
+      <p>processing_mode: {processing_mode}</p>
+      <p>merchant_account_id: {merchant_account_id}</p>
     </div>
   );
 };
