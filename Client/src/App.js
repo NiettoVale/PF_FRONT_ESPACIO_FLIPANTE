@@ -12,6 +12,8 @@ import Orders from "./Components/Orders/Orders";
 import Favorites from "./Components/Favorites/Favorites";
 import ChangePassword from "./Components/ChangePassword/ChangePassword";
 import Vista from "./Components/firebase/Autentication";
+import Review from "./views/Review/Review";
+import Reviews from "./Components/Reviews/Reviews";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
       <Route path="/orders" element={<Orders />} />
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/view" element={<Vista />} />
+      <Route path="/review/:id" element={<Review />} />
+      <Route path="/allReviews" element={<Reviews />} />
     </Routes>
   );
 }

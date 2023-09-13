@@ -102,7 +102,7 @@ export default function Detail() {
 
   useEffect(() => {
     if (user && user.length > 0 && favorites) {
-      const favoriteProductIds = favorites.map((favorite) => favorite.id);
+      const favoriteProductIds = favorites?.map((favorite) => favorite.id);
       setIsFavorite(favoriteProductIds.includes(parseInt(id)));
     }
     if (user && user.length > 0 && cart) {
@@ -174,6 +174,9 @@ export default function Detail() {
             <button className={styles.cartButton} onClick={handleCart}>
               {productCart ? "Eliminar de Carrito" : "Agregar al Carrito"}
             </button>
+            <Link to={`/review/${id}`}>
+              <button>Agregar Reseña</button>
+            </Link>
           </div>
         </div>
       </div>

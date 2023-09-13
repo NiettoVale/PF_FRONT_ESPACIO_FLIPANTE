@@ -38,6 +38,7 @@ const LoginForm = () => {
       if (regex.test(formData.name)) {
         const auth = getAuth();
         const email = formData.name;
+        console.log(formData.name);
         const methods = await fetchSignInMethodsForEmail(auth, email);
 
         if (methods && methods.length > 0) {
@@ -48,7 +49,28 @@ const LoginForm = () => {
           );
           if (userCredentials.user.emailVerified) {
             localStorage.setItem("username", formData.name);
-            submitHandler(event);
+
+            // Aumenta el contador de sesiones de correo electrónico en 1
+            const emailSessionCount =
+              parseInt(localStorage.getItem("emailSessionCount") || "0", 10) +
+              1;
+            localStorage.setItem(
+              "emailSessionCount",
+              emailSessionCount.toString()
+            );
+
+            // Comprueba si el contador de sesiones de correo electrónico es 1 o un múltiplo de 10 para enviar el correo de bienvenida
+            if (emailSessionCount === 1 || emailSessionCount % 10 === 0) {
+              // Almacena el nombre de usuario
+              localStorage.setItem("username", formData.name);
+
+              // Cambia formData.name a la dirección de correo electrónico
+              const email = formData.name;
+
+              // Envía el correo electrónico cuando se inicia sesión con éxito
+              enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+            }
+
             navigate("/");
 
             MySwal.fire({
@@ -81,7 +103,33 @@ const LoginForm = () => {
 
         if (response.status === 200) {
           localStorage.setItem("username", formData.name);
+
+          // Aumenta el contador de sesiones de correo electrónico en 1
+          const emailSessionCount =
+            parseInt(localStorage.getItem("emailSessionCount") || "0", 10) + 1;
+          localStorage.setItem(
+            "emailSessionCount",
+            emailSessionCount.toString()
+          );
+
+          // Comprueba si el contador de sesiones de correo electrónico es 1 o un múltiplo de 10 para enviar el correo de bienvenida
+          if (emailSessionCount === 1 || emailSessionCount % 10 === 0) {
+            // Almacena el nombre de usuario
+            localStorage.setItem("username", formData.name);
+
+            // Cambia formData.name a la dirección de correo electrónico
+            const email = formData.name;
+
+            // Envía el correo electrónico cuando se inicia sesión con éxito
+            enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+          }
+
           navigate("/");
+          MySwal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Inicio de sesión exitoso.",
+          });
         }
         if (response.status === 404) {
           MySwal.fire({
@@ -101,23 +149,21 @@ const LoginForm = () => {
     }
   };
 
-  // Mover la recuperación de datos de localStorage fuera del efecto
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setFormData({ ...formData, name: storedUsername });
     }
-  }, [formData]); // Se ejecutará una vez al montar el componente
+  }, [formData]);
 
-  function submitHandler(event) {
-    event.preventDefault();
-    console.log(formData.name);
-    let correo = formData.name;
-    let asunto = "BIENVENIDO";
-    let texto = "Hola bienvenido";
-    enviarMail(correo, asunto, texto);
-    correo = asunto = texto = "";
-  }
+  // function submitHandler(event) {
+  //   event.preventDefault();
+  //   let correo = formData.name;
+  //   let asunto = "BIENVENIDO";
+  //   let texto = "Hola bienvenido";
+  //   enviarMail(correo, asunto, texto);
+  //   correo = asunto = texto = "";
+  // }
 
   return (
     <div className={styles.loginView}>
