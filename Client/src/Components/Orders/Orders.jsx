@@ -1,4 +1,6 @@
 import React from "react";
+import styles from "../userProfile/userProfile.module.css";
+import SideBar from "../SideBar/SideBar";
 import { useParams } from "react-router-dom"; // Importa el hook useParams de React Router
 
 const Orders = () => {
@@ -45,6 +47,9 @@ const Orders = () => {
   // Si todos los parámetros están presentes, muestra la información
   return (
     <div>
+
+      <SideBar />
+      <h2 className={styles.purchaseTitle}>HISTORIAL DE COMPRAS</h2>
       <h2>HISTORIAL DE COMPRAS</h2>
       <p>collection_id: {collection_id}</p>
       <p>collection_status: {collection_status}</p>

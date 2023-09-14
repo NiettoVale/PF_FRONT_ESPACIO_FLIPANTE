@@ -18,6 +18,7 @@ const Card = ({
   id,
   cantidad,
   setTotalPrice,
+  totalPrice,
   size,
 }) => {
   const back = process.env.REACT_APP_BACK;
@@ -59,9 +60,6 @@ const Card = ({
   };
 
   const handledelete = () => {
-    // Llamar a la acción para eliminar el producto del carrito
-    dispatch(removeallproductCart(userId, cartItem.productId, cartItem.sizeId));
-
     // Calcular el precio total después de eliminar el producto
     const productToDelete = cart.find(
       (product) =>
@@ -69,12 +67,13 @@ const Card = ({
         product.sizeId === cartItem.sizeId
     );
 
-    if (productToDelete) {
-      const productPrice = productToDelete.price * productToDelete.cantidad;
-      const newTotalPrice = price * quantity - productPrice;
-      setTotalPrice(newTotalPrice);
-    }
+    const productPrice = productToDelete.price * quantity;
+    const newTotalPrice = totalPrice - productPrice;
+    setTotalPrice(newTotalPrice);
+
     setIsRemoved(true);
+    // Llamar a la acción para eliminar el producto del carrito
+    dispatch(removeallproductCart(userId, cartItem.productId, cartItem.sizeId));
   };
 
   useEffect(() => {
