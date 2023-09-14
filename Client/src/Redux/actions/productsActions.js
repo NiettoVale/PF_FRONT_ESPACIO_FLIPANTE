@@ -13,8 +13,8 @@ import {
   FAVORITES,
   CART,
   PRICE_CART,
-  REMOVE_FROM_CART,
   GET_USER_MAIL,
+  REMOVE_FROM_CART,
 } from "./actionTypes";
 import Swal from "sweetalert2";
 
@@ -225,17 +225,51 @@ export const getFavorites = (userId) => {
   };
 };
 
-export const addproductCart = (userId, productId, sizeId) => {
-  return async () => {
+export const addproductCart = (userId, productId, sizeId, stockMax) => {
+  return async (dispatch, getState) => {
     try {
-      await fetch(`${back}${userId}/${productId}/${sizeId}`, {
+      const response = await fetch(`${back}${userId}/${productId}/${sizeId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
+      const data = await response.json();
+
+      if (response.status === 200) {
+        const { myCart } = getState();
+
+        // Encuentra el índice del producto en el carrito
+        const productIndex = myCart.findIndex(
+          (product) =>
+            product.productId === productId && product.sizeId === sizeId
+        );
+
+        if (productIndex !== -1) {
+          // Si el producto está en el carrito
+          const updatedCart = [...myCart];
+          const currentQuantity = updatedCart[productIndex].cantidad;
+
+          if (currentQuantity < stockMax) {
+            // Aumenta la cantidad solo si es menor que el stock máximo
+            updatedCart[productIndex].cantidad += 1;
+
+            // Actualiza el estado global del carrito con el carrito modificado
+            dispatch({
+              type: CART,
+              payload: updatedCart,
+            });
+          } else {
+            alert(
+              "Has alcanzado la cantidad máxima de este producto en el carrito."
+            );
+          }
+        }
+      } else {
+        alert("El producto no se encuentra en el carrito.");
+      }
     } catch (error) {
-      alert("Algo salió mal con addproductCart!");
+      alert("Algo salió mal con addQuantityToProduct!");
       console.log(error);
     }
   };
@@ -261,7 +295,7 @@ export const getproductCart = (userId) => {
 };
 
 export const removeproductCart = (userId, productId, sizeId) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       const response = await fetch(`${back}${userId}/${productId}/${sizeId}`, {
         method: "DELETE",
@@ -270,7 +304,33 @@ export const removeproductCart = (userId, productId, sizeId) => {
       const data = await response.json();
 
       if (response.status === 404) {
-        console.log(data.message);
+      } else {
+        const { myCart } = getState();
+        // Encuentra el índice del producto en el carrito
+        const productIndex = myCart.findIndex(
+          (product) =>
+            product.productId === productId && product.sizeId === sizeId
+        );
+
+        if (productIndex !== -1) {
+          // Si el producto está en el carrito
+          const updatedCart = [...myCart];
+
+          // Verifica si la cantidad es mayor que 1, en ese caso, disminuye la cantidad en 1
+
+          if (updatedCart[productIndex].cantidad > 1) {
+            updatedCart[productIndex].cantidad -= 1;
+          } else {
+            // Si la cantidad es 1, elimina el producto del carrito
+            updatedCart.splice(productIndex, 1);
+          }
+
+          // Actualiza el estado global del carrito con el carrito modificado
+          dispatch({
+            type: CART,
+            payload: updatedCart,
+          });
+        }
       }
     } catch (error) {
       console.log("Algo salió mal con removeproductCart!");
@@ -306,7 +366,7 @@ export const removeCart = (userId) => {
 };
 
 export const removeallproductCart = (userId, productId, sizeId) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       const response = await fetch(
         `${back}all/${userId}/${productId}/${sizeId}`,
@@ -319,9 +379,39 @@ export const removeallproductCart = (userId, productId, sizeId) => {
 
       if (response.status === 404) {
         console.log(data.message);
+      } else {
+        // Después de eliminar el producto del servidor, actualiza el estado global
+        // Elimina el producto del carrito en el estado global
+        const { myCart } = getState();
+        const updatedCart = myCart.filter(
+          (product) =>
+            product.productId !== productId || product.sizeId !== sizeId
+        );
+
+        dispatch({
+          type: CART,
+          payload: updatedCart,
+        });
       }
     } catch (error) {
       console.log("Algo salió mal con removeallproductCart!");
+      console.log(error);
+    }
+  };
+};
+
+export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
+  return async () => {
+    try {
+      const response = await axios.post(`${back}order`, {
+        userId: userId,
+        productId: productId,
+        sizeId: sizeId,
+        quantity: quantity,
+        totalPrice: totalPrice,
+      });
+    } catch (error) {
+      alert("Algo salió mal con addproductCart!");
       console.log(error);
     }
   };

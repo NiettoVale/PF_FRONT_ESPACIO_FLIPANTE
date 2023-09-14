@@ -1,67 +1,37 @@
-import React from "react";
-import styles from "../userProfile/userProfile.module.css";
-import SideBar from "../SideBar/SideBar";
-import { useParams } from "react-router-dom"; // Importa el hook useParams de React Router
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Orders = () => {
-  // Usa el hook useParams para acceder a todos los parámetros de la URL
-  const {
-    collection_id,
-    collection_status,
-    payment_id,
-    status,
-    external_reference,
-    payment_type,
-    merchant_order_id,
-    preference_id,
-    site_id,
-    processing_mode,
-    merchant_account_id,
-  } = useParams();
+  const location = useLocation();
+  console.log(location.search);
+  const queryParams = new URLSearchParams(location.search);
 
-  // Verifica si alguno de los parámetros es undefined o nulo
-  if (
-    !collection_id ||
-    !collection_status ||
-    !payment_id ||
-    !status ||
-    !external_reference ||
-    !payment_type ||
-    !merchant_order_id ||
-    !preference_id ||
-    !site_id ||
-    !processing_mode ||
-    !merchant_account_id
-  ) {
-    return (
-      <div>
-        <h2>HISTORIAL DE COMPRAS</h2>
+  // Obtén los parámetros que necesitas
+  const collectionId = queryParams.get("collection_id");
+  const collectionStatus = queryParams.get("collection_status");
+  const paymentId = queryParams.get("payment_id");
+  const status = queryParams.get("status");
+  // y así sucesivamente para otros parámetros relevantes
+
+  // Ahora puedes utilizar estos valores en tu componente
+  return (
+    <div>
+      <h2>HISTORIAL DE COMPRAS</h2>
+      {collectionId && collectionStatus && paymentId ? (
+        <div>
+          <p>Detalles de la confirmación de pago:</p>
+          <p>Collection ID: {collectionId}</p>
+          <p>Collection Status: {collectionStatus}</p>
+          <p>Payment ID: {paymentId}</p>
+          <p>Status: {status}</p>
+          {/* Mostrar más detalles según sea necesario */}
+        </div>
+      ) : (
         <p>
           Lo sentimos, algunos parámetros de la URL son nulos o están
           indefinidos.
         </p>
-      </div>
-    );
-  }
-
-  // Si todos los parámetros están presentes, muestra la información
-  return (
-    <div>
-
-      <SideBar />
-      <h2 className={styles.purchaseTitle}>HISTORIAL DE COMPRAS</h2>
-      <h2>HISTORIAL DE COMPRAS</h2>
-      <p>collection_id: {collection_id}</p>
-      <p>collection_status: {collection_status}</p>
-      <p>payment_id: {payment_id}</p>
-      <p>status: {status}</p>
-      <p>external_reference: {external_reference}</p>
-      <p>payment_type: {payment_type}</p>
-      <p>merchant_order_id: {merchant_order_id}</p>
-      <p>preference_id: {preference_id}</p>
-      <p>site_id: {site_id}</p>
-      <p>processing_mode: {processing_mode}</p>
-      <p>merchant_account_id: {merchant_account_id}</p>
+      )}
     </div>
   );
 };
