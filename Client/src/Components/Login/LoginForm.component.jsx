@@ -142,12 +142,17 @@ const LoginForm = () => {
             title: "Éxito",
             text: "Inicio de sesión exitoso.",
           });
-        }
-        if (response.status === 404) {
+        } else if (response.status === 404) {
           MySwal.fire({
             icon: "error",
             title: "Error:",
             text: "Usuario no encontrado.",
+          });
+        } else if (response.status === 403) {
+          MySwal.fire({
+            icon: "error",
+            title: "Error:",
+            text: "Acceso prohibido: Este usuario ha sido baneado.",
           });
         }
       }
