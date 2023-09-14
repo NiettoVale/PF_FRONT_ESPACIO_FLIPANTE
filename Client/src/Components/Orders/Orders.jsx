@@ -1,30 +1,37 @@
-import React from "react";
-import styles from "../userProfile/userProfile.module.css";
-import SideBar from "../SideBar/SideBar";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Orders = () => {
+  const location = useLocation();
+  console.log(location.search);
+  const queryParams = new URLSearchParams(location.search);
+
+  // Obtén los parámetros que necesitas
+  const collectionId = queryParams.get("collection_id");
+  const collectionStatus = queryParams.get("collection_status");
+  const paymentId = queryParams.get("payment_id");
+  const status = queryParams.get("status");
+  // y así sucesivamente para otros parámetros relevantes
+
+  // Ahora puedes utilizar estos valores en tu componente
   return (
     <div>
-      <SideBar />
-      <h2 className={styles.purchaseTitle}>HISTORIAL DE COMPRAS</h2>
-      <div className={styles.purchaseContainer}>
-        <p className={styles.singlePurchase}>COMPRA 1</p>
-        <p className={styles.singlePurchase}>COMPRA 2</p>
-        <p className={styles.singlePurchase}>COMPRA 3</p>
-        <p className={styles.singlePurchase}>COMPRA 4</p>
-        <p className={styles.singlePurchase}>COMPRA 5</p>
-        <p className={styles.singlePurchase}>COMPRA 6</p>
-        <p className={styles.singlePurchase}>COMPRA 7</p>
-        <p className={styles.singlePurchase}>COMPRA 8</p>
-        <p className={styles.singlePurchase}>COMPRA 9</p>
-        <p className={styles.singlePurchase}>COMPRA 10</p>
-        <p className={styles.singlePurchase}>COMPRA 11</p>
-        <p className={styles.singlePurchase}>COMPRA 12</p>
-        <p className={styles.singlePurchase}>COMPRA 13</p>
-        <p className={styles.singlePurchase}>COMPRA 14</p>
-        <p className={styles.singlePurchase}>COMPRA 15</p>
-        <p className={styles.singlePurchase}>COMPRA 16</p>
-      </div>
+      <h2>HISTORIAL DE COMPRAS</h2>
+      {collectionId && collectionStatus && paymentId ? (
+        <div>
+          <p>Detalles de la confirmación de pago:</p>
+          <p>Collection ID: {collectionId}</p>
+          <p>Collection Status: {collectionStatus}</p>
+          <p>Payment ID: {paymentId}</p>
+          <p>Status: {status}</p>
+          {/* Mostrar más detalles según sea necesario */}
+        </div>
+      ) : (
+        <p>
+          Lo sentimos, algunos parámetros de la URL son nulos o están
+          indefinidos.
+        </p>
+      )}
     </div>
   );
 };

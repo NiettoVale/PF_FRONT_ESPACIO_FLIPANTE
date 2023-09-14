@@ -4,6 +4,8 @@ import Detail from "./views/Detail/Detail";
 import Home from "./views/home/home.component";
 import CartView from "./views/cart/cartView";
 import CreateProduct from "./views/create/create.view";
+import Checkout from "./views/Checkout/Checkout";
+
 import Registro from "./Components/RegisterUser/registerUser.component";
 import LoginForm from "./Components/Login/LoginForm.component";
 import "./App.css";
@@ -14,6 +16,7 @@ import ChangePassword from "./Components/ChangePassword/ChangePassword";
 import Vista from "./Components/firebase/Autentication";
 import Review from "./views/Review/Review";
 import Reviews from "./Components/Reviews/Reviews";
+import About from "./Components/About/About";
 
 function App() {
   return (
@@ -25,12 +28,14 @@ function App() {
       <Route path="/register" element={<Registro />} />
       <Route path="/userProfile" element={<UserProfile />} />
       <Route path="/cart" element={<CartView />} />
+      <Route path="/checkout" element={<Checkout />} />
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/orders" element={<Orders />} />
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/view" element={<Vista />} />
       <Route path="/review/:id" element={<Review />} />
       <Route path="/allReviews" element={<Reviews />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   );
 }

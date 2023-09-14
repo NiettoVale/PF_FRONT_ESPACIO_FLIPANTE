@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const Cards = ({ products }) => {
   const order = useSelector((state) => state.order);
-  console.log(order);
+
   let sortedProducts = [];
 
   if (products.length > 0) {

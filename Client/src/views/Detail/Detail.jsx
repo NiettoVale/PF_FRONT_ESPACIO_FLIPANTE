@@ -44,29 +44,26 @@ export default function Detail() {
   const dispatch = useDispatch();
 
   //----FUNCIONES
+
   const handleCart = () => {
-    if (!googleName || !name) {
+    if (!googleName & !name) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Debes iniciar sesión o registrarte para agregar al carrito",
       });
     } else {
-      if (productCart) {
-        dispatch(removeproductCart(userId, id));
-      } else {
-        dispatch(addproductCart(userId, id));
+      dispatch(addproductCart(userId, id, selectedSize));
+      setProductCart(true);
+
+      if (!selectedSize) {
+        alert("Selecciona una talla antes de agregar al carrito.");
+        return;
       }
-      setProductCart(!productCart);
+
+      setIsSizeSelected(false);
+      window.alert("Producto Agregado");
     }
-    if (!selectedSize) {
-      alert("Selecciona una talla antes de agregar al carrito.");
-      return;
-    }
-    // Agregar al carrito
-    dispatch(addproductCart(userId, id, selectedSize));
-    setIsSizeSelected(false);
-    window.alert("Producto Agregado");
   };
 
   // Función para manejar la selección de tamaño
@@ -76,7 +73,7 @@ export default function Detail() {
   };
 
   const handleToggleFavorites = () => {
-    if (!googleName || !name) {
+    if (!googleName & !name) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -85,10 +82,11 @@ export default function Detail() {
     } else {
       if (isFavorite) {
         dispatch(removeFromFavorites(userId, id));
+        setIsFavorite(false);
       } else {
         dispatch(addFavorite(userId, id));
+        setIsFavorite(true);
       }
-      setIsFavorite(!isFavorite);
     }
   };
 
@@ -106,7 +104,17 @@ export default function Detail() {
     if (userId) {
       dispatch(getproductCart(userId));
     }
-  }, [dispatch, name, userId, googleName, isSizeSelected]);
+    if (favorites) {
+      let isProductInFavorites = false; // Inicializa el estado en falso
+      for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i].id === parseInt(id)) {
+          isProductInFavorites = true;
+          break; // Sale del bucle tan pronto como encuentra una coincidencia
+        }
+        setIsFavorite(isProductInFavorites);
+      }
+    }
+  }, [dispatch, name, userId, googleName, isSizeSelected, id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -134,7 +142,6 @@ export default function Detail() {
       }
     };
 
-    console.log("");
     fetchData();
   }, [id, back]);
 
@@ -239,8 +246,6 @@ export default function Detail() {
               {isSizeSelected
                 ? cartQuantity === cartproduct
                   ? "Stock No Disponible"
-                  : productCart
-                  ? "Eliminar del Carrito"
                   : "Agregar al Carrito"
                 : "Selecciona un Talle"}
             </button>

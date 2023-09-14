@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./register.module.css";
 import validationRegister from "./validationRegister";
-import navBar from "../NavBar/navBar";
+import NavBar from "../NavBar/navBar";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -11,6 +11,7 @@ import {
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import SearchBar from "../SearchBar/SearchBar";
 
 const MySwal = withReactContent(Swal);
 
@@ -107,6 +108,10 @@ const Registro = () => {
 
   return (
     <div className={styles.registerContainer}>
+      <div className={styles.navLog}>
+        <NavBar />
+        <SearchBar />
+      </div>
       <div className={styles.registerImage}></div>
 
       <div className={styles.formContainer}>

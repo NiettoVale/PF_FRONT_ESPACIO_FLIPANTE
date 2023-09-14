@@ -3,6 +3,7 @@ import { applyActionCode } from "firebase/auth";
 import { auth } from "../../firebase";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import styles from "./Autenticacion.module.css";
 const MySwal = withReactContent(Swal);
 
 const Vista = () => {
@@ -23,8 +24,7 @@ const Vista = () => {
           timerProgressBar: true,
         });
         setTimeout(() => {
-          window.location.href =
-            "https://pf-front-denuevo.vercel.app/login";
+          window.location.href = "http://localhost:3000/login";
         }, 3 * 1000);
         // Redirige a otra página después de verificar el correo
         // Reemplaza '/tu-otra-pagina' con la URL a la que deseas redirigir
@@ -38,11 +38,7 @@ const Vista = () => {
     verificarCorreoElectronico();
   }, [mode, oobCode]);
 
-  return (
-    <div>
-      <h1>Aquí se realiza la verificación</h1>
-    </div>
-  );
+  return <div className={styles.backgroundImage}></div>;
 };
 
 export default Vista;

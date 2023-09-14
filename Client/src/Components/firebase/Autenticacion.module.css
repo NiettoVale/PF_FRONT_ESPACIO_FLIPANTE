@@ -1,0 +1,13 @@
+/* Vista.css */
+.backgroundImage {
+  /* Establece la imagen como fondo de pantalla completa */
+  background-image: url("https://acortar.link/Pe3Vmb");
+  background-size: cover; /* Ajusta el tamaño de la imagen para cubrir la pantalla */
+  background-position: center 80%; /* Centra la imagen horizontal y verticalmente */
+  width: 100%;
+  height: 100vh; /* Tamaño de la pantalla completa */
+  position: fixed; /* Fija la imagen en su posición */
+  top: 0;
+  left: 0;
+  z-index: -1; /* Coloca la imagen detrás de otros contenidos */
+}

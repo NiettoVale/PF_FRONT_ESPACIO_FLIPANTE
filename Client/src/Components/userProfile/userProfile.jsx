@@ -125,7 +125,6 @@ const UserProfile = () => {
       }
     }
   }, [dispatch, name, googleName]);
-  console.log(name);
 
   return (
     <div className={styles.userView}>

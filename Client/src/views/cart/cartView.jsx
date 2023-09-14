@@ -7,7 +7,12 @@ import {
   getproductCart,
   getUserByName,
   removeCart,
+  addOrder,
 } from "../../Redux/actions/productsActions";
+
+import NavBar from "../../Components/NavBar/navBar";
+import SearchBar from "../../Components/SearchBar/SearchBar";
+
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
 
@@ -79,6 +84,29 @@ const CartView = () => {
     if (id) {
       setPreferenceId(id); // Establecer preferenceId en el estado
     }
+    try {
+      // Itera sobre los productos en el carrito
+      for (const product of cart) {
+        const {
+          productId: productId,
+          cantidad: quantity,
+          price,
+          sizeId,
+        } = product;
+        const totalProductPrice = quantity * price;
+
+        // Realiza un dispatch de la acción addOrder para cada producto
+        dispatch(addOrder(userId, productId, quantity, totalProductPrice));
+      }
+
+      // Después de agregar todas las órdenes, puedes eliminar todos los productos del carrito
+      //dispatch(removeCart(userId));
+
+      // Redirige al usuario a la página de inicio u otra página
+      //window.location.href = "/cart"; // Reemplaza '/home' con la ruta deseada
+    } catch (error) {
+      console.error("Error al procesar la compra:", error);
+    }
   };
 
   const handleDelete = async (userId) => {
@@ -96,12 +124,20 @@ const CartView = () => {
 
   return (
     <div className={styles.cartContainer}>
+      <div className={styles.cartNav}>
+        <NavBar />
+        <SearchBar />
+      </div>
       <h2>Carrito de Compra</h2>
       <button onClick={() => handleDelete(user[0].id)}>
         Eliminar Carrito Completo
       </button>
 
-      <CartCards products={cart} setTotalPrice={setTotalPrice} />
+      <CartCards
+        products={cart}
+        setTotalPrice={setTotalPrice}
+        totalPrice={totalPrice}
+      />
       <h2>Precio Total : ${totalPrice}</h2>
       <button className={styles.buyButton} onClick={handleBuy}>
         Comprar
