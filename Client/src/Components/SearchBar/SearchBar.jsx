@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   HiOutlineShoppingCart,
   HiOutlineLogin,
@@ -45,15 +45,21 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
     localStorage.removeItem("googleImage");
     window.location.reload();
   };
+
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
     <div className={styles.searchBarContainer}>
-      <input
-        type="search"
-        value={busqueda}
-        onChange={handleChange}
-        className={styles.searchInput}
-        placeholder="BUSCAR"
-      />
+      {isHome && (
+        <input
+          type="search"
+          value={busqueda}
+          onChange={handleChange}
+          className={styles.searchInput}
+          placeholder="BUSCAR"
+        />
+      )}
 
       <Link to={"/cart"} className={styles.cart}>
         <HiOutlineShoppingCart />

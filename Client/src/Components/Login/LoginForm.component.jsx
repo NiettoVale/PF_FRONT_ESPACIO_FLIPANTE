@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import NavBar from "../NavBar/navBar";
+import SearchBar from "../SearchBar/SearchBar";
 
 import FacebookLogin from "../firebase/LoginFacebook";
 import GoogleLogin from "../firebase/LoginGoogle";
@@ -165,6 +166,7 @@ const LoginForm = () => {
     <div className={styles.loginView}>
       <div className={styles.navLog}>
         <NavBar />
+        <SearchBar />
       </div>
       <div className={styles.imageContainer}></div>
 

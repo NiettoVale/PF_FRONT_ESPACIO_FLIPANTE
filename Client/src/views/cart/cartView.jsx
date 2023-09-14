@@ -9,6 +9,10 @@ import {
   removeCart,
   addOrder,
 } from "../../Redux/actions/productsActions";
+
+import NavBar from "../../Components/NavBar/navBar";
+import SearchBar from "../../Components/SearchBar/SearchBar";
+
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
 
@@ -120,6 +124,10 @@ const CartView = () => {
 
   return (
     <div className={styles.cartContainer}>
+      <div className={styles.cartNav}>
+        <NavBar />
+        <SearchBar />
+      </div>
       <h2>Carrito de Compra</h2>
       <button onClick={() => handleDelete(user[0].id)}>
         Eliminar Carrito Completo

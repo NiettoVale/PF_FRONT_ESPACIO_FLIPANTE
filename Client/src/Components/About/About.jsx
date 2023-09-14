@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "./About.module.css";
 import CardsAbout from "./cardsAbout";
+import NavBar from "../NavBar/navBar";
+import SearchBar from "../SearchBar/SearchBar";
 
 const teamMembers = [
   {
@@ -83,6 +85,10 @@ const teamMembers = [
 const About = () => {
   return (
     <div className={styles.aboutContainer}>
+      <div className={styles.aboutNav}>
+        <NavBar />
+        <SearchBar />
+      </div>
       <div className={styles.insideContainer}>
         <h2 className={styles.aboutTitle}>Espacio Flipante</h2>
         <div className={styles.textContainer}>
