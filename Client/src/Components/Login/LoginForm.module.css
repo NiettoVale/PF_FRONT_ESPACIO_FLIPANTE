@@ -69,3 +69,8 @@ p a {
   line-height: 0;
   letter-spacing: 0;
 }
+.navLog {
+  position: fixed;
+
+  left: 0;
+}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./register.module.css";
 import validationRegister from "./validationRegister";
-import navBar from "../NavBar/navBar";
+import NavBar from "../NavBar/navBar";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -107,6 +107,9 @@ const Registro = () => {
 
   return (
     <div className={styles.registerContainer}>
+      <div className={styles.navLog}>
+        <NavBar />
+      </div>
       <div className={styles.registerImage}></div>
 
       <div className={styles.formContainer}>
