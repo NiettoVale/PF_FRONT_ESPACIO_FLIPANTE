@@ -14,6 +14,7 @@ import ChangePassword from "./Components/ChangePassword/ChangePassword";
 import Vista from "./Components/firebase/Autentication";
 import Review from "./views/Review/Review";
 import Reviews from "./Components/Reviews/Reviews";
+import About from "./Components/About/About";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path="/view" element={<Vista />} />
       <Route path="/review/:id" element={<Review />} />
       <Route path="/allReviews" element={<Reviews />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   );
 }
