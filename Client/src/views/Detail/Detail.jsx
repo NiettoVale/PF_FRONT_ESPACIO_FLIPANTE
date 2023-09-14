@@ -44,8 +44,18 @@ export default function Detail() {
   const dispatch = useDispatch();
 
   //----FUNCIONES
+
   const handleCart = () => {
     if (!googleName & !name) {
+    console.log("usuario", !name);
+    if (
+      googleName === null ||
+      googleName === "" ||
+      googleName === undefined ||
+      name === null ||
+      name === "" ||
+      name === undefined
+    ) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
