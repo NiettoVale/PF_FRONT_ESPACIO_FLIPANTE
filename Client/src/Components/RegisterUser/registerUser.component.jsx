@@ -11,6 +11,7 @@ import {
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import SearchBar from "../SearchBar/SearchBar";
 
 const MySwal = withReactContent(Swal);
 
@@ -109,6 +110,7 @@ const Registro = () => {
     <div className={styles.registerContainer}>
       <div className={styles.navLog}>
         <NavBar />
+        <SearchBar />
       </div>
       <div className={styles.registerImage}></div>
 

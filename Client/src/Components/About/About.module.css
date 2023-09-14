@@ -12,6 +12,7 @@
   align-items: center;
   flex-direction: column;
   margin: auto;
+  margin-top: 100px;
 }
 .flexContainer {
   display: flex;
@@ -51,4 +52,9 @@
   font-size: 30px;
   letter-spacing: 5px;
   margin: 100px 0;
+}
+.aboutNav {
+  position: fixed;
+  top: 0;
+  left: 0;
 }
