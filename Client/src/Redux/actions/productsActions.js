@@ -13,7 +13,6 @@ import {
   FAVORITES,
   CART,
   PRICE_CART,
-  REMOVE_FROM_CART,
   GET_USER_MAIL,
 } from "./actionTypes";
 import Swal from "sweetalert2";

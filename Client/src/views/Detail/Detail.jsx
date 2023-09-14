@@ -47,36 +47,23 @@ export default function Detail() {
 
   const handleCart = () => {
     if (!googleName & !name) {
-    console.log("usuario", !name);
-    if (
-      googleName === null ||
-      googleName === "" ||
-      googleName === undefined ||
-      name === null ||
-      name === "" ||
-      name === undefined
-    ) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Debes iniciar sesión o registrarte para agregar al carrito",
       });
     } else {
-      if (productCart) {
-        dispatch(removeproductCart(userId, id, selectedSize));
-      } else {
-        dispatch(addproductCart(userId, id, selectedSize));
+      dispatch(addproductCart(userId, id, selectedSize));
+      setProductCart(true);
+
+      if (!selectedSize) {
+        alert("Selecciona una talla antes de agregar al carrito.");
+        return;
       }
-      setProductCart(!productCart);
+
+      setIsSizeSelected(false);
+      window.alert("Producto Agregado");
     }
-    if (!selectedSize) {
-      alert("Selecciona una talla antes de agregar al carrito.");
-      return;
-    }
-    // Agregar al carrito
-    dispatch(addproductCart(userId, id, selectedSize));
-    setIsSizeSelected(false);
-    window.alert("Producto Agregado");
   };
 
   // Función para manejar la selección de tamaño
@@ -100,7 +87,6 @@ export default function Detail() {
         dispatch(addFavorite(userId, id));
         setIsFavorite(true);
       }
-      setIsFavorite(!isFavorite);
     }
   };
 
@@ -125,10 +111,10 @@ export default function Detail() {
           isProductInFavorites = true;
           break; // Sale del bucle tan pronto como encuentra una coincidencia
         }
+        setIsFavorite(isProductInFavorites);
       }
-      setIsFavorite(isProductInFavorites);
     }
-  }, [dispatch, name, userId, googleName, isSizeSelected, favorites, id]);
+  }, [dispatch, name, userId, googleName, isSizeSelected, id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -260,8 +246,6 @@ export default function Detail() {
               {isSizeSelected
                 ? cartQuantity === cartproduct
                   ? "Stock No Disponible"
-                  : productCart
-                  ? "Eliminar del Carrito"
                   : "Agregar al Carrito"
                 : "Selecciona un Talle"}
             </button>
