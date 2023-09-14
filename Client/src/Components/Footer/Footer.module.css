@@ -28,7 +28,7 @@
 }
 .leftFooter h1 {
   margin: 30px 20px;
-  font-size: 30px;
+  font-size: 25px;
 }
 .rightFooter {
   display: flex;
@@ -43,6 +43,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.redes {
+  display: flex;
+  gap: 35px;
+  align-items: flex-end;
+  height: 60px;
+  font-size: 25px;
+}
+.footer a {
+  color: #fff;
+}
+.footer a:hover {
+  color: #bc64ff;
+}
+.rightFooter ul li {
+  font-size: 14px;
+}
+.rightFooter a {
+  font-size: 14px;
+  font-weight: 400;
 }
 
 @media (max-width: 910px) {
