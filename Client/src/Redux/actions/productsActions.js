@@ -14,7 +14,7 @@ import {
   CART,
   PRICE_CART,
   GET_USER_MAIL,
-  REMOVE_FROM_CART,
+  ORDER_INFO,
 } from "./actionTypes";
 import Swal from "sweetalert2";
 
@@ -234,7 +234,6 @@ export const addproductCart = (userId, productId, sizeId, stockMax) => {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
 
       if (response.status === 200) {
         const { myCart } = getState();
@@ -300,8 +299,6 @@ export const removeproductCart = (userId, productId, sizeId) => {
       const response = await fetch(`${back}${userId}/${productId}/${sizeId}`, {
         method: "DELETE",
       });
-
-      const data = await response.json();
 
       if (response.status === 404) {
       } else {
@@ -401,17 +398,76 @@ export const removeallproductCart = (userId, productId, sizeId) => {
 };
 
 export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
-  return async () => {
+  return async (dispatch, getState) => {
     try {
+      // Realiza la solicitud POST al servidor para agregar la orden
       const response = await axios.post(`${back}order`, {
-        userId: userId,
-        productId: productId,
-        sizeId: sizeId,
-        quantity: quantity,
-        totalPrice: totalPrice,
+        userId,
+        productId,
+        sizeId,
+        quantity,
+        totalPrice,
       });
+
+      // Verifica si la solicitud fue exitosa (código de respuesta 201)
+      if (response.status === 201) {
+        // Obtiene el contenido actual del Local Storage bajo la clave "orders" o crea una matriz vacía si no hay nada almacenado allí
+        const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+
+        // Crea un objeto que representa la nueva orden con los datos proporcionados
+        const newOrder = {
+          userId,
+          productId,
+          sizeId,
+          quantity,
+          totalPrice,
+        };
+
+        // Agrega la nueva orden al final de la matriz de órdenes existente
+        existingOrders.push(newOrder);
+
+        // Actualiza el contenido del Local Storage con la matriz actualizada que contiene la nueva orden
+        localStorage.setItem("orders", JSON.stringify(existingOrders));
+
+        // Muestra un mensaje en la consola para confirmar que la orden se ha agregado correctamente
+        console.log(
+          "La orden se ha agregado correctamente al servidor y al Local Storage."
+        );
+      }
     } catch (error) {
-      alert("Algo salió mal con addproductCart!");
+      // Maneja los errores de la solicitud HTTP o cualquier otro error que pueda ocurrir
+      alert("Algo salió mal con addOrder!");
+      console.log(error);
+    }
+  };
+};
+export const paymentOrder = (
+  userId,
+  productId,
+  sizeId,
+  quantity,
+  totalPrice
+) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await axios.put(`${back}payment`, {
+        userId,
+        productId,
+        sizeId,
+        quantity,
+        totalPrice,
+      });
+      if (response.status === 200) {
+        console.log(
+          "todo bien amigo sos un capo total ya confirmaste la compra como un master y te va a llegar tu ropita FLipante"
+        );
+        console.log(localStorage.order);
+        localStorage.removeItem("orders");
+        console.log(localStorage.order);
+      }
+    } catch (error) {
+      localStorage.removeItem("orders");
+      alert("Algo salió mal con addOrder!");
       console.log(error);
     }
   };

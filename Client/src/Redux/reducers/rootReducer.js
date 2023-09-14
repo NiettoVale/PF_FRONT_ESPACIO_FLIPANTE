@@ -13,6 +13,7 @@ import {
   CART,
   PRICE_CART,
   GET_USER_MAIL,
+  ORDER_INFO,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -26,6 +27,7 @@ const initialState = {
   myFavorites: [],
   myCart: [],
   totalPrice: 0,
+  orderInfo: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -111,6 +113,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         totalPrice: action.payload, // Actualiza el precio total con el nuevo valor
+      };
+    case ORDER_INFO:
+      return {
+        ...state,
+        orderInfo: action.payload, // Actualiza el precio total con el nuevo valor
       };
     default:
       return state;
