@@ -11,11 +11,8 @@ import {
   FAVORITES,
   REMOVE_FROM_FAVORITES,
   CART,
-
   PRICE_CART,
-
   GET_USER_MAIL,
-  REMOVE_FROM_CART,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -99,7 +96,7 @@ const rootReducer = (state = initialState, action) => {
     case CART:
       return {
         ...state,
-        myCart: action.payload,
+        myCart: action.payload, // Actualiza el estado del carrito con el nuevo array
       };
     case REMOVE_FROM_FAVORITES:
       const updatedFavorites = state.myFavorites.filter(

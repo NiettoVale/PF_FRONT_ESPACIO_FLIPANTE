@@ -14,3 +14,4 @@ export const FAVORITES = "FAVORITES";
 export const CART = "REMOVE_FROM_FAVORITES";
 export const REMOVE_FROM_FAVORITES = "REMOVE_FROM_FAVORITES";
 export const PRICE_CART = "PRICE_CART";
+export const REMOVE_FROM_CART = "PRICE_CART";

@@ -7,6 +7,7 @@ import {
   getproductCart,
   getUserByName,
   removeCart,
+  addOrder,
 } from "../../Redux/actions/productsActions";
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
@@ -78,6 +79,29 @@ const CartView = () => {
     const id = await createPreference(totalPrice);
     if (id) {
       setPreferenceId(id); // Establecer preferenceId en el estado
+    }
+    try {
+      // Itera sobre los productos en el carrito
+      for (const product of cart) {
+        const {
+          productId: productId,
+          cantidad: quantity,
+          price,
+          sizeId,
+        } = product;
+        const totalProductPrice = quantity * price;
+
+        // Realiza un dispatch de la acción addOrder para cada producto
+        dispatch(addOrder(userId, productId, quantity, totalProductPrice));
+      }
+
+      // Después de agregar todas las órdenes, puedes eliminar todos los productos del carrito
+      //dispatch(removeCart(userId));
+
+      // Redirige al usuario a la página de inicio u otra página
+      //window.location.href = "/cart"; // Reemplaza '/home' con la ruta deseada
+    } catch (error) {
+      console.error("Error al procesar la compra:", error);
     }
   };
 

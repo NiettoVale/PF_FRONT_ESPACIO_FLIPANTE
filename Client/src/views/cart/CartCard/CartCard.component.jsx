@@ -44,7 +44,15 @@ const Card = ({
   const handleIncrement = () => {
     if (cartItem && quantity < cartItem.stock) {
       // Comprobar si la cantidad es menor que el stock
-      dispatch(addproductCart(userId, cartItem.productId, cartItem.sizeId));
+
+      dispatch(
+        addproductCart(
+          userId,
+          cartItem.productId,
+          cartItem.sizeId,
+          cartItem.stock
+        )
+      );
       setQuantity(quantity + 1);
       setTotalPrice((prevTotalPrice) => prevTotalPrice + cartItem.price);
     }
