@@ -404,14 +404,17 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
   return async () => {
     try {
       const response = await axios.post(`${back}order`, {
-        userId: userId,
-        productId: productId,
-        sizeId: sizeId,
-        quantity: quantity,
-        totalPrice: totalPrice,
+        userId,
+        productId,
+        sizeId,
+        quantity,
+        totalPrice,
       });
+      if ((response.status = 201)) {
+        console.log("Agregado a Order");
+      }
     } catch (error) {
-      alert("Algo salió mal con addproductCart!");
+      alert("Algo salió mal con addOrder!");
       console.log(error);
     }
   };

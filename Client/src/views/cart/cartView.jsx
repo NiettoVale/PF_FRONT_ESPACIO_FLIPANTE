@@ -89,20 +89,20 @@ const CartView = () => {
           price,
           sizeId,
         } = product;
-        const totalProductPrice = quantity * price;
-
+        const totalPrice = quantity * price;
         // Realiza un dispatch de la acción addOrder para cada producto
-        dispatch(addOrder(userId, productId, quantity, totalProductPrice));
+        dispatch(addOrder(userId, productId, sizeId, quantity, totalPrice));
       }
 
       // Después de agregar todas las órdenes, puedes eliminar todos los productos del carrito
-      //dispatch(removeCart(userId));
 
       // Redirige al usuario a la página de inicio u otra página
       //window.location.href = "/cart"; // Reemplaza '/home' con la ruta deseada
     } catch (error) {
       console.error("Error al procesar la compra:", error);
     }
+    // Después de agregar todas las órdenes, puedes eliminar todos los productos del carrito
+    dispatch(removeCart(userId));
   };
 
   const handleDelete = async (userId) => {
