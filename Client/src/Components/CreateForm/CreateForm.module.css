@@ -9,10 +9,10 @@
 }
 
 /* Estilos para los campos de entrada de texto y select */
-input[type="text"],
-select,
-textarea,
-input[type="number"] {
+.createForm input[type="text"],
+.createForm select,
+.createForm textarea,
+.createForm input[type="number"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;

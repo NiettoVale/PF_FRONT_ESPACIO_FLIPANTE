@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+import NavBar from "../NavBar/navBar";
+
 import FacebookLogin from "../firebase/LoginFacebook";
 import GoogleLogin from "../firebase/LoginGoogle";
 import styles from "./LoginForm.module.css";
@@ -160,6 +163,9 @@ const LoginForm = () => {
 
   return (
     <div className={styles.loginView}>
+      <div className={styles.navLog}>
+        <NavBar />
+      </div>
       <div className={styles.imageContainer}></div>
 
       <div className={styles.loginContainer}>
@@ -202,6 +208,9 @@ const LoginForm = () => {
           <Link to="/register">¡Regístrate!</Link>
         </p>
       </div>
+      <Link to={"/"}>
+        <button className={styles.backButton}>⬅</button>
+      </Link>
     </div>
   );
 };
