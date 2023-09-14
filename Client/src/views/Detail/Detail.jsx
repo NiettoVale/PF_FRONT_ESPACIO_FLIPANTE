@@ -45,7 +45,7 @@ export default function Detail() {
 
   //----FUNCIONES
   const handleCart = () => {
-    if (!googleName || !name) {
+    if (!googleName & !name) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -53,9 +53,9 @@ export default function Detail() {
       });
     } else {
       if (productCart) {
-        dispatch(removeproductCart(userId, id));
+        dispatch(removeproductCart(userId, id, selectedSize));
       } else {
-        dispatch(addproductCart(userId, id));
+        dispatch(addproductCart(userId, id, selectedSize));
       }
       setProductCart(!productCart);
     }
@@ -76,7 +76,7 @@ export default function Detail() {
   };
 
   const handleToggleFavorites = () => {
-    if (!googleName || !name) {
+    if (!googleName & !name) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -85,8 +85,10 @@ export default function Detail() {
     } else {
       if (isFavorite) {
         dispatch(removeFromFavorites(userId, id));
+        setIsFavorite(false);
       } else {
         dispatch(addFavorite(userId, id));
+        setIsFavorite(true);
       }
       setIsFavorite(!isFavorite);
     }
@@ -106,7 +108,17 @@ export default function Detail() {
     if (userId) {
       dispatch(getproductCart(userId));
     }
-  }, [dispatch, name, userId, googleName, isSizeSelected]);
+    if (favorites) {
+      let isProductInFavorites = false; // Inicializa el estado en falso
+      for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i].id === parseInt(id)) {
+          isProductInFavorites = true;
+          break; // Sale del bucle tan pronto como encuentra una coincidencia
+        }
+      }
+      setIsFavorite(isProductInFavorites);
+    }
+  }, [dispatch, name, userId, googleName, isSizeSelected, favorites, id]);
 
   useEffect(() => {
     const fetchData = async () => {
