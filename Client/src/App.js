@@ -33,6 +33,7 @@ function App() {
       <Route path="/review/:id" element={<Review />} />
       <Route path="/allReviews" element={<Reviews />} />
       <Route path="/about" element={<About />} />
+      <Route path="/admin/*" element={<About />} />
     </Routes>
   );
 }

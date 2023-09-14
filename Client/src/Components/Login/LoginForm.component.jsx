@@ -39,7 +39,8 @@ const LoginForm = () => {
     if (storedUsername) {
       setFormData({ ...formData, name: storedUsername });
     }
-  }, [formData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -50,13 +51,9 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      console.log(regex.test(formData.name));
       if (regex.test(formData.name)) {
-        console.log("Soy el email de usuario");
-
         const auth = getAuth();
         const email = formData.name;
-        console.log(formData.name);
         const methods = await fetchSignInMethodsForEmail(auth, email);
 
         if (methods && methods.length > 0) {
@@ -66,15 +63,10 @@ const LoginForm = () => {
             formData.password
           );
           if (userCredentials.user.emailVerified) {
-            localStorage.setItem("username", formData.name);
-
             // Comprueba si el correo de bienvenida ya se ha enviado
             const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
 
             if (welcomeEmailSent === "false") {
-              // Almacena el nombre de usuario
-              localStorage.setItem("username", formData.name);
-
               // Cambia formData.name a la dirección de correo electrónico
               const email = formData.name;
 
@@ -85,7 +77,13 @@ const LoginForm = () => {
               localStorage.setItem("welcomeEmailSent", "true");
             }
 
-            navigate("/");
+            if (userCredentials.user.isSuperuser) {
+              localStorage.setItem("username", "root"); // Guarda "root" si es superusuario
+            } else {
+              localStorage.setItem("username", formData.name);
+            }
+
+            navigate(userCredentials.user.isSuperuser ? "/admin" : "/");
 
             MySwal.fire({
               icon: "success",
@@ -107,7 +105,6 @@ const LoginForm = () => {
           });
         }
       } else {
-        console.log("Soy el nombre de usuario");
         const response = await fetch(`${back}login`, {
           method: "POST",
           headers: {
@@ -115,34 +112,46 @@ const LoginForm = () => {
           },
           body: JSON.stringify(formData),
         });
+        const data = await response.json();
+        const superUser = data.isSuperuser;
 
-        if (response.status === 200) {
-          localStorage.setItem("username", formData.name);
-
-          const name = localStorage.getItem("username");
-          const response = await fetch(`${back}profile/${name}`);
-
-          const data = await response.json();
-          const email = data.email;
-
-          // Comprueba si el correo de bienvenida ya se ha enviado
-          const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
-
-          if (welcomeEmailSent === "false") {
-            // Envía el correo electrónico cuando se inicia sesión con éxito
-            enviarMail(email, "BIENVENIDO", "Hola bienvenido");
-
-            // Establece la bandera en "true" para que no se envíe nuevamente
-            localStorage.setItem("welcomeEmailSent", "true");
-          }
-
+        if (superUser) {
+          localStorage.setItem("root", data.name);
           navigate("/");
-          MySwal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Inicio de sesión exitoso.",
-          });
-        } else if (response.status === 404) {
+        } else {
+          localStorage.setItem("username", data.name);
+          navigate("/");
+        }
+
+        // if (response.status === 200) {
+        //   const name = localStorage.getItem("username");
+        //   const response = await fetch(`${back}profile/${name}`);
+        //   const data = await response.json();
+        //   const email = data.email;
+
+        //   // Comprueba si el correo de bienvenida ya se ha enviado
+        //   const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
+
+        //   if (welcomeEmailSent === "false") {
+        //     // Envía el correo electrónico cuando se inicia sesión con éxito
+        //     enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+
+        //     // Establece la bandera en "true" para que no se envíe nuevamente
+        //     localStorage.setItem("welcomeEmailSent", "true");
+        //   }
+
+        //   localStorage.setItem("username", formData.name);
+
+        //   navigate("/");
+
+        //   MySwal.fire({
+        //     icon: "success",
+        //     title: "Éxito",
+        //     text: "Inicio de sesión exitoso.",
+        //   });
+        // }
+
+        if (response.status === 404) {
           MySwal.fire({
             icon: "error",
             title: "Error:",
