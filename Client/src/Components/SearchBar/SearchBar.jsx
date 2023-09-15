@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   HiOutlineShoppingCart,
   HiOutlineLogin,
@@ -10,13 +10,17 @@ import {
 import { getUserByName } from "../../Redux/actions/productsActions";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
+  // const storedUsername = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
   const googleImage = localStorage.getItem("googleImage");
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
+  const root = localStorage.getItem("root");
   const userInfo = user.length > 0 ? user[0] : "";
   const imageProfile = userInfo.imageProfile
     ? userInfo.imageProfile
+    : root
+    ? "https://acortar.link/wrpVGk"
     : "https://acortar.link/9rBdMA";
   const dispatch = useDispatch();
 
@@ -32,6 +36,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
 
   const logOut = () => {
     localStorage.removeItem("username");
+    localStorage.removeItem("root");
     window.location.reload();
   };
 
@@ -43,23 +48,19 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const logOutGoogle = () => {
     localStorage.removeItem("googleName");
     localStorage.removeItem("googleImage");
+    localStorage.removeItem("root");
     window.location.reload();
   };
 
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-
   return (
     <div className={styles.searchBarContainer}>
-      {isHome && (
-        <input
-          type="search"
-          value={busqueda}
-          onChange={handleChange}
-          className={styles.searchInput}
-          placeholder="BUSCAR"
-        />
-      )}
+      <input
+        type="search"
+        value={busqueda}
+        onChange={handleChange}
+        className={styles.searchInput}
+        placeholder="BUSCAR"
+      />
 
       <Link to={"/cart"} className={styles.cart}>
         <HiOutlineShoppingCart />
@@ -70,19 +71,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
       {storedUsername ? (
         <div>
           <Link to={"/userProfile"}>
-            {imageProfile ? (
-              <img
-                src={imageProfile}
-                className={styles.userIcon}
-                alt="profile"
-              />
-            ) : (
-              <img
-                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif" // Reemplaza con la URL del GIF de carga
-                alt="Cargando..."
-                className={styles.loadingIcon}
-              />
-            )}
+            <img src={imageProfile} className={styles.userIcon} alt="profile" />
           </Link>
 
           <Link to={"/"}>
@@ -91,20 +80,8 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         </div>
       ) : googleName ? (
         <div>
-          {console.log(googleImage)}
           <Link to={"/userProfile"}>
-            {googleImage ? (
-              <img
-                src={googleImage}
-                alt="profile"
-                className={styles.userImage}
-              />
-            ) : (
-              <img
-                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif" // Reemplaza con la URL del GIF de carga
-                alt="Cargando..."
-              />
-            )}
+            <img src={googleImage} alt="profile" className={styles.userImage} />
           </Link>
 
           <Link to={"/"}>
