@@ -46,7 +46,7 @@ export default function Detail() {
   //----FUNCIONES
 
   const handleCart = () => {
-    if (!googleName & !name) {
+    if (!googleName && !name) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -57,12 +57,19 @@ export default function Detail() {
       setProductCart(true);
 
       if (!selectedSize) {
-        alert("Selecciona una talla antes de agregar al carrito.");
-        return;
+        Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "Primero selecciona un talle",
+        });
       }
 
       setIsSizeSelected(false);
-      window.alert("Producto Agregado");
+      Swal.fire({
+        icon: "success",
+        title: "Nice!",
+        text: "Producto agregado al carrito",
+      });
     }
   };
 
@@ -73,7 +80,7 @@ export default function Detail() {
   };
 
   const handleToggleFavorites = () => {
-    if (!googleName & !name) {
+    if (!googleName && !name) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -114,6 +121,7 @@ export default function Detail() {
         setIsFavorite(isProductInFavorites);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, name, userId, googleName, isSizeSelected, id]);
 
   useEffect(() => {

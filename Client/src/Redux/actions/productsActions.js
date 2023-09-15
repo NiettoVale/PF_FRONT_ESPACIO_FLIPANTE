@@ -400,14 +400,21 @@ export const removeallproductCart = (userId, productId, sizeId) => {
 export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
   return async (dispatch, getState) => {
     try {
-      // Realiza la solicitud POST al servidor para agregar la orden
-      const response = await axios.post(`${back}order`, {
-        userId,
-        productId,
-        sizeId,
-        quantity,
-        totalPrice,
-      });
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          productId,
+          sizeId,
+          quantity,
+          totalPrice,
+        }),
+      };
+
+      const response = await fetch(`${back}order`, requestOptions);
 
       // Verifica si la solicitud fue exitosa (código de respuesta 201)
       if (response.status === 201) {
@@ -437,7 +444,7 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
     } catch (error) {
       // Maneja los errores de la solicitud HTTP o cualquier otro error que pueda ocurrir
       alert("Algo salió mal con addOrder!");
-      console.log(error);
+      console.error(error);
     }
   };
 };
