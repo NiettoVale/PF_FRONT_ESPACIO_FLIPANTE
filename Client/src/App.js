@@ -18,6 +18,7 @@ import UserList from "./Components/UserList/UserList";
 import DetailOrder from "./views/DetailOrder/DetailOrder";
 import UserReviews from "./Components/Reviews/UserReviews";
 import Review from "./views/Review/Review.jsx";
+import About from "./Components/About/About";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/user-reviews/:userId" element={<UserReviews />} />
       <Route path="/review/:userId/:productId" element={<Review />} />
+      <Route path="/about" element={<About />} />
       <Route path="/admin/*" element={<DashboardAdmin />}>
         <Route path="list" element={<ProductList />} />
         <Route path="create" element={<CreateForm />} />

@@ -3,6 +3,7 @@ import styles from "./Footer.module.css";
 import MapComponent from "../Mapa/MapComponent";
 
 import { BsInstagram, BsFacebook } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -63,6 +64,7 @@ const Footer = () => {
           <li>Contacto</li>
           <li>flipante@eshop.com</li>
           <li>+54 11 123-456-789</li>
+          <Link to="/about">¿Quienes Somos?</Link>
         </ul>
       </div>
     </div>
