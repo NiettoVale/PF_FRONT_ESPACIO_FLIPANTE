@@ -7,7 +7,9 @@ const Offers = () => {
 
   useEffect(() => {
     const getOffers = async () => {
-      const { data } = await axios("http://localhost:3001/offer");
+      const { data } = await axios(
+        "https://backend-espacio-flipante.onrender.com/offer"
+      );
       setOffers(data);
     };
     getOffers();

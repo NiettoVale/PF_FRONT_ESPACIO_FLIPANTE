@@ -7,7 +7,7 @@ function VisitsCounter() {
   useEffect(() => {
     // Realiza una solicitud POST al backend para incrementar el contador
     axios
-      .post("http://localhost:3001/visit")
+      .post("https://backend-espacio-flipante.onrender.com/visit")
       .then((response) => {
         setVisits(response.data.count); // Actualiza el contador en la interfaz
       })

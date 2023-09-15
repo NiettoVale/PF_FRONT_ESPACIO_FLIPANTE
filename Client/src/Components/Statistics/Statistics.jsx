@@ -74,7 +74,9 @@ const Statistics = () => {
     const fetchData = async () => {
       try {
         // Obtener datos de usuarios registrados
-        const usersResponse = await fetch("http://localhost:3001/users");
+        const usersResponse = await fetch(
+          "https://backend-espacio-flipante.onrender.com/users"
+        );
         const usersData = await usersResponse.json();
 
         const totalUsuarios = usersData.length;
@@ -110,7 +112,9 @@ const Statistics = () => {
         }));
 
         // Obtener datos de revisiones
-        const reviewsResponse = await fetch("http://localhost:3001/reviews");
+        const reviewsResponse = await fetch(
+          "https://backend-espacio-flipante.onrender.com/reviews"
+        );
         let reviewsData = await reviewsResponse.json();
 
         const months = [
@@ -166,7 +170,9 @@ const Statistics = () => {
         }));
 
         // Obtener datos de ventas
-        const orderResponse = await fetch("http://localhost:3001/order");
+        const orderResponse = await fetch(
+          "https://backend-espacio-flipante.onrender.com/order"
+        );
         const orderData = await orderResponse.json();
 
         const totalSales = orderData.length;
@@ -219,7 +225,9 @@ const Statistics = () => {
         }));
 
         // Obtener datos de visitas
-        const visitResponse = await fetch("http://localhost:3001/visit");
+        const visitResponse = await fetch(
+          "https://backend-espacio-flipante.onrender.com/visit"
+        );
         const visitData = await visitResponse.json();
 
         // Procesar los datos de visitas aquí
@@ -239,7 +247,9 @@ const Statistics = () => {
     // Realiza una solicitud HTTP para obtener los datos de productos
     const fetchProducts = async () => {
       try {
-        const productsResponse = await fetch("http://localhost:3001/products");
+        const productsResponse = await fetch(
+          "https://backend-espacio-flipante.onrender.com/products"
+        );
         const productsData = await productsResponse.json();
 
         const activeProducts = productsData.filter(

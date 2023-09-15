@@ -18,7 +18,7 @@ const ReviewForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3001/reviews/${userId}/${productId}`;
+    const url = `https://backend-espacio-flipante.onrender.com/reviews/${userId}/${productId}`;
     try {
       console.log(formData);
       const response = await fetch(url, {

@@ -7,12 +7,12 @@ import Footer from "../Footer/Footer";
 const UserReviews = () => {
   const { userId } = useParams();
   const [userReviews, setUserReviews] = useState([]);
-  
+
   useEffect(() => {
     const getReviewsById = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/reviews-user/${userId}`
+          `https://backend-espacio-flipante.onrender.com/reviews-user/${userId}`
         );
 
         if (!response.ok) {
