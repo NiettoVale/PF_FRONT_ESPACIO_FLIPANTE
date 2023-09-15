@@ -27,6 +27,9 @@ function DashboardAdmin() {
             <Link to="/admin">Estadisticas</Link>
           </li>
           <li>
+            <Link to="/admin/offers">Codigos de descuento</Link>
+          </li>
+          <li>
             <Link to="/">Volver al Inicio</Link>
           </li>
         </ul>

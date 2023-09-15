@@ -19,6 +19,7 @@ import DetailOrder from "./views/DetailOrder/DetailOrder";
 import UserReviews from "./Components/Reviews/UserReviews";
 import Review from "./views/Review/Review.jsx";
 import About from "./Components/About/About";
+import Offers from "./Components/Offers/Offers";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="create" element={<CreateForm />} />
         <Route path="users" element={<UserList />} />
         <Route path="banned" element={<Banned />} />
+        <Route path="offers" element={<Offers />} />
       </Route>
     </Routes>
   );
