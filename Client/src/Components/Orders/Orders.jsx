@@ -1,58 +1,77 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { paymentOrder } from "../../Redux/actions/productsActions";
+import Swal from "sweetalert2";
+import SideBar from "../SideBar/SideBar";
+import axios from "axios";
+import styles from "./Orders.module.css";
+
 const Orders = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [ArrayOrders, setArrayOrders] = useState([]);
 
-  //Info Mercado Pago
+  // Info Mercado Pago
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
   // Obtén los parámetros que necesitas
-  const collectionId = queryParams.get("collection_id");
   const collectionStatus = queryParams.get("collection_status");
-  const paymentId = queryParams.get("payment_id");
   const status = queryParams.get("status");
-  useEffect(() => {
-    // Obtener datos del Local Storage
-    const storedOrders = JSON.parse(localStorage.getItem("orders")) || [];
 
-    // Verifica si se ha recibido la confirmación de pago (status: success)
-    if (
-      status === "approved" &&
-      storedOrders.length > 0 &&
-      collectionStatus === "approved"
-    ) {
-      // Itera sobre cada orden almacenada en el Local Storage y ejecuta paymentOrder
-      storedOrders.forEach((order) => {
-        const { userId, productId, sizeId, quantity, totalPrice } = order;
-        dispatch(paymentOrder(userId, productId, sizeId, quantity, totalPrice));
-      });
-    } else if (status === null || status == "null" || !status) {
-      localStorage.removeItem("orders");
-      window.alert("Compra No Confirmada/Realizada");
-    }
-  }, [dispatch, status]);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        // Obtener datos del Local Storage
+        const storedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+
+        // Verifica si se ha recibido la confirmación de pago (status: success)
+        if (
+          status === "approved" &&
+          storedOrders.length > 0 &&
+          collectionStatus === "approved"
+        ) {
+          // Itera sobre cada orden almacenada en el Local Storage y ejecuta paymentOrder
+          storedOrders.forEach((order) => {
+            const { userId, productId, sizeId, quantity, totalPrice } = order;
+            dispatch(
+              paymentOrder(userId, productId, sizeId, quantity, totalPrice)
+            );
+          });
+        } else {
+          // Si no se cumple la condición, obtén datos de la API
+          const response = await axios.get("http://localhost:3001/order");
+          const data = response.data;
+          console.log(data);
+          setArrayOrders(data); // Actualiza el estado con los datos de la API
+        }
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+        // Maneja el error según tu lógica (por ejemplo, mostrar un mensaje al usuario)
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Ha ocurrido un error al obtener los datos de la API.",
+        });
+      }
+    };
+
+    fetchOrders(); // Llama a la función para cargar los datos
+  }, [dispatch, status, collectionStatus]);
 
   return (
     <div>
-      <h2>HISTORIAL DE COMPRAS</h2>
-      {collectionId && collectionStatus && paymentId ? (
-        <div>
-          <p>Detalles de la confirmación de pago:</p>
-          <p>Collection ID: {collectionId}</p>
-          <p>Collection Status: {collectionStatus}</p>
-          <p>Payment ID: {paymentId}</p>
-          <p>Status: {status}</p>
-          {/* Mostrar más detalles según sea necesario */}
-        </div>
-      ) : (
-        <p>
-          Lo sentimos, algunos parámetros de la URL son nulos o están
-          indefinidos.
-        </p>
-      )}
+      <SideBar />
+      <div className={styles.orderscontainer}>
+        {ArrayOrders.map((order) => (
+          <div className={styles.ordercard} key={order.id}>
+            <p>Compra {order.id}</p>
+            <p>Producto: {order.productName}</p>
+            <Link to={`/detail-order/${order.id}`}>Ver Detalle de Compra</Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

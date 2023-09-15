@@ -8,9 +8,7 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 const ReviewForm = () => {
-  const user = useSelector((state) => state.infoUser);
-  const userInfo = user.length > 0 ? user[0] : null;
-  const { id } = useParams();
+  const { userId, productId } = useParams();
 
   // Mover la lógica de Rating a ReviewForm
   const [formData, setFormData] = useState({
@@ -20,7 +18,7 @@ const ReviewForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3001/reviews/${userInfo.id}/${id}`;
+    const url = `http://localhost:3001/reviews/${userId}/${productId}`;
     try {
       console.log(formData);
       const response = await fetch(url, {

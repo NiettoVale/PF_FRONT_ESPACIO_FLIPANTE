@@ -17,6 +17,7 @@ import Vista from "./Components/firebase/Autentication";
 import Review from "./views/Review/Review";
 import Reviews from "./Components/Reviews/Reviews";
 import About from "./Components/About/About";
+import DetailOrder from "./views/DetailOrder/DetailOrder";
 
 function App() {
   return (
@@ -33,9 +34,10 @@ function App() {
       <Route path="/orders" element={<Orders />} />
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/view" element={<Vista />} />
-      <Route path="/review/:id" element={<Review />} />
+      <Route path="/review/:userId/:productId" element={<Review />} />
       <Route path="/allReviews" element={<Reviews />} />
       <Route path="/about" element={<About />} />
+      <Route path="/detail-order/:id" element={<DetailOrder />} />
     </Routes>
   );
 }
