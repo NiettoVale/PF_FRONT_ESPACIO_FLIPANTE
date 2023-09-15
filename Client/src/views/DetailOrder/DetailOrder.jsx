@@ -5,6 +5,17 @@ import axios from "axios";
 const DetailOrder = () => {
   const { id } = useParams();
   const [order, setOrder] = useState({});
+  const name = localStorage.getItem("username");
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await axios(`http://localhost:3001/profile/${name}`);
+      setUser(data);
+    };
+    getUser();
+  }, [name]);
+
 
   useEffect(() => {
     const getOrder = async () => {
@@ -18,7 +29,7 @@ const DetailOrder = () => {
     getOrder();
   }, [id]);
 
-  console.log(order);
+  console.log(id);
 
   return (
     <div>
@@ -27,7 +38,7 @@ const DetailOrder = () => {
       <p>Cantidad: {order.quantity}</p>
       <p>Precio Total: {order.totalPrice}</p>
       <p>Fecha: {order.purchaseDate}</p>
-      <Link to={`/review/${id}/${order.productId}`}>
+      <Link to={`/review/${user.id}/${order.productId}`}>
         <button>Dejar reseña</button>
       </Link>
       {order.image &&

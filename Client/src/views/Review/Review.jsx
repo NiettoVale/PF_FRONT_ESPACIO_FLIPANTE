@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styles from "../../Components/Rating/Rating.module.css"; // Agrega estilos CSS personalizados
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
 
 const ReviewForm = () => {
+  const navigate = useNavigate();
   const { userId, productId } = useParams();
 
   // Mover la lógica de Rating a ReviewForm
@@ -33,6 +34,11 @@ const ReviewForm = () => {
           icon: "success",
           title: "Éxito",
           text: "Mensaje de éxito",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Redirige a /userProfile cuando el usuario presione OK
+            navigate("/userProfile");
+          }
         });
       }
       if (response.status === 404) {

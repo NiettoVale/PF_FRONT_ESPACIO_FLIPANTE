@@ -9,8 +9,8 @@ import styles from "./Orders.module.css";
 
 const Orders = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [ArrayOrders, setArrayOrders] = useState([]);
+  const userId = localStorage.getItem("userId");
 
   // Info Mercado Pago
   const location = useLocation();
@@ -41,13 +41,15 @@ const Orders = () => {
           });
         } else {
           // Si no se cumple la condición, obtén datos de la API
-          const response = await axios.get("http://localhost:3001/order");
+          const response = await axios.get(
+            `http://localhost:3001/order/${userId}`
+          );
           const data = response.data;
-          console.log(data);
+       
           setArrayOrders(data); // Actualiza el estado con los datos de la API
         }
       } catch (error) {
-        console.error("Error al obtener datos:", error);
+        
         // Maneja el error según tu lógica (por ejemplo, mostrar un mensaje al usuario)
         Swal.fire({
           icon: "error",
@@ -58,7 +60,7 @@ const Orders = () => {
     };
 
     fetchOrders(); // Llama a la función para cargar los datos
-  }, [dispatch, status, collectionStatus]);
+  }, [dispatch, status, collectionStatus, userId]);
 
   return (
     <div>

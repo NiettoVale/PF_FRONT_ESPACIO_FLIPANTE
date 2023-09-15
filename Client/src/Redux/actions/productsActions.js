@@ -120,6 +120,7 @@ export const getFilters = (dataFilter) => {
         });
       } else {
         const data = await response.json(); // Espera la respuesta antes de procesarla
+        console.log(data);
         dispatch({ type: FILTER, payload: data });
       }
     } catch (error) {

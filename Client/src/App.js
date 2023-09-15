@@ -15,6 +15,9 @@ import DashboardAdmin from "./views/dashboardAdmin/dashboardAdmin";
 import CreateForm from "./Components/CreateForm/CreateForm";
 import Banned from "./Components/BannedList/Banned";
 import UserList from "./Components/UserList/UserList";
+import DetailOrder from "./views/DetailOrder/DetailOrder";
+import UserReviews from "./Components/Reviews/UserReviews";
+import Review from "./views/Review/Review.jsx";
 
 function App() {
   return (
@@ -26,8 +29,11 @@ function App() {
       <Route path="/userProfile" element={<UserProfile />} />
       <Route path="/cart" element={<CartView />} />
       <Route path="/favorites" element={<Favorites />} />
+      <Route path="/detail-order/:id" element={<DetailOrder />} />
       <Route path="/orders" element={<Orders />} />
       <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/user-reviews/:userId" element={<UserReviews />} />
+      <Route path="/review/:userId/:productId" element={<Review />} />
       <Route path="/admin/*" element={<DashboardAdmin />}>
         <Route path="list" element={<ProductList />} />
         <Route path="create" element={<CreateForm />} />

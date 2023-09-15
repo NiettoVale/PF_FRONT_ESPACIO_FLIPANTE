@@ -118,15 +118,17 @@ const LoginForm = () => {
 
           if (superUser) {
             localStorage.setItem("root", data.name);
+            localStorage.setItem("AdminId", data.id);
             navigate("/");
           } else {
             localStorage.setItem("username", data.name);
+            localStorage.setItem("userId", data.id);
             navigate("/");
           }
           const name = localStorage.getItem("username");
           const response = await fetch(`${back}profile/${name}`);
           const datau = await response.json();
-          console.log(datau);
+          
           const email = datau.email;
 
           // Comprueba si el correo de bienvenida ya se ha enviado

@@ -46,12 +46,6 @@ const ProductList = () => {
     dispatch(getGenders());
   }, [dispatch]);
 
-  // Efecto para mostrar productos cargados en la consola cuando se actualiza 'products'
-  useEffect(() => {
-    console.log("editedImages actualizado:", [...editedImages]);
-    console.log("Productos cargados:", products);
-  }, [products, editedImages]);
-
   // Función para manejar el clic en el botón de editar producto
   const handleEditClick = (product) => {
     // Configurar el estado para editar el producto seleccionado
@@ -130,7 +124,7 @@ const ProductList = () => {
     axios
       .put(`${back}products/${updatedProduct.id}`, updatedProduct)
       .then((response) => {
-        console.log("Respuesta del servidor:", response.data);
+       
 
         // Actualizar la lista de productos manteniendo el producto en su posición original
         setProducts((prevProducts) =>
@@ -146,12 +140,12 @@ const ProductList = () => {
         setEditedImages([]);
         setEditedStock({});
         fetchProducts();
-        console.log("Producto actualizado y estado reiniciado.");
+        
       })
       .catch((error) => {
         console.error("Error al actualizar el producto:", error);
-        console.log("Estado actual de updatedProduct:", updatedProduct);
-      });
+        
+      })
   };
 
   // Función para manejar el clic en el botón de eliminar producto
@@ -159,7 +153,7 @@ const ProductList = () => {
     fetch(`${back}products/${productId}`, { method: "DELETE" })
       .then((response) => {
         if (response.status === 204) {
-          console.log("Producto eliminado con éxito.");
+          
           const updatedProducts = products.filter((p) => p.id !== productId);
           setProducts(updatedProducts);
         }

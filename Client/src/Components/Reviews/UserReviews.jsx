@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./UserReview.module.css"; // Importa tus estilos CSS Modules
@@ -8,14 +7,27 @@ import Footer from "../Footer/Footer";
 const UserReviews = () => {
   const { userId } = useParams();
   const [userReviews, setUserReviews] = useState([]);
-
+  
   useEffect(() => {
     const getReviewsById = async () => {
-      const { data } = await axios(
-        `http://localhost:3001/reviews-user/${userId}`
-      );
-      setUserReviews(data);
+      try {
+        const response = await fetch(
+          `http://localhost:3001/reviews-user/${userId}`
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener las reseñas: ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
+        setUserReviews(data);
+      } catch (error) {
+        console.error(error);
+      }
     };
+
     getReviewsById();
   }, [userId]);
 
