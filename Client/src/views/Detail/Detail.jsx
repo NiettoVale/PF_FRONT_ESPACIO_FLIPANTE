@@ -14,6 +14,7 @@ import {
 } from "../../Redux/actions/productsActions";
 import Swal from "sweetalert2"; // Importa SweetAlert2
 import Footer from "../../Components/Footer/Footer";
+import SearchBar from "../../Components/SearchBar/SearchBar";
 
 export default function Detail() {
   const back = process.env.REACT_APP_BACK;
@@ -175,6 +176,7 @@ export default function Detail() {
     <div>
       <div className={styles.navBarDetail}>
         <NavBar />
+        <SearchBar />
       </div>
       <Link to={"/"}>
         <button className={styles.backButton}>⬅</button>
