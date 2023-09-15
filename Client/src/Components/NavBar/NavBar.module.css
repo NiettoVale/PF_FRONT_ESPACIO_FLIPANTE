@@ -70,7 +70,18 @@
   padding: 3px;
   border: solid 1px #000;
 }
-
+.logo:hover {
+  border: solid 1px #a600ff;
+}
+.logo h2:hover,
+.logo span:hover {
+  cursor: pointer;
+  color: #a600ff;
+}
+.logo h2:hover {
+  cursor: pointer;
+  color: #a600ff;
+}
 .logo h2 {
   color: #000;
   letter-spacing: -1px;

@@ -3,13 +3,6 @@ import styles from "./NavBar.module.css";
 import { Link } from "react-router-dom";
 // import {useSelector, useDispatch} from "react-redux"
 
-import {
-  HiOutlineShoppingCart,
-  HiOutlineLogin,
-  HiOutlineLogout,
-  HiOutlineUserCircle,
-} from "react-icons/hi";
-
 const NavBar = () => {
   // const user = useSelector((state) => state.infoUser);
   // const userInfo = user.length > 0 ? user[0] : null;
@@ -44,12 +37,14 @@ const NavBar = () => {
   return (
     <div className={styles.navContainer}>
       <div className={styles.navBar}>
-        <div className={styles.logo}>
-          <h2>
-            <span>ESPACIO</span>
-          </h2>
-          <h2> FLIPANTE</h2>
-        </div>
+        <Link to={"/"}>
+          <div className={styles.logo}>
+            <h2>
+              <span>ESPACIO</span>
+            </h2>
+            <h2> FLIPANTE</h2>
+          </div>
+        </Link>
         <Link to={"/"} className={styles.link}>
           INICIO
         </Link>
