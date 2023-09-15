@@ -29,6 +29,7 @@ const CartView = () => {
 
   const [preferenceId, setPreferenceId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [compraRealizada, setCompraRealizada] = useState(false);
 
   let userId = 0;
   if (user.length > 0) {
@@ -57,6 +58,13 @@ const CartView = () => {
     }, 0);
     setTotalPrice(calculatePrice);
   }, [cart]);
+
+  useEffect(() => {
+    return () => {
+      // Esta función se ejecutará cuando el componente se desmonte
+      localStorage.removeItem("orders"); // Eliminas la clave "orders" del localStorage
+    };
+  }, []);
 
   const createPreference = async (totalPrice) => {
     try {
@@ -102,11 +110,13 @@ const CartView = () => {
             dispatch(addOrder(userId, productId, sizeId, quantity, totalPrice));
           }
           dispatch(removeCart(userId));
+          setCompraRealizada(true);
         } catch (error) {
           console.error("Error al procesar la compra:", error);
         }
       }
     });
+    localStorage.removeItem("orders");
   };
 
   // Función para mostrar una alerta de confirmación antes de eliminar el carrito
@@ -154,7 +164,11 @@ const CartView = () => {
         totalPrice={totalPrice}
       />
       <h2>Precio Total : ${totalPrice}</h2>
-      <button className={styles.buyButton} onClick={handleBuy}>
+      <button
+        className={styles.buyButton}
+        onClick={handleBuy}
+        disabled={compraRealizada}
+      >
         Comprar
       </button>
       {preferenceId && <Wallet initialization={{ preferenceId }} />}
