@@ -1,0 +1,184 @@
+/* cardAbout.module.css .cardContainer {
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 20px;
+  width: 250px;
+  height: 270px;
+  position: relative;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.cardContainer:hover {
+  transform: rotateY(180deg);
+}
+
+.cardInfo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotateY(0deg);
+  transition: transform 0.5s;
+}
+
+.cardInfo img:hover {
+  transform: rotateY(180deg);
+}
+
+.cardInfo img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.cardInfo p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.cardDescription {
+  display: none;
+}
+
+.cardContainer:hover .cardDescription {
+  display: block;
+}
+
+.cardInfo a {
+  text-decoration: none;
+  color: #007bff;
+  margin: 5px 0;
+}
+
+.cardInfo a:hover {
+  text-decoration: underline;
+} */
+
+/* cardAbout.module.css */
+
+/* cardAbout.module.css */
+.cardContainer {
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 12px rgba(206, 204, 204, 0.711);
+
+  color: #000;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  margin: 20px;
+  width: 300px;
+  height: 380px;
+  position: relative;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.cardContainer img {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+}
+
+.cardContainer:hover {
+  transform: rotateY(180deg);
+  cursor: grabbing;
+}
+
+.cardFront,
+.cardBack {
+  padding: 30px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.cardFront {
+  z-index: 2; /* Asegura que la parte frontal esté arriba durante la transición */
+}
+.cardFront p {
+  text-transform: uppercase;
+  color: #444;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+.cardBack {
+  transform: rotateY(180deg);
+  z-index: 1; /* Asegura que la parte trasera esté detrás durante la transición */
+}
+
+.cardDescription {
+  transform: rotateY(180deg);
+  display: none;
+  text-align: center;
+}
+
+.cardContainer:hover .cardDescription {
+  transform: rotateY(0deg);
+  display: block;
+}
+
+.cardInfo img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.cardInfo p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.cardInfo a {
+  text-decoration: none;
+  color: #007bff;
+  margin: 5px 0;
+}
+
+.cardInfo a:hover {
+  text-decoration: underline;
+}
+
+.cardLinks {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.cardLinks a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.cardLinks a:hover {
+  text-decoration: underline;
+}
+.cardLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

@@ -1,0 +1,12 @@
+.orderscontainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Columnas de 300px de ancho que se ajustan automáticamente */
+  gap: 16px; /* Permite que los elementos se ajusten automáticamente al tamaño del contenedor */
+}
+
+.ordercard {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 8px;
+  width: 300px; /* Establece el ancho máximo de cada tarjeta */
+}

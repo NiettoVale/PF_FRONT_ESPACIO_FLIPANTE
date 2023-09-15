@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import styles from "./Detail.module.css";
 import NavBar from "../../Components/NavBar/navBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +14,10 @@ import {
   removeFromFavorites,
   removeproductCart,
 } from "../../Redux/actions/productsActions";
-import Swal from "sweetalert2"; // Importa SweetAlert2
+import Footer from "../../Components/Footer/Footer";
+import SearchBar from "../../Components/SearchBar/SearchBar";
+
+const MySwal = withReactContent(Swal);
 
 export default function Detail() {
   const back = process.env.REACT_APP_BACK;
@@ -23,8 +28,8 @@ export default function Detail() {
   const [imageDetail, setImageDetail] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [productCart, setProductCart] = useState(false);
-  const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
-  const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
+  const [availableSizes, setAvailableSizes] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [isSizeSelected, setIsSizeSelected] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
   const [cartproduct, setCartProduct] = useState(null);
@@ -42,57 +47,77 @@ export default function Detail() {
   }
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //----FUNCIONES
+
   const handleCart = () => {
-    if (!googleName || !name) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debes iniciar sesión o registrarte para agregar al carrito",
+    if (!googleName && !name) {
+      // Muestra una alerta personalizada con botones
+      MySwal.fire({
+        title: "Debes iniciar sesión o registrarte",
+        text: "Para agregar al carrito, inicia sesión o regístrate",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iniciar Sesión",
+        cancelButtonText: "Más Tarde",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirige a la página de inicio de sesión si el usuario elige iniciar sesión
+          navigate("/login");
+        }
       });
     } else {
-      if (productCart) {
-        dispatch(removeproductCart(userId, id));
-      } else {
-        dispatch(addproductCart(userId, id));
+      dispatch(addproductCart(userId, id, selectedSize));
+      setProductCart(true);
+
+      if (!selectedSize) {
+        Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "Primero selecciona un talle",
+        });
       }
-      setProductCart(!productCart);
+
+      setIsSizeSelected(false);
+      Swal.fire({
+        icon: "success",
+        title: "Nice!",
+        text: "Producto agregado al carrito",
+      });
     }
-    if (!selectedSize) {
-      alert("Selecciona una talla antes de agregar al carrito.");
-      return;
-    }
-    // Agregar al carrito
-    dispatch(addproductCart(userId, id, selectedSize));
-    setIsSizeSelected(false);
-    window.alert("Producto Agregado");
   };
 
-  // Función para manejar la selección de tamaño
   const handleSizeSelection = (sizeId) => {
     setSelectedSize(sizeId);
-    setIsSizeSelected(true); // Marcar que se ha seleccionado un tamaño
+    setIsSizeSelected(true);
   };
 
   const handleToggleFavorites = () => {
-    if (!googleName || !name) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debes iniciar sesión o registrarte para agregar a favoritos",
+    if (!googleName && !name) {
+      MySwal.fire({
+        title: "Debes iniciar sesión o registrarte",
+        text: "Para agregar a favoritos, inicia sesión o regístrate",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iniciar Sesión",
+        cancelButtonText: "Más Tarde",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
       });
     } else {
       if (isFavorite) {
         dispatch(removeFromFavorites(userId, id));
+        setIsFavorite(false);
       } else {
         dispatch(addFavorite(userId, id));
+        setIsFavorite(true);
       }
-      setIsFavorite(!isFavorite);
     }
   };
 
-  //----USE_EFFECT
   useEffect(() => {
     if (!googleName) {
       dispatch(getUserByName(name));
@@ -106,19 +131,27 @@ export default function Detail() {
     if (userId) {
       dispatch(getproductCart(userId));
     }
-  }, [dispatch, name, userId, googleName, isSizeSelected]);
+    if (favorites) {
+      let isProductInFavorites = false;
+      for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i].id === parseInt(id)) {
+          isProductInFavorites = true;
+          break;
+        }
+        setIsFavorite(isProductInFavorites);
+      }
+    }
+  }, [dispatch, name, userId, googleName, isSizeSelected, id]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`${back}detail/${id}`);
-
         const data = await response.json();
 
         if (response.status === 200) {
           setCardDetail(data);
           setImageDetail(data.images);
-          // Obtener tallas disponibles del producto
           const sizesWithStock = data.Sizes.filter(
             (size) => size.Stock.quantity > 0
           );
@@ -134,7 +167,6 @@ export default function Detail() {
       }
     };
 
-    console.log("");
     fetchData();
   }, [id, back]);
 
@@ -159,6 +191,7 @@ export default function Detail() {
     <div>
       <div className={styles.navBarDetail}>
         <NavBar />
+        <SearchBar />
       </div>
       <Link to={"/"}>
         <button className={styles.backButton}>⬅</button>
@@ -188,7 +221,7 @@ export default function Detail() {
                 availableSizes.map((size) => (
                   <button
                     key={size.id}
-                    onClick={() => handleSizeSelection(size.id)} // Llama a la función de manejo de selección de tamaño
+                    onClick={() => handleSizeSelection(size.id)}
                     className={
                       selectedSize === size.id ? styles.selectedSize : ""
                     }
@@ -204,9 +237,9 @@ export default function Detail() {
 
           <div>
             <p className={styles.detailDescription}>{cardDetail.description}</p>
-            <p className={styles.detailGender}>Genero: {cardDetail.gender}</p>
+            <p className={styles.detailGender}>Género: {cardDetail.gender}</p>
             <p className={styles.detailCategory}>
-              Categoria: {cardDetail.category}
+              Categoría: {cardDetail.category}
             </p>
             <p className={styles.detailMaterial}>
               Material Principal: {cardDetail.mainMaterial}
@@ -239,14 +272,14 @@ export default function Detail() {
               {isSizeSelected
                 ? cartQuantity === cartproduct
                   ? "Stock No Disponible"
-                  : productCart
-                  ? "Eliminar del Carrito"
                   : "Agregar al Carrito"
                 : "Selecciona un Talle"}
             </button>
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

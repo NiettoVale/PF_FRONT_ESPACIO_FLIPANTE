@@ -2,7 +2,7 @@ import CartCard from "../CartCard/CartCard.component";
 import styles from "./CartCards.module.css";
 import { useSelector } from "react-redux";
 
-const Cards = ({ products, setTotalPrice }) => {
+const Cards = ({ products, setTotalPrice, totalPrice }) => {
   const orderByName = useSelector((state) => state.order);
   let sortedProducts = []; // Inicializa la variable fuera del condicional
 
@@ -32,6 +32,7 @@ const Cards = ({ products, setTotalPrice }) => {
           price={product.price}
           cantidad={product.cantidad}
           setTotalPrice={setTotalPrice}
+          totalPrice={totalPrice}
         />
       ))}
     </div>

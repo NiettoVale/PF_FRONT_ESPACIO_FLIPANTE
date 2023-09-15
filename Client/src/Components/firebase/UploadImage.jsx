@@ -21,7 +21,7 @@ function UploadImage({ handleImageURLChange, imageURLs }) {
           getDownloadURL(storageRef)
             .then((url) => {
               console.log("URL de la imagen:", url);
-              handleImageURLChange(index, url); // Actualiza el estado en CreateForm con la URL
+              handleImageURLChange(index, url); 
             })
             .catch((error) => {
               console.error("Error al obtener la URL de descarga:", error);

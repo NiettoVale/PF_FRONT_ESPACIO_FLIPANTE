@@ -9,11 +9,12 @@ import SearchBar from "../../Components/SearchBar/SearchBar";
 import ProductSlider from "../../Components/ProductSlider/ProductSlider";
 import styles from "./home.module.css";
 import Footer from "../../Components/Footer/Footer";
-
+import axios from "axios";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const [visits, setVisits] = useState(0);
   const products = useSelector((state) => state.products);
   const productsFiltered = useSelector((state) => state.productsFiltered);
 
@@ -95,7 +96,18 @@ const Home = () => {
     console.log("Resetting page to 1");
     setCurrentPage(1); // Reiniciar la página a 1
   };
-
+  useEffect(() => {
+    // Realizar una solicitud POST al backend para incrementar el contador
+    axios
+      .post("http://localhost:3001/visit")
+      .then((response) => {
+        setVisits(response.data.count); // Actualiza el contador en la interfaz
+      })
+      .catch((error) => {
+        console.error("Error al incrementar el contador de visitas", error);
+      });
+  }, []); // El segundo argumento [] asegura que este efecto se ejecute solo una vez al montar el componente
+  console.log(visits);
   return (
     <div>
       <Hero />

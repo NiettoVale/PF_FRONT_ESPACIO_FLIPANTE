@@ -11,11 +11,9 @@ import {
   FAVORITES,
   REMOVE_FROM_FAVORITES,
   CART,
-
   PRICE_CART,
-
   GET_USER_MAIL,
-  REMOVE_FROM_CART,
+  ORDER_INFO,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -29,6 +27,7 @@ const initialState = {
   myFavorites: [],
   myCart: [],
   totalPrice: 0,
+  orderInfo: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -99,7 +98,7 @@ const rootReducer = (state = initialState, action) => {
     case CART:
       return {
         ...state,
-        myCart: action.payload,
+        myCart: action.payload, // Actualiza el estado del carrito con el nuevo array
       };
     case REMOVE_FROM_FAVORITES:
       const updatedFavorites = state.myFavorites.filter(
@@ -114,6 +113,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         totalPrice: action.payload, // Actualiza el precio total con el nuevo valor
+      };
+    case ORDER_INFO:
+      return {
+        ...state,
+        orderInfo: action.payload, // Actualiza el precio total con el nuevo valor
       };
     default:
       return state;

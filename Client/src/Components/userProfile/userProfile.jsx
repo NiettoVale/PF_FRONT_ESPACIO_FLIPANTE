@@ -17,6 +17,7 @@ const back = process.env.REACT_APP_BACK;
 
 const UserProfile = () => {
   const dispatch = useDispatch();
+  const root = localStorage.getItem("root");
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
   const user = useSelector((state) => state.infoUser);
@@ -41,10 +42,12 @@ const UserProfile = () => {
       setImageURL(
         typeof userInfo.imageProfile === "string"
           ? userInfo.imageProfile
+          : root
+          ? "https://acortar.link/wrpVGk"
           : "https://acortar.link/9rBdMA"
       );
     }
-  }, [userInfo]);
+  }, [userInfo, root]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -125,7 +128,6 @@ const UserProfile = () => {
       }
     }
   }, [dispatch, name, googleName]);
-  console.log(name);
 
   return (
     <div className={styles.userView}>

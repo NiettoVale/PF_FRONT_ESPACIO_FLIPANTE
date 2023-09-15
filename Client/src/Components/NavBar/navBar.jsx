@@ -1,45 +1,11 @@
-// import React, {useState, useEffect} from "react";
 import styles from "./NavBar.module.css";
 import { Link } from "react-router-dom";
-// import {useSelector, useDispatch} from "react-redux"
-
-import {
-  HiOutlineShoppingCart,
-  HiOutlineLogin,
-  HiOutlineLogout,
-  HiOutlineUserCircle,
-} from "react-icons/hi";
 
 const NavBar = () => {
-  // const user = useSelector((state) => state.infoUser);
-  // const userInfo = user.length > 0 ? user[0] : null;
-  // const dispatch = useDispatch();
-
-  // const googleName = localStorage.getItem("googleName");
-  // const googleImage = localStorage.getItem("googleImage");
-  // const [storedUsername, setStoredUsername] = useState(
-  //   localStorage.getItem("username")
-  // );
-
-  // useEffect(() => {
-  //   // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
-  //   setStoredUsername(localStorage.getItem("username"));
-  // }, []);
-
-  // const logOut = () => {
-  //   localStorage.removeItem("username");
-  //   window.location.reload();
-  // };
-
-  // const logOutGoogle = () => {
-  //   localStorage.removeItem("googleName");
-  //   localStorage.removeItem("googleImage");
-  //   window.location.reload();
-  // };
-
   const handleClickScroll = () => {
     window.scrollTo({ top: 1600, behavior: "smooth" });
   };
+  const superUser = localStorage.getItem("root");
 
   return (
     <div className={styles.navContainer}>
@@ -50,22 +16,23 @@ const NavBar = () => {
           </h2>
           <h2> FLIPANTE</h2>
         </div>
-        <Link to={"/"} className={styles.link}>
-          INICIO
-        </Link>
-        <Link to={"/"} className={styles.link} onClick={handleClickScroll}>
-          CATALOGO
-        </Link>
 
-        {/* {storedUsername ? (
-          <Link to={"/userProfile"}>
-            <p>{storedUsername}</p>
-          </Link>
+        {superUser ? (
+          <>
+            <Link to={"/admin"} className={styles.link}>
+              PANEL DE CONTROL
+            </Link>
+          </>
         ) : (
-          <Link to={"/userProfile"}>
-            <p>{googleName}</p>
-          </Link>
-        )} */}
+          <>
+            <Link to={"/"} className={styles.link}>
+              INICIO
+            </Link>
+            <Link to={"/"} className={styles.link} onClick={handleClickScroll}>
+              CATALOGO
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

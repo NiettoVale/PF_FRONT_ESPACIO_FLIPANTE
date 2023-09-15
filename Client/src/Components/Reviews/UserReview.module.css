@@ -1,0 +1,38 @@
+/* UserReviews.module.css */
+
+.userReviewsContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 tarjetas por fila */
+  gap: 20px;
+}
+
+.reviewCard {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 100%; /* Ancho del 100% para ocupar el espacio disponible en la fila */
+  height: 300px; /* Altura fija para todas las tarjetas */
+  box-sizing: border-box;
+}
+
+.rating {
+  font-weight: bold;
+}
+
+.comment {
+  margin-top: 10px;
+}
+
+.product {
+  margin-top: 10px;
+  color: #007bff; /* Color para el nombre del producto */
+}
+
+/* Clase para una estrella llena */
+.starFilled {
+  color: gold; /* Puedes ajustar el color a tu gusto */
+}
+
+/* Clase para una estrella vacía */
+.starEmpty {
+  color: #ccc; /* Puedes ajustar el color a tu gusto */
+}

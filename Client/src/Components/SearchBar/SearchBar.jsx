@@ -10,13 +10,17 @@ import {
 import { getUserByName } from "../../Redux/actions/productsActions";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
+  // const storedUsername = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
   const googleImage = localStorage.getItem("googleImage");
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
+  const root = localStorage.getItem("root");
   const userInfo = user.length > 0 ? user[0] : "";
   const imageProfile = userInfo.imageProfile
     ? userInfo.imageProfile
+    : root
+    ? "https://acortar.link/wrpVGk"
     : "https://acortar.link/9rBdMA";
   const dispatch = useDispatch();
 
@@ -32,6 +36,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
 
   const logOut = () => {
     localStorage.removeItem("username");
+    localStorage.removeItem("root");
     window.location.reload();
   };
 
@@ -43,8 +48,10 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const logOutGoogle = () => {
     localStorage.removeItem("googleName");
     localStorage.removeItem("googleImage");
+    localStorage.removeItem("root");
     window.location.reload();
   };
+
   return (
     <div className={styles.searchBarContainer}>
       <input
@@ -64,19 +71,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
       {storedUsername ? (
         <div>
           <Link to={"/userProfile"}>
-            {imageProfile ? (
-              <img
-                src={imageProfile}
-                className={styles.userIcon}
-                alt="profile"
-              />
-            ) : (
-              <img
-                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif" // Reemplaza con la URL del GIF de carga
-                alt="Cargando..."
-                className={styles.loadingIcon}
-              />
-            )}
+            <img src={imageProfile} className={styles.userIcon} alt="profile" />
           </Link>
 
           <Link to={"/"}>
@@ -85,20 +80,8 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         </div>
       ) : googleName ? (
         <div>
-          {console.log(googleImage)}
           <Link to={"/userProfile"}>
-            {googleImage ? (
-              <img
-                src={googleImage}
-                alt="profile"
-                className={styles.userImage}
-              />
-            ) : (
-              <img
-                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif" // Reemplaza con la URL del GIF de carga
-                alt="Cargando..."
-              />
-            )}
+            <img src={googleImage} alt="profile" className={styles.userImage} />
           </Link>
 
           <Link to={"/"}>

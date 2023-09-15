@@ -11,11 +11,14 @@
   line-height: 0;
   letter-spacing: 0;
 }
-.cartContainer h2 {
-  margin: 40px 0;
-}
+
 .buyButton {
   margin-bottom: 80px;
   margin-top: 10px;
   padding: 10px;
+}
+.cartNav {
+  position: fixed;
+  top: 0;
+  left: 0;
 }

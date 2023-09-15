@@ -464,7 +464,7 @@ export default CreateForm;
 //   };
 
 //   return (
-//     <form className={styles["create-form"]} onSubmit={handleSubmit}>
+//     <form className={styles.createForm} onSubmit={handleSubmit}>
 //       <div>
 //         <label htmlFor="name">Nombre</label>
 //         <input

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+import NavBar from "../NavBar/navBar";
+
 import FacebookLogin from "../firebase/LoginFacebook";
 import GoogleLogin from "../firebase/LoginGoogle";
 import styles from "./LoginForm.module.css";
@@ -26,6 +29,19 @@ const LoginForm = () => {
   const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Almacena una bandera para verificar si el correo de bienvenida se ha enviado
+    if (!localStorage.getItem("welcomeEmailSent")) {
+      localStorage.setItem("welcomeEmailSent", "false");
+    }
+
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setFormData({ ...formData, name: storedUsername });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -38,7 +54,6 @@ const LoginForm = () => {
       if (regex.test(formData.name)) {
         const auth = getAuth();
         const email = formData.name;
-        console.log(formData.name);
         const methods = await fetchSignInMethodsForEmail(auth, email);
 
         if (methods && methods.length > 0) {
@@ -48,30 +63,27 @@ const LoginForm = () => {
             formData.password
           );
           if (userCredentials.user.emailVerified) {
-            localStorage.setItem("username", formData.name);
+            // Comprueba si el correo de bienvenida ya se ha enviado
+            const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
 
-            // Aumenta el contador de sesiones de correo electrónico en 1
-            const emailSessionCount =
-              parseInt(localStorage.getItem("emailSessionCount") || "0", 10) +
-              1;
-            localStorage.setItem(
-              "emailSessionCount",
-              emailSessionCount.toString()
-            );
-
-            // Comprueba si el contador de sesiones de correo electrónico es 1 o un múltiplo de 10 para enviar el correo de bienvenida
-            if (emailSessionCount === 1 || emailSessionCount % 10 === 0) {
-              // Almacena el nombre de usuario
-              localStorage.setItem("username", formData.name);
-
+            if (welcomeEmailSent === "false") {
               // Cambia formData.name a la dirección de correo electrónico
               const email = formData.name;
 
               // Envía el correo electrónico cuando se inicia sesión con éxito
               enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+
+              // Establece la bandera en "true" para que no se envíe nuevamente
+              localStorage.setItem("welcomeEmailSent", "true");
             }
 
-            navigate("/");
+            if (userCredentials.user.isSuperuser) {
+              localStorage.setItem("username", "root"); // Guarda "root" si es superusuario
+            } else {
+              localStorage.setItem("username", formData.name);
+            }
+
+            navigate(userCredentials.user.isSuperuser ? "/admin" : "/");
 
             MySwal.fire({
               icon: "success",
@@ -100,35 +112,59 @@ const LoginForm = () => {
           },
           body: JSON.stringify(formData),
         });
-
+        const data = await response.json();
         if (response.status === 200) {
-          localStorage.setItem("username", formData.name);
+          const superUser = data.isSuperuser;
 
-          // Aumenta el contador de sesiones de correo electrónico en 1
-          const emailSessionCount =
-            parseInt(localStorage.getItem("emailSessionCount") || "0", 10) + 1;
-          localStorage.setItem(
-            "emailSessionCount",
-            emailSessionCount.toString()
-          );
+          if (superUser) {
+            localStorage.setItem("root", data.name);
+            localStorage.setItem("AdminId", data.id);
+            navigate("/");
+          } else {
+            localStorage.setItem("username", data.name);
+            localStorage.setItem("userId", data.id);
+            navigate("/");
+          }
+          const name = localStorage.getItem("username");
+          const response = await fetch(`${back}profile/${name}`);
+          const datau = await response.json();
+          
+          const email = datau.email;
 
-          // Comprueba si el contador de sesiones de correo electrónico es 1 o un múltiplo de 10 para enviar el correo de bienvenida
-          if (emailSessionCount === 1 || emailSessionCount % 10 === 0) {
-            // Almacena el nombre de usuario
-            localStorage.setItem("username", formData.name);
+          // Comprueba si el correo de bienvenida ya se ha enviado
+          const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
 
-            // Cambia formData.name a la dirección de correo electrónico
-            const email = formData.name;
-
+          if (welcomeEmailSent === "false") {
             // Envía el correo electrónico cuando se inicia sesión con éxito
             enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+
+            // Establece la bandera en "true" para que no se envíe nuevamente
+            localStorage.setItem("welcomeEmailSent", "true");
           }
 
+          localStorage.setItem("username", formData.name);
+
           navigate("/");
+
+          if (superUser) {
+            MySwal.fire({
+              icon: "success",
+              title: "Éxito",
+              text: "Bienvenido Administrador!.",
+            });
+          } else {
+            MySwal.fire({
+              icon: "success",
+              title: "Éxito",
+              text: "Inicio de sesión exitoso.",
+            });
+          }
+        }
+        if (response.status === 401) {
           MySwal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Inicio de sesión exitoso.",
+            icon: "error",
+            title: "Error:",
+            text: "Contraseña incorrecta.",
           });
         }
         if (response.status === 404) {
@@ -136,6 +172,12 @@ const LoginForm = () => {
             icon: "error",
             title: "Error:",
             text: "Usuario no encontrado.",
+          });
+        } else if (response.status === 403) {
+          MySwal.fire({
+            icon: "error",
+            title: "Error:",
+            text: "Acceso prohibido: Este usuario ha sido baneado. Comunicarse al siguiente email: flipante@admin.com",
           });
         }
       }
@@ -149,24 +191,11 @@ const LoginForm = () => {
     }
   };
 
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setFormData({ ...formData, name: storedUsername });
-    }
-  }, [formData]);
-
-  // function submitHandler(event) {
-  //   event.preventDefault();
-  //   let correo = formData.name;
-  //   let asunto = "BIENVENIDO";
-  //   let texto = "Hola bienvenido";
-  //   enviarMail(correo, asunto, texto);
-  //   correo = asunto = texto = "";
-  // }
-
   return (
     <div className={styles.loginView}>
+      <div className={styles.navLog}>
+        <NavBar />
+      </div>
       <div className={styles.imageContainer}></div>
 
       <div className={styles.loginContainer}>
@@ -209,6 +238,9 @@ const LoginForm = () => {
           <Link to="/register">¡Regístrate!</Link>
         </p>
       </div>
+      <Link to={"/"}>
+        <button className={styles.backButton}>⬅</button>
+      </Link>
     </div>
   );
 };

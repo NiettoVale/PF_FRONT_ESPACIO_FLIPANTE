@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import styles from "../../Components/Rating/Rating.module.css"; // Agrega estilos CSS personalizados
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
 
 const ReviewForm = () => {
-  const user = useSelector((state) => state.infoUser);
-  const userInfo = user.length > 0 ? user[0] : null;
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const { userId, productId } = useParams();
 
   // Mover la lógica de Rating a ReviewForm
   const [formData, setFormData] = useState({
@@ -20,7 +18,7 @@ const ReviewForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3001/reviews/${userInfo.id}/${id}`;
+    const url = `http://localhost:3001/reviews/${userId}/${productId}`;
     try {
       console.log(formData);
       const response = await fetch(url, {
@@ -36,6 +34,11 @@ const ReviewForm = () => {
           icon: "success",
           title: "Éxito",
           text: "Mensaje de éxito",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Redirige a /userProfile cuando el usuario presione OK
+            navigate("/userProfile");
+          }
         });
       }
       if (response.status === 404) {

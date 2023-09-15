@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import styles from "./UserReview.module.css"; // Importa tus estilos CSS Modules
+import { Link } from "react-router-dom";
+import NavBar from "../NavBar/navBar";
+import Footer from "../Footer/Footer";
 
 const Reviews = () => {
   const [allReviews, setAllReviews] = useState([]);
@@ -26,7 +30,6 @@ const Reviews = () => {
 
     fetchData();
   }, []);
-  // El segundo argumento [] asegura que el efecto solo se ejecute una vez al montar el componente
 
   const renderStars = (rating) => {
     const starArray = [];
@@ -35,7 +38,7 @@ const Reviews = () => {
         <FontAwesomeIcon
           key={i}
           icon={i <= rating ? faStar : ["far", "star"]}
-          style={{ color: "gold" }}
+          className={styles.starFilled} // Aplica la clase CSS para estrellas llenas
         />
       );
     }
@@ -44,16 +47,22 @@ const Reviews = () => {
 
   return (
     <div>
-      {allReviews.map((review) => (
-        <div key={review.id}>
-          <p>Comentario: {review.comment}</p>
-          <div>
-            <p>Rating: {renderStars(review.rating)}</p>
+      <NavBar />
+      <div className={styles.userReviewsContainer}>
+        {allReviews.map((review) => (
+          <div key={review.id} className={styles.reviewCard}>
+            <p>Comentario: {review.comment}</p>
+            <div>
+              <p className={styles.rating}>
+                Rating: {renderStars(review.rating)}
+              </p>
+            </div>
+            <p>Usuario: {review.User}</p>
+            <p>Producto: {review.Product}</p>
           </div>
-          <p>Usuario: {review.User}</p>
-          <p>Producto: {review.Product}</p>
-        </div>
-      ))}
+        ))}
+      </div>
+      <Footer />
     </div>
   );
 };

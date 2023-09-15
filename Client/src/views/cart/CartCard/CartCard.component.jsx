@@ -9,6 +9,7 @@ import {
   getUserByName,
   removeallproductCart,
 } from "../../../Redux/actions/productsActions";
+import Swal from "sweetalert2";
 
 const Card = ({
   nameProduct,
@@ -59,22 +60,38 @@ const Card = ({
   };
 
   const handledelete = () => {
-    // Llamar a la acción para eliminar el producto del carrito
-    dispatch(removeallproductCart(userId, cartItem.productId, cartItem.sizeId));
+    // Mostrar la alerta de confirmación
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Una vez eliminado, no podrás recuperar este artículo.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, borrarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si el usuario confirma, llama a la acción para eliminar el producto del carrito
+        dispatch(
+          removeallproductCart(userId, cartItem.productId, cartItem.sizeId)
+        );
 
-    // Calcular el precio total después de eliminar el producto
-    const productToDelete = cart.find(
-      (product) =>
-        product.productId === cartItem.productId &&
-        product.sizeId === cartItem.sizeId
-    );
+        // Calcular el precio total después de eliminar el producto
+        const productToDelete = cart.find(
+          (product) =>
+            product.productId === cartItem.productId &&
+            product.sizeId === cartItem.sizeId
+        );
 
-    if (productToDelete) {
-      const productPrice = productToDelete.price * productToDelete.cantidad;
-      const newTotalPrice = price * quantity - productPrice;
-      setTotalPrice(newTotalPrice);
-    }
-    setIsRemoved(true);
+        if (productToDelete) {
+          const productPrice = productToDelete.price * productToDelete.cantidad;
+          const newTotalPrice = price * quantity - productPrice;
+          setTotalPrice(newTotalPrice);
+        }
+        setIsRemoved(true);
+      }
+    });
   };
 
   useEffect(() => {
