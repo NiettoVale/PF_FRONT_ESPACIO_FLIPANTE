@@ -13,6 +13,7 @@ import {
   removeproductCart,
 } from "../../Redux/actions/productsActions";
 import Swal from "sweetalert2"; // Importa SweetAlert2
+import Footer from "../../Components/Footer/Footer";
 import SearchBar from "../../Components/SearchBar/SearchBar";
 
 export default function Detail() {
@@ -262,6 +263,8 @@ export default function Detail() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

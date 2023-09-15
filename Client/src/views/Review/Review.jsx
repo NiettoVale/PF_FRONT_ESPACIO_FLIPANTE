@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "../../Components/Rating/Rating.module.css"; // Agrega estilos CSS personalizados
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";

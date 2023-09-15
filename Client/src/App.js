@@ -18,6 +18,7 @@ import Review from "./views/Review/Review";
 import Reviews from "./Components/Reviews/Reviews";
 import About from "./Components/About/About";
 import DetailOrder from "./views/DetailOrder/DetailOrder";
+import UserReviews from "./Components/Reviews/UserReviews";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
       <Route path="/allReviews" element={<Reviews />} />
       <Route path="/about" element={<About />} />
       <Route path="/detail-order/:id" element={<DetailOrder />} />
+      <Route path="/user-reviews/:userId" element={<UserReviews />} />
     </Routes>
   );
 }
