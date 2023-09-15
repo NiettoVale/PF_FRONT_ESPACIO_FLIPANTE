@@ -1,8 +1,10 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import styles from "./dashboardAdmin.module.css";
-
+import Statistics from "../../Components/Statistics/Statistics";
 function DashboardAdmin() {
+  const location = useLocation();
+  const isDashboardRoute = location.pathname === "/admin";
   return (
     <div className={styles.dashboardAdmin}>
       {/* Barra lateral */}
@@ -22,6 +24,9 @@ function DashboardAdmin() {
             <Link to="/admin/banned">Usuarios Baneados</Link>
           </li>
           <li>
+            <Link to="/admin">Estadisticas</Link>
+          </li>
+          <li>
             <Link to="/">Volver al Inicio</Link>
           </li>
         </ul>
@@ -37,6 +42,7 @@ function DashboardAdmin() {
         {/* Contenido dinámico */}
         <div className={styles.content}>
           <Outlet /> {/* Esto renderizará el contenido de las rutas anidadas */}
+          {isDashboardRoute && <Statistics />}
         </div>
       </div>
     </div>
