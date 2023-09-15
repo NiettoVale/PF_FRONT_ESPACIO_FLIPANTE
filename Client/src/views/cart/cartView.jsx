@@ -149,40 +149,55 @@ const CartView = () => {
   };
 
   return (
-    <div className={styles.cartContainer}>
-      <div className={styles.cartNav}>
-        <NavBar />
-        <SearchBar />
-      </div>
-      <h2 className={styles.cartTitle}>Carrito</h2>
-
-      <CartCards
-        products={cart}
-        setTotalPrice={setTotalPrice}
-        totalPrice={totalPrice}
-      />
-      <a
-        className={styles.deleteButton}
-        onClick={() => handleDelete(user[0].id)}
-      >
-        Borrar todo
-      </a>
-
-      <div className={styles.lastFlex}>
-        <div>
-          <p>TOTAL DE LA COMPRA</p>
-          <h2 className={styles.totalPrice}>${totalPrice}</h2>
+    <div className={styles.fullContainer}>
+      <div className={styles.cartContainer}>
+        <div className={styles.cartNav}>
+          <NavBar />
+          <SearchBar />
         </div>
-        <button
-          className={styles.buyButton}
-          onClick={handleBuy}
-          disabled={compraRealizada}
-        >
-          continuar compra
-        </button>
-        {preferenceId && <Wallet initialization={{ preferenceId }} />}
+        <h2 className={styles.cartTitle}>Carrito</h2>
+
+        {cart.length === 0 ? ( // Verificar si el carrito está vacío
+          <div className={styles.emptyCart}>
+            <h1>Carrito vacío</h1>
+            <Link to="/">
+              <button className={styles.catalogButton}>Ir al catálogo</button>
+            </Link>
+          </div>
+        ) : (
+          <>
+            <CartCards
+              products={cart}
+              setTotalPrice={setTotalPrice}
+              totalPrice={totalPrice}
+            />
+            <a
+              className={styles.deleteButton}
+              onClick={() => handleDelete(user[0].id)}
+            >
+              Borrar todo
+            </a>
+
+            <div className={styles.lastFlex}>
+              <div>
+                <p>TOTAL DE LA COMPRA</p>
+                <h2 className={styles.totalPrice}>${totalPrice}</h2>
+              </div>
+              <button
+                className={styles.buyButton}
+                onClick={handleBuy}
+                disabled={compraRealizada}
+              >
+                continuar compra
+              </button>
+              {preferenceId && <Wallet initialization={{ preferenceId }} />}
+            </div>
+          </>
+        )}
       </div>
-      <Footer />
+      <div className={styles.footer}>
+        <Footer />
+      </div>
     </div>
   );
 };

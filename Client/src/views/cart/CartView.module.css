@@ -1,3 +1,10 @@
+.fullContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .cartTitle {
   margin: 70px auto;
 }
@@ -34,4 +41,13 @@
   align-items: flex-end;
   justify-content: space-between;
   text-align: right;
+}
+.catalogButton {
+  padding: 10px 20px;
+  margin: 50px;
+}
+.footer {
+  display: block;
+  left: 0;
+  bottom: 0;
 }
