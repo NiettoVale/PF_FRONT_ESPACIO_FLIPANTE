@@ -133,14 +133,14 @@ export const getUserByName = (name) => {
   return async (dispatch) => {
     try {
       const response = await fetch(`${back}profile/${name}`);
-
       const data = await response.json();
 
       if (response.status === 404) {
         console.log(data.message);
       }
-
-      dispatch({ type: GET_USER_NAME, payload: data });
+      if (response.status === 200) {
+        dispatch({ type: GET_USER_NAME, payload: data });
+      }
     } catch (error) {
       console.log("Algo salió mal con getUserByName!");
       console.log(error);
