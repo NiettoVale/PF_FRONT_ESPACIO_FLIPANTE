@@ -7,7 +7,7 @@
   /* border: solid 1px #333; */
 
   background-color: #fff;
-  color: #333;
+  color: #000;
   border: solid 1px #ddd;
 
   text-align: left;
@@ -23,6 +23,17 @@
 .cardContainer:hover {
   box-shadow: 0 0 50px #dddddd;
 }
+.deleteButton {
+  color: red;
+  background-color: #ffffff00;
+  font-size: 20px;
+}
+.deleteButton button:hover {
+  border: none;
+}
+.deleteButton:hover {
+  border: none;
+}
 
 .imgCard {
   margin: 0;
@@ -36,7 +47,7 @@
 }
 
 .cardInfo {
-  width: 50vw;
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -59,9 +70,44 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+.cardSize {
+  color: #000;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 .cardPrice {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+.quantityButtons {
+  border: solid 1px #000;
+  font-size: 20px;
+  width: 70px;
+
+  display: flex;
+  justify-content: space-between;
+}
+.quantityButtons button:hover {
+  border: none;
+}
+.quantityButtons button {
+  padding: 3px;
+  background-color: #ffffff00;
+  color: #000;
+  font-weight: 700;
+  font-size: 12px;
+}
+.quantityButtons button:disabled {
+  color: #999;
+  cursor: auto;
+}
+.rightFlex {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
 }
