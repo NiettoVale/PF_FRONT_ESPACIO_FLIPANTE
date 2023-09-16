@@ -93,7 +93,7 @@ const Statistics = () => {
       try {
         // Obtener datos de usuarios registrados
         const usersResponse = await fetch(
-          "http://localhost:3001/users"
+          "https://backend-espacio-flipante.onrender.com/users"
         );
         const usersData = await usersResponse.json();
 
@@ -131,7 +131,7 @@ const Statistics = () => {
 
         // Obtener datos de revisiones
         const reviewsResponse = await fetch(
-          "http://localhost:3001/reviews"
+          "https://backend-espacio-flipante.onrender.com/reviews"
         );
         let reviewsData = await reviewsResponse.json();
 
@@ -189,7 +189,7 @@ const Statistics = () => {
 
         // Obtener datos de ventas
         const orderResponse = await fetch(
-          "http://localhost:3001/order"
+          "https://backend-espacio-flipante.onrender.com/order"
         );
         const orderData = await orderResponse.json();
 
@@ -303,7 +303,7 @@ const Statistics = () => {
     const fetchProducts = async () => {
       try {
         const productsResponse = await fetch(
-          "http://localhost:3001/products"
+          "https://backend-espacio-flipante.onrender.com/products"
         );
         const productsData = await productsResponse.json();
 
