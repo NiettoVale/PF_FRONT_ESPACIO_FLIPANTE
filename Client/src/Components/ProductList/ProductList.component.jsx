@@ -340,9 +340,23 @@ const ProductList = () => {
               </td>
               <td>
                 {editingProduct === product ? (
+                  <input
+                    type="text"
+                    value={editedProduct.description || ""}
+                    onChange={(e) =>
+                      setEditedProduct({ ...editedProduct, description: e.target.value })
+                    }
+                    className={styles["input-text"]}
+                  />
+                ) : (
+                  product.description
+                )}
+              </td>
+              <td>
+                {editingProduct === product ? (
                   <div>
                     {editedImages.map((image, index) => (
-                      <div key={index} className={styles["image-thumbnail"]}>
+                      <div key={index} className={styles.imagecolumn}>
                         <img src={image} alt={`Imagen ${index}`} />
                         <button
                           type="button"
