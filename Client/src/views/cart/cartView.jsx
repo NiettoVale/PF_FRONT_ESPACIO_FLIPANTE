@@ -12,6 +12,7 @@ import {
 
 import NavBar from "../../Components/NavBar/navBar";
 import SearchBar from "../../Components/SearchBar/SearchBar";
+import Footer from "../../Components/Footer/Footer";
 
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
@@ -29,6 +30,7 @@ const CartView = () => {
 
   const [preferenceId, setPreferenceId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [compraRealizada, setCompraRealizada] = useState(false);
 
   let userId = 0;
   if (user.length > 0) {
@@ -57,6 +59,13 @@ const CartView = () => {
     }, 0);
     setTotalPrice(calculatePrice);
   }, [cart]);
+
+  useEffect(() => {
+    return () => {
+      // Esta función se ejecutará cuando el componente se desmonte
+      localStorage.removeItem("orders"); // Eliminas la clave "orders" del localStorage
+    };
+  }, []);
 
   const createPreference = async (totalPrice) => {
     try {
@@ -102,11 +111,13 @@ const CartView = () => {
             dispatch(addOrder(userId, productId, sizeId, quantity, totalPrice));
           }
           dispatch(removeCart(userId));
+          setCompraRealizada(true);
         } catch (error) {
           console.error("Error al procesar la compra:", error);
         }
       }
     });
+    localStorage.removeItem("orders");
   };
 
   // Función para mostrar una alerta de confirmación antes de eliminar el carrito
@@ -138,29 +149,55 @@ const CartView = () => {
   };
 
   return (
-    <div className={styles.cartContainer}>
-      <div className={styles.cartNav}>
-        <NavBar />
-        <SearchBar />
-      </div>
-      <h2>Carrito de Compra</h2>
-      <button onClick={() => handleDelete(user[0].id)}>
-        Eliminar Carrito Completo
-      </button>
+    <div className={styles.fullContainer}>
+      <div className={styles.cartContainer}>
+        <div className={styles.cartNav}>
+          <NavBar />
+          <SearchBar />
+        </div>
+        <h2 className={styles.cartTitle}>Carrito</h2>
 
-      <CartCards
-        products={cart}
-        setTotalPrice={setTotalPrice}
-        totalPrice={totalPrice}
-      />
-      <h2>Precio Total : ${totalPrice}</h2>
-      <button className={styles.buyButton} onClick={handleBuy}>
-        Comprar
-      </button>
-      {preferenceId && <Wallet initialization={{ preferenceId }} />}
-      <Link to={"/"}>
-        <button className={styles.backButton}>⬅</button>
-      </Link>
+        {cart.length === 0 ? ( // Verificar si el carrito está vacío
+          <div className={styles.emptyCart}>
+            <h1>Carrito vacío</h1>
+            <Link to="/">
+              <button className={styles.catalogButton}>Ir al catálogo</button>
+            </Link>
+          </div>
+        ) : (
+          <>
+            <CartCards
+              products={cart}
+              setTotalPrice={setTotalPrice}
+              totalPrice={totalPrice}
+            />
+            <a
+              className={styles.deleteButton}
+              onClick={() => handleDelete(user[0].id)}
+            >
+              Borrar todo
+            </a>
+
+            <div className={styles.lastFlex}>
+              <div>
+                <p>TOTAL DE LA COMPRA</p>
+                <h2 className={styles.totalPrice}>${totalPrice}</h2>
+              </div>
+              <button
+                className={styles.buyButton}
+                onClick={handleBuy}
+                disabled={compraRealizada}
+              >
+                continuar compra
+              </button>
+              {preferenceId && <Wallet initialization={{ preferenceId }} />}
+            </div>
+          </>
+        )}
+      </div>
+      <div className={styles.footer}>
+        <Footer />
+      </div>
     </div>
   );
 };

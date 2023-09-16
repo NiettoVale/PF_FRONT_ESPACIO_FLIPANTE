@@ -9,6 +9,10 @@ import {
   getUserByName,
   removeallproductCart,
 } from "../../../Redux/actions/productsActions";
+
+import { FaRegTrashAlt } from "react-icons/fa";
+import { FaPlus, FaMinus } from "react-icons/fa6";
+
 import Swal from "sweetalert2";
 
 const Card = ({
@@ -132,7 +136,6 @@ const Card = ({
 
   return (
     <div className={styles.cardContainer}>
-      <button onClick={handledelete}>X</button>
       <Link to={`/detail/${id}`}>
         <div className={styles.cardImageContainer}>
           {/* Mostrar la imagen */}
@@ -147,18 +150,31 @@ const Card = ({
         </div>
       </Link>
       <div className={styles.cardInfo}>
-        <p className={styles.cardName}>
-          {nameProduct}, Cantidad: {quantity}, Size:{" "}
-          {productSize ? productSize.name : "Cargando..."}
-        </p>
-        <p className={styles.cardCategory}>{category}</p>
+        <div>
+          <p className={styles.cardName}>{nameProduct} </p>
+          <p className={styles.cardCategory}>{category}</p>
+          <p className={styles.cardSize}>
+            {productSize ? productSize.name : "Cargando..."}
+          </p>
+        </div>
+        <p className={styles.cardPrice}>${price}</p>
+
+        <div className={styles.quantityButtons}>
+          <button onClick={handleDecrement} disabled={quantity === 1}>
+            <FaMinus />
+          </button>
+          {quantity}
+          <button
+            onClick={handleIncrement}
+            disabled={quantity === cartItem.stock}
+          >
+            <FaPlus />
+          </button>
+        </div>
         <p className={styles.cardPrice}>${price * quantity}</p>
-      </div>
-      <div>
-        {quantity > 1 && <button onClick={handleDecrement}>-</button>}
-        {quantity < cartItem.stock && (
-          <button onClick={handleIncrement}>+</button>
-        )}
+        <button onClick={handledelete} className={styles.deleteButton}>
+          <FaRegTrashAlt />
+        </button>
       </div>
     </div>
   );

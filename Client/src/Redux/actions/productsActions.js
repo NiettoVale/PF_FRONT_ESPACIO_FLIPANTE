@@ -344,7 +344,7 @@ export const updateTotalPrice = (newTotalPrice) => {
 };
 
 export const removeCart = (userId) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       const response = await fetch(`${back}cart/${userId}`, {
         method: "DELETE",
@@ -354,9 +354,12 @@ export const removeCart = (userId) => {
 
       if (response.status === 404) {
         console.log(data.message);
+      } else {
+        // Despacha la acción para limpiar el carrito en el estado global
+        dispatch(resetCart());
       }
     } catch (error) {
-      console.log("Algo salió mal con removeproductCart!");
+      console.log("Algo salió mal con removeCart!");
       console.log(error);
     }
   };
@@ -400,28 +403,20 @@ export const removeallproductCart = (userId, productId, sizeId) => {
 export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
   return async (dispatch, getState) => {
     try {
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId,
-          productId,
-          sizeId,
-          quantity,
-          totalPrice,
-        }),
-      };
+      // Obtén la lista actual de pedidos del Local Storage
+      const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
 
-      const response = await fetch(`${back}order`, requestOptions);
+      // Verifica si el producto ya existe en la lista
+      const existingOrder = existingOrders.find((order) => {
+        return (
+          order.userId === userId &&
+          order.productId === productId &&
+          order.sizeId === sizeId
+        );
+      });
 
-      // Verifica si la solicitud fue exitosa (código de respuesta 201)
-      if (response.status === 201) {
-        // Obtiene el contenido actual del Local Storage bajo la clave "orders" o crea una matriz vacía si no hay nada almacenado allí
-        const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-
-        // Crea un objeto que representa la nueva orden con los datos proporcionados
+      if (!existingOrder) {
+        // Si el producto no existe en la lista, entonces agrégalo
         const newOrder = {
           userId,
           productId,
@@ -430,16 +425,34 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
           totalPrice,
         };
 
-        // Agrega la nueva orden al final de la matriz de órdenes existente
         existingOrders.push(newOrder);
 
-        // Actualiza el contenido del Local Storage con la matriz actualizada que contiene la nueva orden
+        // Actualiza el contenido del Local Storage
         localStorage.setItem("orders", JSON.stringify(existingOrders));
 
-        // Muestra un mensaje en la consola para confirmar que la orden se ha agregado correctamente
-        console.log(
-          "La orden se ha agregado correctamente al servidor y al Local Storage."
-        );
+        // Envía la solicitud al servidor solo si el producto no existe en la lista
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newOrder),
+        };
+
+        // Realiza la solicitud HTTP al servidor para agregar la orden
+        const response = await fetch(`${back}order`, requestOptions);
+
+        // Verifica si la solicitud fue exitosa (código de respuesta 201)
+
+        if (response.status === 201) {
+          // Muestra un mensaje en la consola para confirmar que la orden se ha agregado correctamente
+          console.log(
+            "La orden se ha agregado correctamente al servidor y al Local Storage."
+          );
+        }
+      } else {
+        // El producto ya existe en la lista, puedes mostrar un mensaje de error o manejarlo de acuerdo a tus necesidades
+        console.log("El producto ya existe en la lista.");
       }
     } catch (error) {
       // Maneja los errores de la solicitud HTTP o cualquier otro error que pueda ocurrir
@@ -448,6 +461,7 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
     }
   };
 };
+
 export const paymentOrder = (
   userId,
   productId,
@@ -482,4 +496,11 @@ export const paymentOrder = (
 
 export const setOrder = (order) => {
   return { type: ORDER, payload: order };
+};
+
+export const resetCart = () => {
+  return {
+    type: CART,
+    payload: [],
+  };
 };
