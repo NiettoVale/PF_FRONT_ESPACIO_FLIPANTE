@@ -202,9 +202,6 @@ export default function Detail() {
         <NavBar />
         <SearchBar />
       </div>
-      <Link to={"/"}>
-        <button className={styles.backButton}>⬅</button>
-      </Link>
 
       <div className={styles.detailContainer}>
         <div className={styles.imgContainer}>
