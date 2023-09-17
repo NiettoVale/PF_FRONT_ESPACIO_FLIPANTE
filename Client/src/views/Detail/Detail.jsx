@@ -150,7 +150,7 @@ export default function Detail() {
       setIsFavorite(isProductInFavorites);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, name, userId, googleName, isSizeSelected, id, favorites]);
+  }, [dispatch, name, userId, googleName, isSizeSelected, id]);
 
   useEffect(() => {
     const fetchData = async () => {

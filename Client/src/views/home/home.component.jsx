@@ -22,9 +22,24 @@ const Home = () => {
   const [productsByName, setProductsByName] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const initialState = {
+    category: "",
+    size: "",
+    gender: "",
+    minPrice: "",
+    maxPrice: "",
+    order: "",
+  };
+
+  const [dataFilter, setDataFilter] = useState(initialState);
+  const [priceFilter, setPriceFilter] = useState("");
+
   useEffect(() => {
     if (busqueda === "" || busqueda === null) {
       dispatch(getProducts());
+      // Limpiar filtros y barra de búsqueda cuando no hay búsqueda
+      setDataFilter(initialState);
+      setPriceFilter("");
     } else {
       filterSearch(busqueda);
     }
@@ -149,20 +164,65 @@ const Home = () => {
           </button>
         </div>
       )}
-
       <div className="">
-        {busqueda === "" ? (
-          <>
+        {busqueda === "" && productsFiltered.length === 0 ? (
+          // Caso 1: No hay búsqueda y no hay productos filtrados, mostramos el catálogo completo
+          <div>
             <h1>Catalogo</h1>
             <Cards products={currentProducts} />
-          </>
-        ) : currentProducts.length > 0 ? (
+          </div>
+        ) : busqueda !== "" && productsFiltered.length === 0 ? (
+          // Caso 2: Hay búsqueda pero no hay productos filtrados, mostramos los productos buscados en el catálogo
           <>
             <h2>Productos seleccionados</h2>
-            <Cards products={currentProducts} />
+            {currentProducts.filter((product) =>
+              product.name.toLowerCase().includes(busqueda.toLowerCase())
+            ).length > 0 ? (
+              <Cards
+                products={currentProducts.filter((product) =>
+                  product.name.toLowerCase().includes(busqueda.toLowerCase())
+                )}
+              />
+            ) : (
+              <p>No se encontraron productos con la búsqueda.</p>
+            )}
+          </>
+        ) : busqueda !== "" && productsFiltered.length > 0 ? (
+          // Caso 3: Hay búsqueda y productos filtrados, mostramos los productos buscados en base a los productos filtrados
+          <>
+            <h2>Productos seleccionados</h2>
+            {productsFiltered.filter((product) =>
+              product.name.toLowerCase().includes(busqueda.toLowerCase())
+            ).length > 0 ? (
+              <Cards
+                products={productsFiltered.filter((product) =>
+                  product.name.toLowerCase().includes(busqueda.toLowerCase())
+                )}
+              />
+            ) : (
+              <p>
+                No se encontraron productos con la búsqueda y los filtros
+                aplicados.
+              </p>
+            )}
           </>
         ) : (
-          <p>No se encontraron productos.</p>
+          // Caso 4: No hay búsqueda pero hay productos filtrados, mostramos los productos filtrados
+          <>
+            <h2>Productos filtrados</h2>
+            {Array.isArray(productsFiltered) && productsFiltered.length > 0 ? (
+              <Cards products={productsFiltered} />
+            ) : (
+              // Caso 4: No hay búsqueda pero hay productos filtrados, mostramos los productos filtrados
+              <>
+                <p>No se encontraron productos con los filtros aplicados.</p>
+                <div>
+                  <h1>Catalogo</h1>
+                  <Cards products={currentProducts} />
+                </div>
+              </>
+            )}
+          </>
         )}
       </div>
 
