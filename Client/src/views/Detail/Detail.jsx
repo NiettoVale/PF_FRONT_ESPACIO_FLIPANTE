@@ -1,5 +1,8 @@
+//!  Correcion Favs:
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import styles from "./Detail.module.css";
 import NavBar from "../../Components/NavBar/navBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,11 +13,11 @@ import {
   getFavorites,
   getUserByName,
   removeFromFavorites,
-  removeproductCart,
 } from "../../Redux/actions/productsActions";
-import Swal from "sweetalert2"; // Importa SweetAlert2
 import Footer from "../../Components/Footer/Footer";
 import SearchBar from "../../Components/SearchBar/SearchBar";
+
+const MySwal = withReactContent(Swal);
 
 export default function Detail() {
   const back = process.env.REACT_APP_BACK;
@@ -25,11 +28,13 @@ export default function Detail() {
   const [imageDetail, setImageDetail] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [productCart, setProductCart] = useState(false);
-  const [availableSizes, setAvailableSizes] = useState([]); // Estado para tallas disponibles
-  const [selectedSize, setSelectedSize] = useState(null); // Estado para talla seleccionada
+  const [availableSizes, setAvailableSizes] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [isSizeSelected, setIsSizeSelected] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
   const [cartproduct, setCartProduct] = useState(null);
+  const [isProductAvailable, setIsProductAvailable] = useState(true);
+  const [favoritesLoaded, setFavoritesLoaded] = useState(false);
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
@@ -44,62 +49,81 @@ export default function Detail() {
   }
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  //----FUNCIONES
+  // Función para mostrar la alerta cuando no está logueado
+  const showLoginAlert = () => {
+    MySwal.fire({
+      title: "Debes iniciar sesión o registrarte",
+      text: "Para realizar esta acción, inicia sesión o regístrate",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iniciar Sesión",
+      cancelButtonText: "Más Tarde",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/login");
+      }
+    });
+  };
 
   const handleCart = () => {
     if (!googleName && !name) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debes iniciar sesión o registrarte para agregar al carrito",
-      });
+      // Muestra la alerta de inicio de sesión
+      showLoginAlert();
     } else {
-      dispatch(addproductCart(userId, id, selectedSize));
-      setProductCart(true);
-
-      if (!selectedSize) {
+      if (!isSizeSelected) {
         Swal.fire({
           icon: "warning",
           title: "Oops...",
-          text: "Primero selecciona un talle",
+          text: "Debes seleccionar un tamaño antes de agregar al carrito.",
+        });
+      } else if (!isProductAvailable) {
+        Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "El producto no está disponible en stock.",
+        });
+      } else {
+        dispatch(addproductCart(userId, id, selectedSize));
+        setProductCart(true);
+
+        setIsSizeSelected(false);
+        Swal.fire({
+          icon: "success",
+          title: "Nice!",
+          text: "Producto agregado al carrito",
         });
       }
-
-      setIsSizeSelected(false);
-      Swal.fire({
-        icon: "success",
-        title: "Nice!",
-        text: "Producto agregado al carrito",
-      });
     }
   };
 
-  // Función para manejar la selección de tamaño
   const handleSizeSelection = (sizeId) => {
     setSelectedSize(sizeId);
-    setIsSizeSelected(true); // Marcar que se ha seleccionado un tamaño
+    setIsSizeSelected(true);
   };
 
   const handleToggleFavorites = () => {
     if (!googleName && !name) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debes iniciar sesión o registrarte para agregar a favoritos",
-      });
+      // Muestra la alerta de inicio de sesión
+      showLoginAlert();
     } else {
       if (isFavorite) {
-        dispatch(removeFromFavorites(userId, id));
-        setIsFavorite(false);
+        if (userId && id) {
+          // Asegúrate de que userId e id estén definidos
+          dispatch(removeFromFavorites(userId, id));
+          setIsFavorite(false);
+        }
       } else {
-        dispatch(addFavorite(userId, id));
-        setIsFavorite(true);
+        if (userId && id) {
+          // Asegúrate de que userId e id estén definidos
+          dispatch(addFavorite(userId, id));
+          setIsFavorite(true);
+        }
       }
     }
   };
 
-  //----USE_EFFECT
   useEffect(() => {
     if (!googleName) {
       dispatch(getUserByName(name));
@@ -108,35 +132,35 @@ export default function Detail() {
     }
 
     if (userId) {
-      dispatch(getFavorites(userId));
+      dispatch(getFavorites(userId)).then(() => {
+        setFavoritesLoaded(true);
+      });
     }
     if (userId) {
       dispatch(getproductCart(userId));
     }
     if (favorites) {
-      let isProductInFavorites = false; // Inicializa el estado en falso
+      let isProductInFavorites = false;
       for (let i = 0; i < favorites.length; i++) {
         if (favorites[i].id === parseInt(id)) {
           isProductInFavorites = true;
-          break; // Sale del bucle tan pronto como encuentra una coincidencia
+          break;
         }
-        setIsFavorite(isProductInFavorites);
       }
+      setIsFavorite(isProductInFavorites);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, name, userId, googleName, isSizeSelected, id]);
+  }, [dispatch, name, userId, googleName, isSizeSelected, id, favorites]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`${back}detail/${id}`);
-
         const data = await response.json();
 
         if (response.status === 200) {
           setCardDetail(data);
           setImageDetail(data.images);
-          // Obtener tallas disponibles del producto
           const sizesWithStock = data.Sizes.filter(
             (size) => size.Stock.quantity > 0
           );
@@ -206,7 +230,7 @@ export default function Detail() {
                 availableSizes.map((size) => (
                   <button
                     key={size.id}
-                    onClick={() => handleSizeSelection(size.id)} // Llama a la función de manejo de selección de tamaño
+                    onClick={() => handleSizeSelection(size.id)}
                     className={
                       selectedSize === size.id ? styles.selectedSize : ""
                     }
@@ -222,20 +246,12 @@ export default function Detail() {
 
           <div>
             <p className={styles.detailDescription}>{cardDetail.description}</p>
-            <p className={styles.detailGender}>Genero: {cardDetail.gender}</p>
+            <p className={styles.detailGender}>Género: {cardDetail.gender}</p>
             <p className={styles.detailCategory}>
-              Categoria: {cardDetail.category}
+              Categoría: {cardDetail.category}
             </p>
             <p className={styles.detailMaterial}>
               Material Principal: {cardDetail.mainMaterial}
-            </p>
-            <p className={styles.detailMaterial}>
-              Cantidad en el Carrito:{" "}
-              {isSizeSelected
-                ? cartQuantity !== null
-                  ? cartQuantity
-                  : "Selecciona un Talle"
-                : "Selecciona un Talle"}
             </p>
           </div>
 
@@ -249,16 +265,10 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button
-              className={styles.cartButton}
-              onClick={handleCart}
-              disabled={!isSizeSelected || cartQuantity === cartproduct}
-            >
-              {isSizeSelected
-                ? cartQuantity === cartproduct
-                  ? "Stock No Disponible"
-                  : "Agregar al Carrito"
-                : "Selecciona un Talle"}
+            <button className={styles.cartButton} onClick={handleCart}>
+              {isProductAvailable
+                ? "Agregar al Carrito"
+                : "Stock No Disponible"}
             </button>
           </div>
         </div>

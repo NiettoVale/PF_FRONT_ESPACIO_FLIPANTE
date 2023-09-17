@@ -3,17 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../../Redux/actions/productsActions";
 import Cards from "../../Components/cards/cards.component";
 import Hero from "../../Components/Hero/Hero";
-import NavBar from "../../Components/NavBar/navBar"; // Asegúrate de tener la ruta correcta
+import NavBar from "../../Components/NavBar/navBar";
 import FilterBar from "../../Components/FilterBar/FilterBar";
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import ProductSlider from "../../Components/ProductSlider/ProductSlider";
 import styles from "./home.module.css";
 import Footer from "../../Components/Footer/Footer";
-
+import axios from "axios";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const [visits, setVisits] = useState(0);
   const products = useSelector((state) => state.products);
   const productsFiltered = useSelector((state) => state.productsFiltered);
 
@@ -27,7 +28,6 @@ const Home = () => {
     } else {
       filterSearch(busqueda);
     }
-    // Reiniciar la página actual cuando se aplica una búsqueda
     setCurrentPage(1);
   }, [busqueda, dispatch]);
 
@@ -35,20 +35,15 @@ const Home = () => {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const totalFilteredProducts = productsFiltered.length;
-
   const totalAllProducts =
     busqueda === "" ? products.length : productsByName.length;
 
-  const totalPages = Math.ceil(
-    totalFilteredProducts > 0
-      ? totalFilteredProducts / productsPerPage
-      : totalAllProducts / productsPerPage
-  );
+  const totalPages = Math.ceil(totalAllProducts / productsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
@@ -79,22 +74,30 @@ const Home = () => {
 
   let currentProducts = [];
 
-  if (totalFilteredProducts > 0) {
-    currentProducts = productsFiltered.slice(
-      indexOfFirstProduct,
-      indexOfLastProduct
-    );
-  } else {
+  if (totalAllProducts > 0) {
     currentProducts =
       busqueda === ""
         ? products.slice(indexOfFirstProduct, indexOfLastProduct)
         : productsByName.slice(indexOfFirstProduct, indexOfLastProduct);
   }
 
+  // Mostrar las flechas solo cuando haya más productos en páginas subsiguientes
+  const showPagination = totalAllProducts > productsPerPage;
+
   const resetPage = () => {
-    console.log("Resetting page to 1");
-    setCurrentPage(1); // Reiniciar la página a 1
+    setCurrentPage(1);
   };
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:3001/visit")
+      .then((response) => {
+        setVisits(response.data.count);
+      })
+      .catch((error) => {
+        console.error("Error al incrementar el contador de visitas", error);
+      });
+  }, []);
 
   return (
     <div>
@@ -113,37 +116,39 @@ const Home = () => {
         />
       </div>
 
-      <FilterBar resetPage={resetPage} />
+      <FilterBar resetPage={resetPage} setBusqueda={setBusqueda} />
 
-      <div className={styles.paginationButtons}>
-        <button
-          className={styles.unButton}
-          onClick={prev}
-          disabled={currentPage === 1}
-        >
-          <MdArrowBackIos />
-        </button>
-
-        {pageNumbers.map((number) => (
+      {showPagination && (
+        <div className={styles.paginationButtons}>
           <button
-            className={`${
-              number === currentPage ? styles.currentPageButton : ""
-            }`}
-            key={number}
-            onClick={() => handlePageChange(number)}
+            className={styles.unButton}
+            onClick={prev}
+            disabled={currentPage === 1}
           >
-            {number}
+            <MdArrowBackIos />
           </button>
-        ))}
 
-        <button
-          className={styles.unButton}
-          onClick={next}
-          disabled={currentPage === totalPages}
-        >
-          <MdArrowForwardIos />
-        </button>
-      </div>
+          {pageNumbers.map((number) => (
+            <button
+              className={`${
+                number === currentPage ? styles.currentPageButton : ""
+              }`}
+              key={number}
+              onClick={() => handlePageChange(number)}
+            >
+              {number}
+            </button>
+          ))}
+
+          <button
+            className={styles.unButton}
+            onClick={next}
+            disabled={currentPage === totalPages}
+          >
+            <MdArrowForwardIos />
+          </button>
+        </div>
+      )}
 
       <div className="">
         {busqueda === "" ? (
@@ -153,11 +158,7 @@ const Home = () => {
           </>
         ) : currentProducts.length > 0 ? (
           <>
-            {totalFilteredProducts > 0 ? (
-              <h2>Productos seleccionados</h2>
-            ) : (
-              <h1>Resultado de búsqueda</h1>
-            )}
+            <h2>Productos seleccionados</h2>
             <Cards products={currentProducts} />
           </>
         ) : (

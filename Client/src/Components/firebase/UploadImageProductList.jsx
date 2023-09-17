@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-function UploadImage({ handleImageURLChange, imageURLs }) {
+function UploadImageProductList({ handleImageURLChange }) {
   const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
@@ -10,7 +10,7 @@ function UploadImage({ handleImageURLChange, imageURLs }) {
     setImage(file);
   };
 
-  const handleImageUpload = (index) => {
+  const handleImageUpload = () => {
     if (image) {
       const storageRef = ref(storage, image.name);
 
@@ -21,7 +21,7 @@ function UploadImage({ handleImageURLChange, imageURLs }) {
           getDownloadURL(storageRef)
             .then((url) => {
               console.log("URL de la imagen:", url);
-              handleImageURLChange(index, url); 
+              handleImageURLChange(url);
             })
             .catch((error) => {
               console.error("Error al obtener la URL de descarga:", error);
@@ -38,9 +38,11 @@ function UploadImage({ handleImageURLChange, imageURLs }) {
   return (
     <div>
       <input type="file" onChange={handleImageChange} />
-      <button type="button" onClick={() => handleImageUpload(imageURLs.length)}>Subir Imagen</button>
+      <button type="button" onClick={handleImageUpload}>
+        Subir Imagen
+      </button>
     </div>
   );
 }
 
-export default UploadImage;
+export default UploadImageProductList;
