@@ -6,7 +6,7 @@
 }
 
 .cartTitle {
-  margin: 70px auto;
+  margin: 100px auto 60px auto;
 }
 
 .buyButton {
@@ -31,10 +31,14 @@
 }
 .lastFlex p {
   margin: 0;
+  text-transform: uppercase;
   font-weight: 500;
 }
 .lastFlex {
   width: 80vw;
+
+  max-width: 900px;
+
   margin: 20px auto;
   display: flex;
   flex-direction: column;

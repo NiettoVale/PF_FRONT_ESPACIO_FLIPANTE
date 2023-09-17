@@ -12,6 +12,7 @@ import {
 
 import NavBar from "../../Components/NavBar/navBar";
 import SearchBar from "../../Components/SearchBar/SearchBar";
+import Footer from "../../Components/Footer/Footer";
 
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
@@ -141,25 +142,26 @@ const CartView = () => {
       {cart.length > 0 ? (
         <div>
           <h2 className={styles.cartTitle}>Carrito de Compra</h2>
-          <Link to={"/"}>
-            <button className={styles.catalogButton}>Volver</button>
-          </Link>
-          <br />
-          <br />
-          <button className={styles.deleteButton} onClick={handleDelete}>
-            Eliminar Carrito Completo
-          </button>
 
           <CartCards
             products={cart}
             setTotalPrice={setTotalPrice}
             totalPrice={totalPrice}
           />
-          <h2 className={styles.totalPrice}>Precio Total: ${totalPrice}</h2>
-          <button className={styles.buyButton} onClick={handleBuy}>
-            Comprar
-          </button>
-          {preferenceId && <Wallet initialization={{ preferenceId }} />}
+
+          <a className={styles.deleteButton} onClick={handleDelete}>
+            Eliminar carrito
+          </a>
+
+          <div className={styles.lastFlex}>
+            <p>Total de la compra</p>
+            <h2 className={styles.totalPrice}>${totalPrice}</h2>
+
+            <button className={styles.buyButton} onClick={handleBuy}>
+              Continuar Compra
+            </button>
+            {preferenceId && <Wallet initialization={{ preferenceId }} />}
+          </div>
         </div>
       ) : (
         <div>
@@ -169,6 +171,7 @@ const CartView = () => {
           </Link>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

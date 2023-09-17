@@ -1,5 +1,6 @@
 .cardContainer {
   width: 80vw;
+  max-width: 900px;
   height: 120px;
   margin: 10px;
 
@@ -30,9 +31,11 @@
 }
 .deleteButton button:hover {
   border: none;
+  outline: none;
 }
 .deleteButton:hover {
   border: none;
+  outline: none;
 }
 
 .imgCard {
@@ -72,16 +75,23 @@
 }
 .cardSize {
   color: #000;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 .cardPrice {
+  width: 100px;
   font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-align: center;
+}
+.quantityButtons span {
+  color: #000;
+  font-weight: 600;
+  font-size: 16px;
 }
 .quantityButtons {
   border: solid 1px #000;
@@ -89,7 +99,7 @@
   width: 70px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .quantityButtons button:hover {
   border: none;
@@ -105,9 +115,15 @@
   color: #999;
   cursor: auto;
 }
+.leftFlex {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+}
 .rightFlex {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 10px;
+  gap: 30px;
 }
