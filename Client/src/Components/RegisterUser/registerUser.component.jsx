@@ -11,51 +11,48 @@ import {
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import SearchBar from "../SearchBar/SearchBar";
 
 const MySwal = withReactContent(Swal);
 
 const back = process.env.REACT_APP_BACK;
 
 const Registro = () => {
-  // Creamos un estado local para almacenar al nuevo usuario
   const [newUser, setNewUser] = useState({
-    // estas son las propiedades necesarias para crear al nuevo usuario
     name: "",
     email: "",
     password: "",
   });
 
-  // Creamos un estado local para almacenar los errores que surjan mediante la validación.
   const [registerErrors, setRegisterErrors] = useState({});
   const navigate = useNavigate();
 
-  // Creamos una función que maneja los cambios de los inputs
   const handleChange = (event) => {
-    // Destructuramos dos valores de target -> (name, value)
     const { name, value } = event.target;
-
-    // Seteamos la información del nuevo usuario
     setNewUser((prevData) => ({
-      // Tomamos la información anterior del usuario y la guardamos junto con el cambio realizado
       ...prevData,
       [name]: value,
     }));
 
-    // Seteamos errores que puedan surgir al registrar al usuario.
-    setRegisterErrors(
-      // Llamamos a la función validar y le pasamos el nuevo usuario y los cambios que se registraron.
-      validationRegister({
-        ...newUser,
-        [name]: value,
-      })
-    );
+    // Validar los campos en tiempo real al cambiar
+    setRegisterErrors(validationRegister({ ...newUser, [name]: value }));
   };
 
-  // Creamos una función que se ejecuta cuando enviamos el formulario.
   const handleSubmit = async () => {
+    // Validar los campos antes de enviar la solicitud
+    const validationErrors = validationRegister(newUser);
+
+    if (Object.keys(validationErrors).length > 0) {
+      // Mostrar una alerta al usuario si hay errores
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Por favor, complete correctamente la información del formulario.",
+      });
+      setRegisterErrors(validationErrors);
+      return;
+    }
+
     try {
-      // Realizamos una petición al backend usando fetch y le pasamos el método y lo que le queremos enviar.
       const response = await fetch(`${back}register`, {
         method: "POST",
         headers: {
@@ -64,10 +61,8 @@ const Registro = () => {
         body: JSON.stringify(newUser),
       });
 
-      // Obtenemos los datos de la respuesta de la petición y los almacenamos
       const responseData = await response.json();
 
-      // Verificamos el estado de las posibles respuestas del servidor y mostramos adecuadamente los mensajes:
       if (response.status === 200) {
         try {
           const auth = getAuth();
@@ -76,8 +71,6 @@ const Registro = () => {
             newUser.email,
             newUser.password
           );
-          // Enviar correo de verificación
-
           await sendEmailVerification(userCredentials.user);
         } catch (error) {
           console.error("Error:", error.message);
@@ -89,14 +82,16 @@ const Registro = () => {
           text: "Usuario registrado exitosamente. Correo de verificación enviado.",
         });
         navigate("/login");
-        // window.location.reload();
       } else if (response.status === 400) {
-        setRegisterErrors({ badRequest: responseData.message });
+        MySwal.fire({
+          icon: "error",
+          title: "Error",
+          text: responseData.message,
+        });
       } else if (response.status === 500) {
         setRegisterErrors({ serverError: responseData.message });
       }
     } catch (error) {
-      // Si hubo algún error que no es del servidor, lo mostramos
       MySwal.fire({
         icon: "error",
         title: "Error",
@@ -110,7 +105,6 @@ const Registro = () => {
     <div className={styles.registerContainer}>
       <div className={styles.navLog}>
         <NavBar />
-        <SearchBar />
       </div>
       <div className={styles.registerImage}></div>
 
@@ -163,15 +157,10 @@ const Registro = () => {
           </button>
 
           <Link to={"/login"}>
-            <a>
-              ¿Ya tienes una cuenta? <span>Inicia sesión</span>
-            </a>
+            ¿Ya tienes una cuenta? <span>Inicia sesión</span>
           </Link>
         </div>
       </div>
-      <Link to={"/"}>
-        <button className={styles.backButton}>⬅</button>
-      </Link>
     </div>
   );
 };

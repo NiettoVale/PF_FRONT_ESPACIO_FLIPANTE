@@ -9,12 +9,7 @@ import {
   getUserByName,
   removeallproductCart,
 } from "../../../Redux/actions/productsActions";
-
-import { FaRegTrashAlt } from "react-icons/fa";
-import { FaPlus, FaMinus } from "react-icons/fa6";
-
 import Swal from "sweetalert2";
-
 const Card = ({
   nameProduct,
   images,
@@ -46,9 +41,17 @@ const Card = ({
   const cartItem = cart.find((item) => item.id === id);
 
   const handleIncrement = () => {
+    console.log("Este es el stock", cartItem.stock);
     if (cartItem && quantity < cartItem.stock) {
       // Comprobar si la cantidad es menor que el stock
-      dispatch(addproductCart(userId, cartItem.productId, cartItem.sizeId));
+      dispatch(
+        addproductCart(
+          userId,
+          cartItem.productId,
+          cartItem.sizeId,
+          cartItem.stock
+        )
+      );
       setQuantity(quantity + 1);
       setTotalPrice((prevTotalPrice) => prevTotalPrice + cartItem.price);
     }
@@ -136,6 +139,7 @@ const Card = ({
 
   return (
     <div className={styles.cardContainer}>
+      <button onClick={handledelete}>X</button>
       <Link to={`/detail/${id}`}>
         <div className={styles.cardImageContainer}>
           {/* Mostrar la imagen */}
@@ -150,30 +154,26 @@ const Card = ({
         </div>
       </Link>
       <div className={styles.cardInfo}>
-        <div>
-          <p className={styles.cardName}>{nameProduct} </p>
-          <p className={styles.cardCategory}>{category}</p>
-          <p className={styles.cardSize}>
-            {productSize ? productSize.name : "Cargando..."}
-          </p>
-        </div>
-        <p className={styles.cardPrice}>${price}</p>
-
-        <div className={styles.quantityButtons}>
-          <button onClick={handleDecrement} disabled={quantity === 1}>
-            <FaMinus />
-          </button>
-          {quantity}
-          <button
-            onClick={handleIncrement}
-            disabled={quantity === cartItem.stock}
-          >
-            <FaPlus />
-          </button>
-        </div>
+        <p className={styles.cardName}>{nameProduct}</p>
+        <p className={styles.cardName}>
+          Size: {productSize ? productSize.name : "Cargando..."}
+        </p>
+        <p className={styles.cardCategory}>{category}</p>
         <p className={styles.cardPrice}>${price * quantity}</p>
-        <button onClick={handledelete} className={styles.deleteButton}>
-          <FaRegTrashAlt />
+      </div>
+      <div className={styles.quantityButtons}>
+        <button
+          onClick={handleDecrement}
+          disabled={quantity <= 1} // Deshabilitar si la cantidad es 1 o menos
+        >
+          -
+        </button>
+        <span className={styles.quantity}>{quantity}</span>
+        <button
+          onClick={handleIncrement}
+          disabled={quantity >= cartItem.stock} // Deshabilitar si la cantidad alcanza el stock máximo
+        >
+          +
         </button>
       </div>
     </div>

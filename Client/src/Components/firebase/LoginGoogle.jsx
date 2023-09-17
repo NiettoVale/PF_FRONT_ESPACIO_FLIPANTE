@@ -1,37 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { AiFillGoogleCircle } from "react-icons/ai";
-import enviarMail from "../Login/funcionEnviar";
-
+import enviar from "../Login/funcionEnviar";
 import styles from "./LoginButtons.module.css";
 import Swal from "sweetalert2";
 
 const back = process.env.REACT_APP_BACK;
 
-const postUser = async (name, email, imageProfile) => {
-  try {
-    const userData = {
-      name: name,
-      email: email,
-      imageProfile: imageProfile,
-    };
-
-    await fetch(`${back}register-google`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-  } catch (error) {
-    console.error("Error en la solicitud:", error);
-  }
-};
-
-function GoogleLogin() {
+const GoogleLogin = () => {
   const navigate = useNavigate();
+  const [isBanned, setIsBanned] = useState(true);
+  const [googleEmail, setGoogleEmail] = useState("");
+
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
 
@@ -41,29 +23,71 @@ function GoogleLogin() {
       const image = result.user.photoURL;
       const email = result.user.email;
 
-      localStorage.setItem("googleName", name);
-      localStorage.setItem("googleImage", image);
-      localStorage.setItem("googleEmail", email);
+      setGoogleEmail(email);
 
-      postUser(name, email, image);
+      const response = await fetch(`${back}check-banned-status`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
 
-      // Aumenta el contador de sesiones de Google en 1
-      const googleSessionCount =
-        parseInt(localStorage.getItem("googleSessionCount") || "0", 10) + 1;
-      localStorage.setItem("googleSessionCount", googleSessionCount.toString());
+      const data = await response.json();
 
-      // Comprueba si el contador de sesiones de Google es 1 o un múltiplo de 10 para enviar el correo de bienvenida
-      if (googleSessionCount === 1 || googleSessionCount % 10 === 0) {
-        // Almacena la dirección de correo electrónico de Google
-        const googleEmail = localStorage.getItem("googleEmail");
+      if (
+        response.status === 200 ||
+        response.status === 202 ||
+        response.status === 404
+      ) {
+        setIsBanned(data.banned);
 
-        // Envía el correo electrónico cuando se inicia sesión con éxito
-        enviarMail(googleEmail, "BIENVENIDO", "Hola bienvenido");
+        if (!data.banned) {
+          postUser(name, email, image);
+          submitHandler(email);
+          localStorage.setItem("googleName", name);
+          localStorage.setItem("googleImage", image);
+          localStorage.setItem("googleEmail", email);
+          navigate("/");
+        } else {
+          // Si el usuario está baneado, muestra una alerta
+          Swal.fire({
+            icon: "error",
+            title: "Usuario Baneado",
+            text: "Acceso prohibido: Este usuario ha sido baneado. Comunicarse al siguiente email: flipante@admin.com",
+          });
+        }
       }
-
-      navigate("/");
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  function submitHandler(email) {
+    let correo = email;
+    let asunto = "BIENVENIDO";
+    let texto = "Hola bienvenido";
+    enviar(correo, asunto, texto);
+    correo = asunto = texto = "";
+  }
+
+  const postUser = async (name, email, imageProfile) => {
+    try {
+      const userData = {
+        name: name,
+        email: email,
+        imageProfile: imageProfile,
+      };
+
+      await fetch(`${back}register-google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
     }
   };
 
@@ -73,6 +97,6 @@ function GoogleLogin() {
       Accede con Google
     </button>
   );
-}
+};
 
 export default GoogleLogin;
