@@ -1,13 +1,17 @@
+.checkContainer input {
+  background-color: #fff;
+}
 .checkContainer {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
   flex-wrap: wrap;
-  width: 90vw;
+  gap: 30px;
+  width: 82vw;
 }
 
 .checkTitle {
-  margin: 50px;
+  margin: 10px;
 }
 
 .checkNav {
@@ -18,7 +22,7 @@
 }
 
 .checkImage {
-  width: 500px;
+  width: 40vw;
   height: 500px;
   background-image: url(../../assets/checkout-img.jpg);
   background-size: cover;
@@ -28,6 +32,7 @@
 .checkForm {
   min-width: 360px;
   width: 40vw;
+  max-width: 450px;
 }
 .checkCountry {
   border: solid 1px #000;
@@ -84,4 +89,9 @@
 .checkButtons a {
   letter-spacing: normal;
   color: #bf0eff;
+}
+@media (max-width: 1150px) {
+  .checkImage {
+    display: none;
+  }
 }
