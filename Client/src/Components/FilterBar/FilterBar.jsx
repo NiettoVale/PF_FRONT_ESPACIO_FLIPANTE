@@ -23,6 +23,10 @@ const FilterBar = ({ resetPage, setBusqueda }) => {
   const [dataFilter, setDataFilter] = useState(initialState);
   const [priceFilter, setPriceFilter] = useState("");
 
+  const handleClickScroll = () => {
+    window.scrollTo({ top: 1650, behavior: "smooth" });
+  };
+
   const handleGenderChange = (event) => {
     const { name, value } = event.target;
     setDataFilter((prevData) => ({ ...prevData, [name]: value }));
@@ -88,7 +92,9 @@ const FilterBar = ({ resetPage, setBusqueda }) => {
       <div className={styles.stickyButton}>
         <div onClick={handleClick}>
           {!filtersBar ? (
-            <a className={styles.openButton}>FILTROS </a>
+            <a className={styles.openButton} onClick={handleClickScroll}>
+              FILTROS{" "}
+            </a>
           ) : (
             <a className={styles.openButton}>CERRAR </a>
           )}

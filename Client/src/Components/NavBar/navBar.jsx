@@ -6,7 +6,8 @@ const NavBar = () => {
     window.scrollTo({ top: 1600, behavior: "smooth" });
   };
   const superUser = localStorage.getItem("root");
-
+  const user = localStorage.getItem("username");
+  const googleName = localStorage.getItem("googleName");
   return (
     <div className={styles.navContainer}>
       <div className={styles.navBar}>
@@ -31,6 +32,9 @@ const NavBar = () => {
             <Link to={"/"} className={styles.link} onClick={handleClickScroll}>
               CATALOGO
             </Link>
+            {user || googleName ? (
+              <Link to={"/favorites"}>FAVORITOS❤️</Link>
+            ) : null}
           </>
         )}
       </div>
