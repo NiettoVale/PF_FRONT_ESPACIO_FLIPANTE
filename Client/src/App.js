@@ -24,6 +24,7 @@ import Checkout from "./views/Checkout/Checkout";
 import Vista from "./Components/firebase/Autentication";
 import "./App.css";
 import PasswordReset from "./Components/resetPAssword/ResetPAssword";
+import BadURL from "./views/badURL/BadURL";
 
 function App() {
   return (
@@ -52,6 +53,8 @@ function App() {
         <Route path="banned" element={<Banned />} />
         {/* <Route path="offers" element={<Offers />} /> */}
       </Route>
+
+      <Route path="*" element={<BadURL />} />
     </Routes>
   );
 }
