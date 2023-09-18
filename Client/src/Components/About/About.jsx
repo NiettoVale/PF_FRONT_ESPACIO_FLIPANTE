@@ -9,6 +9,8 @@ import Fer from "../../assets/Fer.png";
 import Vale from "../../assets/Vale.png";
 import Anto from "../../assets/Anto.png";
 import Juan from "../../assets/Juan.png";
+import Karen from "../../assets/Karen.png";
+import Rami from "../../assets/Rami.png";
 const teamMembers = [
   {
     id: 1,
@@ -61,7 +63,7 @@ const teamMembers = [
     name: "Ramiro Fiscella",
     github: "https://github.com/BenjaPalazzo12",
     linkedin: "https://www.linkedin.com/in/benjam%C3%ADn-palazzo-32167a275/",
-    image: "https://acortar.link/rey8bO",
+    image: Rami,
     description:
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
@@ -81,7 +83,7 @@ const teamMembers = [
     name: "Karen Tiznado",
     github: "https://github.com/Karenjtp18",
     linkedin: "https://www.linkedin.com/in/karen-tiznado-736043219/",
-    image: "https://acortar.link/rey8bO",
+    image: Karen,
     description:
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
