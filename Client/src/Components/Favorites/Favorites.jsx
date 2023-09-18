@@ -13,7 +13,7 @@ const Favorites = () => {
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const favorites = useSelector((state) => state.myFavorites);
-
+  console.log(favorites);
   const dispatch = useDispatch();
   let userId = null;
 

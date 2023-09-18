@@ -12,10 +12,11 @@ import {
 
 import NavBar from "../../Components/NavBar/navBar";
 import SearchBar from "../../Components/SearchBar/SearchBar";
+import Footer from "../../Components/Footer/Footer";
 
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
-import Swal from "sweetalert2"; // Importa SweetAlert2
+import Swal from "sweetalert2";
 
 const back = process.env.REACT_APP_BACK;
 
@@ -69,12 +70,11 @@ const CartView = () => {
       const { id } = response.data;
       return id;
     } catch (error) {
-      console.log(error);
+      console.error("Error al crear preferencia:", error);
     }
   };
 
   const handleBuy = async () => {
-    // Mostrar la alerta de confirmación
     Swal.fire({
       title: "¿Estás seguro de realizar la compra?",
       text: "Una vez realizada la compra, no podrás deshacerla.",
@@ -86,32 +86,32 @@ const CartView = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const id = await createPreference(totalPrice);
-        if (id) {
-          setPreferenceId(id);
-        }
         try {
-          for (const product of cart) {
-            const {
-              productId: productId,
-              cantidad: quantity,
-              price,
-              sizeId,
-            } = product;
-            const totalPrice = quantity * price;
-            dispatch(addOrder(userId, productId, sizeId, quantity, totalPrice));
+          const id = await createPreference(totalPrice);
+          if (id) {
+            setPreferenceId(id);
+
+            // Procesa las órdenes primero
+            for (const product of cart) {
+              const { productId, cantidad: quantity, price, sizeId } = product;
+              const totalPrice = quantity * price;
+              dispatch(
+                addOrder(userId, productId, sizeId, quantity, totalPrice)
+              );
+            }
+
+            // Luego, elimina el carrito después de un retraso de 10 segundos
+            setTimeout(() => {
+              dispatch(removeCart(userId));
+            }, 10 * 1000);
           }
-          dispatch(removeCart(userId));
         } catch (error) {
           console.error("Error al procesar la compra:", error);
         }
       }
     });
   };
-
-  // Función para mostrar una alerta de confirmación antes de eliminar el carrito
-  const handleDelete = (userId) => {
-    // Utiliza SweetAlert2 para mostrar una alerta de confirmación
+  const handleDelete = () => {
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Esta acción eliminará todos los productos del carrito. ¿Deseas continuar?",
@@ -123,13 +123,9 @@ const CartView = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Si el usuario confirmó, llama a la acción para eliminar el carrito completo
         try {
           dispatch(removeCart(userId));
-
-          // Después de eliminar el carrito, puedes redirigir al usuario a la página de inicio u otra página
-          // Reemplaza '/home' con la ruta a la página a la que deseas redirigir al usuario
-          window.location.href = "/cart";
+          // Puedes redirigir al usuario después de eliminar el carrito si es necesario
         } catch (error) {
           console.error("Error al eliminar el carrito:", error);
         }
@@ -138,29 +134,44 @@ const CartView = () => {
   };
 
   return (
-    <div className={styles.cartContainer}>
+    <div className={styles.fullContainer}>
       <div className={styles.cartNav}>
         <NavBar />
         <SearchBar />
       </div>
-      <h2>Carrito de Compra</h2>
-      <button onClick={() => handleDelete(user[0].id)}>
-        Eliminar Carrito Completo
-      </button>
+      {cart.length > 0 ? (
+        <div>
+          <h2 className={styles.cartTitle}>Carrito de Compra</h2>
 
-      <CartCards
-        products={cart}
-        setTotalPrice={setTotalPrice}
-        totalPrice={totalPrice}
-      />
-      <h2>Precio Total : ${totalPrice}</h2>
-      <button className={styles.buyButton} onClick={handleBuy}>
-        Comprar
-      </button>
-      {preferenceId && <Wallet initialization={{ preferenceId }} />}
-      <Link to={"/"}>
-        <button className={styles.backButton}>⬅</button>
-      </Link>
+          <CartCards
+            products={cart}
+            setTotalPrice={setTotalPrice}
+            totalPrice={totalPrice}
+          />
+
+          <a className={styles.deleteButton} onClick={handleDelete}>
+            Eliminar carrito
+          </a>
+
+          <div className={styles.lastFlex}>
+            <p>Total de la compra</p>
+            <h2 className={styles.totalPrice}>${totalPrice}</h2>
+
+            <button className={styles.buyButton} onClick={handleBuy}>
+              Continuar Compra
+            </button>
+            {preferenceId && <Wallet initialization={{ preferenceId }} />}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <h1>El carrito se encuentra vacío</h1>
+          <Link to={"/"}>
+            <button className={styles.catalogButton}>Agregar Productos</button>
+          </Link>
+        </div>
+      )}
+      <Footer />
     </div>
   );
 };

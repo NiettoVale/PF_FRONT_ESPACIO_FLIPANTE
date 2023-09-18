@@ -1,0 +1,60 @@
+/* ProductList.module.css */
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .product-table th,
+  .product-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .product-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .product-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .product-table tbody tr:hover {
+    background-color: #ddd;
+  }
+  
+  .input-text,
+  .input-number,
+  .input-select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 5px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  
+  .imagecolumn img {
+    max-width: 100px;
+    max-height: 100px;
+    margin-bottom: 5px;
+  }
+  
+  /* Estilo para productos activos */
+  .active {
+    background-color: #42c919; 
+    color: white; /* Texto blanco */
+  }
+  
+  /* Estilo para productos inactivos */
+  .inactive {
+    background-color: #f73333; 
+    color: white; /* Texto blanco */
+  }

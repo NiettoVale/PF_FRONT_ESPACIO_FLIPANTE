@@ -46,3 +46,15 @@
   max-height: 100px;
   margin-bottom: 5px;
 }
+
+/* Estilo para productos activos */
+.active {
+  background-color: #42c919;
+  color: white; /* Texto blanco */
+}
+
+/* Estilo para productos inactivos */
+.inactive {
+  background-color: #f73333;
+  color: white; /* Texto blanco */
+}

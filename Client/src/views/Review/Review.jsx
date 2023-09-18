@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import styles from "../../Components/Rating/Rating.module.css"; // Agrega estilos CSS personalizados
-import { useParams, useNavigate } from "react-router-dom";
+import styles from "../../Components/Rating/Rating.module.css";
+import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigate
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import NavBar from "../../Components/NavBar/navBar";
 
 const MySwal = withReactContent(Swal);
 
@@ -10,7 +11,6 @@ const ReviewForm = () => {
   const navigate = useNavigate();
   const { userId, productId } = useParams();
 
-  // Mover la lógica de Rating a ReviewForm
   const [formData, setFormData] = useState({
     comment: "",
     rating: 1,
@@ -18,9 +18,9 @@ const ReviewForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `https://backend-espacio-flipante.onrender.com/reviews/${userId}/${productId}`;
+    const url = `http://localhost:3001/reviews/${userId}/${productId}`;
+
     try {
-      console.log(formData);
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -34,11 +34,8 @@ const ReviewForm = () => {
           icon: "success",
           title: "Éxito",
           text: "Mensaje de éxito",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // Redirige a /userProfile cuando el usuario presione OK
-            navigate("/userProfile");
-          }
+        }).then(() => {
+          navigate("/"); // Redirige a la página principal después de la alerta
         });
       }
       if (response.status === 404) {
@@ -50,7 +47,7 @@ const ReviewForm = () => {
   };
 
   const handleRatingChange = (newRating) => {
-    setFormData({ ...formData, rating: newRating }); // Actualiza el estado de rating cuando cambia la calificación
+    setFormData({ ...formData, rating: newRating });
   };
 
   const handleChange = (event) => {
@@ -60,8 +57,8 @@ const ReviewForm = () => {
 
   return (
     <div>
+      <NavBar />
       <h2>Escribe tu reseña</h2>
-      {/* Rating se encuentra integrado en ReviewForm */}
       <div className={styles.rating}>
         {[1, 2, 3, 4, 5].map((star) => (
           <span

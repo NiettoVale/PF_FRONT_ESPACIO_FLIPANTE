@@ -1,5 +1,6 @@
 .cardContainer {
   width: 80vw;
+  max-width: 900px;
   height: 120px;
   margin: 10px;
 
@@ -7,7 +8,7 @@
   /* border: solid 1px #333; */
 
   background-color: #fff;
-  color: #333;
+  color: #000;
   border: solid 1px #ddd;
 
   text-align: left;
@@ -23,6 +24,19 @@
 .cardContainer:hover {
   box-shadow: 0 0 50px #dddddd;
 }
+.deleteButton {
+  color: red;
+  background-color: #ffffff00;
+  font-size: 20px;
+}
+.deleteButton button:hover {
+  border: none;
+  outline: none;
+}
+.deleteButton:hover {
+  border: none;
+  outline: none;
+}
 
 .imgCard {
   margin: 0;
@@ -36,7 +50,7 @@
 }
 
 .cardInfo {
-  width: 50vw;
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -59,9 +73,57 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+.cardSize {
+  color: #000;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 .cardPrice {
-  font-size: 22px;
+  width: 100px;
+  font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-align: center;
+}
+.quantityButtons span {
+  color: #000;
+  font-weight: 600;
+  font-size: 16px;
+}
+.quantityButtons {
+  border: solid 1px #000;
+  font-size: 20px;
+  width: 70px;
+
+  display: flex;
+  justify-content: space-evenly;
+}
+.quantityButtons button:hover {
+  border: none;
+}
+.quantityButtons button {
+  padding: 3px;
+  background-color: #ffffff00;
+  color: #000;
+  font-weight: 700;
+  font-size: 12px;
+}
+.quantityButtons button:disabled {
+  color: #999;
+  cursor: auto;
+}
+.leftFlex {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+}
+.rightFlex {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 30px;
 }

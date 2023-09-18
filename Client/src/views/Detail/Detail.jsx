@@ -12,10 +12,16 @@ import {
   getFavorites,
   getUserByName,
   removeFromFavorites,
-  removeproductCart,
 } from "../../Redux/actions/productsActions";
 import Footer from "../../Components/Footer/Footer";
 import SearchBar from "../../Components/SearchBar/SearchBar";
+import axios from "axios";
+
+// Importa Slick Carousel y los estilos
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import CardReview from "./CardReview";
 
 const MySwal = withReactContent(Swal);
 
@@ -33,6 +39,9 @@ export default function Detail() {
   const [isSizeSelected, setIsSizeSelected] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
   const [cartproduct, setCartProduct] = useState(null);
+  const [isProductAvailable, setIsProductAvailable] = useState(true);
+  const [favoritesLoaded, setFavoritesLoaded] = useState(false);
+  const [reviewsProducts, setReviewsProducts] = useState([]);
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
@@ -49,42 +58,50 @@ export default function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //----FUNCIONES
+  // Función para mostrar la alerta cuando no está logueado
+  const showLoginAlert = () => {
+    MySwal.fire({
+      title: "Debes iniciar sesión o registrarte",
+      text: "Para realizar esta acción, inicia sesión o regístrate",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iniciar Sesión",
+      cancelButtonText: "Más Tarde",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/login");
+      }
+    });
+  };
 
   const handleCart = () => {
     if (!googleName && !name) {
-      // Muestra una alerta personalizada con botones
-      MySwal.fire({
-        title: "Debes iniciar sesión o registrarte",
-        text: "Para agregar al carrito, inicia sesión o regístrate",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iniciar Sesión",
-        cancelButtonText: "Más Tarde",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Redirige a la página de inicio de sesión si el usuario elige iniciar sesión
-          navigate("/login");
-        }
-      });
+      // Muestra la alerta de inicio de sesión
+      showLoginAlert();
     } else {
-      dispatch(addproductCart(userId, id, selectedSize));
-      setProductCart(true);
-
-      if (!selectedSize) {
+      if (!isSizeSelected) {
         Swal.fire({
           icon: "warning",
           title: "Oops...",
-          text: "Primero selecciona un talle",
+          text: "Debes seleccionar un tamaño antes de agregar al carrito.",
+        });
+      } else if (!isProductAvailable) {
+        Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "El producto no está disponible en stock.",
+        });
+      } else {
+        dispatch(addproductCart(userId, id, selectedSize));
+        setProductCart(true);
+
+        setIsSizeSelected(false);
+        Swal.fire({
+          icon: "success",
+          title: "Nice!",
+          text: "Producto agregado al carrito",
         });
       }
-
-      setIsSizeSelected(false);
-      Swal.fire({
-        icon: "success",
-        title: "Nice!",
-        text: "Producto agregado al carrito",
-      });
     }
   };
 
@@ -95,25 +112,21 @@ export default function Detail() {
 
   const handleToggleFavorites = () => {
     if (!googleName && !name) {
-      MySwal.fire({
-        title: "Debes iniciar sesión o registrarte",
-        text: "Para agregar a favoritos, inicia sesión o regístrate",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iniciar Sesión",
-        cancelButtonText: "Más Tarde",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/login");
-        }
-      });
+      // Muestra la alerta de inicio de sesión
+      showLoginAlert();
     } else {
       if (isFavorite) {
-        dispatch(removeFromFavorites(userId, id));
-        setIsFavorite(false);
+        if (userId && id) {
+          // Asegúrate de que userId e id estén definidos
+          dispatch(removeFromFavorites(userId, id));
+          setIsFavorite(false);
+        }
       } else {
-        dispatch(addFavorite(userId, id));
-        setIsFavorite(true);
+        if (userId && id) {
+          // Asegúrate de que userId e id estén definidos
+          dispatch(addFavorite(userId, id));
+          setIsFavorite(true);
+        }
       }
     }
   };
@@ -126,7 +139,9 @@ export default function Detail() {
     }
 
     if (userId) {
-      dispatch(getFavorites(userId));
+      dispatch(getFavorites(userId)).then(() => {
+        setFavoritesLoaded(true);
+      });
     }
     if (userId) {
       dispatch(getproductCart(userId));
@@ -138,8 +153,8 @@ export default function Detail() {
           isProductInFavorites = true;
           break;
         }
-        setIsFavorite(isProductInFavorites);
       }
+      setIsFavorite(isProductInFavorites);
     }
   }, [dispatch, name, userId, googleName, isSizeSelected, id]);
 
@@ -166,10 +181,20 @@ export default function Detail() {
         console.log(error.message);
       }
     };
-
+    const axiosData = async () => {
+      try {
+        const { data } = await axios(
+          `http://localhost:3001/reviews-product/${id}`
+        );
+        setReviewsProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    axiosData();
     fetchData();
   }, [id, back]);
-
+  console.log(reviewsProducts);
   useEffect(() => {
     if (user && user.length > 0 && cart && isSizeSelected) {
       const cartProduct = cart.find(
@@ -196,7 +221,6 @@ export default function Detail() {
       <Link to={"/"}>
         <button className={styles.backButton}>⬅</button>
       </Link>
-
       <div className={styles.detailContainer}>
         <div className={styles.imgContainer}>
           {imageDetail.map((url, index) =>
@@ -244,14 +268,6 @@ export default function Detail() {
             <p className={styles.detailMaterial}>
               Material Principal: {cardDetail.mainMaterial}
             </p>
-            <p className={styles.detailMaterial}>
-              Cantidad en el Carrito:{" "}
-              {isSizeSelected
-                ? cartQuantity !== null
-                  ? cartQuantity
-                  : "Selecciona un Talle"
-                : "Selecciona un Talle"}
-            </p>
           </div>
 
           <p className={styles.detailPrice}>${cardDetail.price}</p>
@@ -264,21 +280,15 @@ export default function Detail() {
               {isFavorite ? "Eliminar de Favoritos" : "Agregar a Favoritos"}
             </button>
 
-            <button
-              className={styles.cartButton}
-              onClick={handleCart}
-              disabled={!isSizeSelected || cartQuantity === cartproduct}
-            >
-              {isSizeSelected
-                ? cartQuantity === cartproduct
-                  ? "Stock No Disponible"
-                  : "Agregar al Carrito"
-                : "Selecciona un Talle"}
+            <button className={styles.cartButton} onClick={handleCart}>
+              {isProductAvailable
+                ? "Agregar al Carrito"
+                : "Stock No Disponible"}
             </button>
           </div>
         </div>
       </div>
-
+      <CardReview reviewsProducts={reviewsProducts} />
       <Footer />
     </div>
   );

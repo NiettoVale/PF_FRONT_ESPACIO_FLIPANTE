@@ -11,6 +11,8 @@ import {
 } from "../../../Redux/actions/productsActions";
 import Swal from "sweetalert2";
 
+import { FaRegTrashCan, FaMinus, FaPlus } from "react-icons/fa6";
+
 const Card = ({
   nameProduct,
   images,
@@ -42,9 +44,17 @@ const Card = ({
   const cartItem = cart.find((item) => item.id === id);
 
   const handleIncrement = () => {
+    console.log("Este es el stock", cartItem.stock);
     if (cartItem && quantity < cartItem.stock) {
       // Comprobar si la cantidad es menor que el stock
-      dispatch(addproductCart(userId, cartItem.productId, cartItem.sizeId));
+      dispatch(
+        addproductCart(
+          userId,
+          cartItem.productId,
+          cartItem.sizeId,
+          cartItem.stock
+        )
+      );
       setQuantity(quantity + 1);
       setTotalPrice((prevTotalPrice) => prevTotalPrice + cartItem.price);
     }
@@ -132,33 +142,56 @@ const Card = ({
 
   return (
     <div className={styles.cardContainer}>
-      <button onClick={handledelete}>X</button>
-      <Link to={`/detail/${id}`}>
-        <div className={styles.cardImageContainer}>
-          {/* Mostrar la imagen */}
-          {images ? (
-            <img src={images[0]} alt={nameProduct} className={styles.imgCard} />
-          ) : (
-            <img
-              src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
-              alt="Cargando..."
-            />
-          )}
+      <div className={styles.leftFlex}>
+        <Link to={`/detail/${id}`}>
+          <div className={styles.cardImageContainer}>
+            {/* Mostrar la imagen */}
+            {images ? (
+              <img
+                src={images[0]}
+                alt={nameProduct}
+                className={styles.imgCard}
+              />
+            ) : (
+              <img
+                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
+                alt="Cargando..."
+              />
+            )}
+          </div>
+        </Link>
+        <div className={styles.cardInfo}>
+          <div>
+            <p className={styles.cardName}>{nameProduct}</p>
+            <p className={styles.cardCategory}>{category}</p>
+            <p className={styles.cardSize}>
+              Talle: {productSize ? productSize.name : "Cargando..."}
+            </p>
+          </div>
         </div>
-      </Link>
-      <div className={styles.cardInfo}>
-        <p className={styles.cardName}>
-          {nameProduct}, Cantidad: {quantity}, Size:{" "}
-          {productSize ? productSize.name : "Cargando..."}
-        </p>
-        <p className={styles.cardCategory}>{category}</p>
-        <p className={styles.cardPrice}>${price * quantity}</p>
       </div>
-      <div>
-        {quantity > 1 && <button onClick={handleDecrement}>-</button>}
-        {quantity < cartItem.stock && (
-          <button onClick={handleIncrement}>+</button>
-        )}
+      <div className={styles.rightFlex}>
+        <p className={styles.unitPrice}>${price}</p>
+        <div className={styles.quantityButtons}>
+          <button
+            onClick={handleDecrement}
+            disabled={quantity <= 1} // Deshabilitar si la cantidad es 1 o menos
+          >
+            <FaMinus />
+          </button>
+          <span className={styles.quantity}>{quantity}</span>
+          <button
+            onClick={handleIncrement}
+            disabled={quantity >= cartItem.stock} // Deshabilitar si la cantidad alcanza el stock máximo
+          >
+            <FaPlus />
+          </button>
+        </div>
+        <p className={styles.cardPrice}>${price * quantity}</p>
+
+        <button onClick={handledelete} className={styles.deleteButton}>
+          <FaRegTrashCan />
+        </button>
       </div>
     </div>
   );

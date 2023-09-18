@@ -62,9 +62,11 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         placeholder="BUSCAR"
       />
 
-      <Link to={"/cart"} className={styles.cart}>
-        <HiOutlineShoppingCart />
-      </Link>
+      {storedUsername || googleName ? (
+        <Link to={"/cart"} className={styles.cart}>
+          <HiOutlineShoppingCart />
+        </Link>
+      ) : null}
 
       <div className={styles.flexSpace}></div>
 

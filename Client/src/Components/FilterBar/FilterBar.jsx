@@ -17,11 +17,15 @@ const initialState = {
   maxPrice: "",
 };
 
-const FilterBar = ({ resetPage }) => {
+const FilterBar = ({ resetPage, setBusqueda }) => {
   const dispatch = useDispatch();
 
   const [dataFilter, setDataFilter] = useState(initialState);
-  const [priceFilter, setPriceFilter] = useState(""); // Nueva pieza de estado para el precio
+  const [priceFilter, setPriceFilter] = useState("");
+
+  const handleClickScroll = () => {
+    window.scrollTo({ top: 1650, behavior: "smooth" });
+  };
 
   const handleGenderChange = (event) => {
     const { name, value } = event.target;
@@ -37,7 +41,9 @@ const FilterBar = ({ resetPage }) => {
 
   const handleClearFilters = () => {
     setDataFilter(initialState);
-    setPriceFilter(""); // Restablecer la pieza de estado del precio
+    setPriceFilter("");
+    setBusqueda(""); // Limpiar la barra de búsqueda
+    resetPage();
   };
 
   const handleSortChange = (event) => {
@@ -69,7 +75,7 @@ const FilterBar = ({ resetPage }) => {
       dispatch(setOrder(null));
     }
 
-    setPriceFilter(selectedValue); // Actualizar la pieza de estado para el precio
+    setPriceFilter(selectedValue);
     resetPage();
   };
 
@@ -86,7 +92,9 @@ const FilterBar = ({ resetPage }) => {
       <div className={styles.stickyButton}>
         <div onClick={handleClick}>
           {!filtersBar ? (
-            <a className={styles.openButton}>FILTROS </a>
+            <a className={styles.openButton} onClick={handleClickScroll}>
+              FILTROS{" "}
+            </a>
           ) : (
             <a className={styles.openButton}>CERRAR </a>
           )}
@@ -135,7 +143,7 @@ const FilterBar = ({ resetPage }) => {
             <select
               id="PriceSelect"
               onChange={handlePriceChange}
-              value={priceFilter} // Usar la pieza de estado para el precio como valor
+              value={priceFilter}
             >
               <option value="" disabled>
                 SELECCIONAR PRECIO

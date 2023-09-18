@@ -118,9 +118,9 @@ export const getFilters = (dataFilter) => {
           title: "Error",
           text: data.message,
         });
+        dispatch({ type: FILTER, payload: [] });
       } else {
-        const data = await response.json(); // Espera la respuesta antes de procesarla
-        console.log(data);
+        const data = await response.json(); // Espera la respuesta antes de procesarl
         dispatch({ type: FILTER, payload: data });
       }
     } catch (error) {
@@ -133,14 +133,32 @@ export const getFilters = (dataFilter) => {
 export const getUserByName = (name) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`${back}profile/${name}`);
-      const data = await response.json();
+      if (name === null || name === undefined || name === "") {
+        return;
+      } else {
+        const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
 
-      if (response.status === 404) {
-        console.log(data.message);
-      }
-      if (response.status === 200) {
-        dispatch({ type: GET_USER_NAME, payload: data });
+        console.log(name);
+        console.log(emailRegex.test(name));
+        if (emailRegex.test(name)) {
+          const response = await fetch(`${back}user/${name}`);
+          const data = await response.json();
+          if (response.status === 404) {
+            alert("PEPE2");
+          }
+          if (response.status === 200) {
+            dispatch({ type: GET_USER_NAME, payload: data });
+          }
+        } else {
+          const response = await fetch(`${back}profile/${name}`);
+          const data = await response.json();
+          if (response.status === 404) {
+            alert("PEPE");
+          }
+          if (response.status === 200) {
+            dispatch({ type: GET_USER_NAME, payload: data });
+          }
+        }
       }
     } catch (error) {
       console.log("Algo salió mal con getUserByName!");
@@ -162,7 +180,7 @@ export const getUserByMail = (mail) => {
 
       dispatch({ type: GET_USER_MAIL, payload: data });
     } catch (error) {
-      console.log("Algo salió mal con getUserByName!");
+      console.log("Algo salió mal con getUserByMail!");
       console.log(error);
     }
   };
@@ -187,7 +205,9 @@ export const addFavorite = (userId, productId) => {
 export const removeFromFavorites = (userId, productId) => {
   return async () => {
     try {
-      const response = await fetch(`${back}/favorites/${userId}/${productId}`, {
+      console.log("UserID: ", userId);
+      console.log("ProductId: ", productId);
+      const response = await fetch(`${back}favorites/${userId}/${productId}`, {
         method: "DELETE",
       });
 
@@ -195,10 +215,6 @@ export const removeFromFavorites = (userId, productId) => {
 
       if (response.status === 200) {
         console.log(data.message);
-      }
-
-      if (response.status === 200) {
-        window.location.href = "/userProfile";
       }
     } catch (error) {
       console.log("Algo salió mal con removeFromFavorites!");
@@ -226,6 +242,59 @@ export const getFavorites = (userId) => {
   };
 };
 
+// export const addproductCart = (userId, productId, sizeId, stockMax) => {
+//   return async (dispatch, getState) => {
+//     try {
+//       const response = await fetch(`${back}${userId}/${productId}/${sizeId}`, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       });
+
+//       if (response.status === 200) {
+//         const { myCart } = getState();
+
+//         // Encuentra el índice del producto en el carrito
+//         const productIndex = myCart.findIndex(
+//           (product) =>
+//             product.productId === productId && product.sizeId === sizeId
+//         );
+
+//         if (productIndex !== -1) {
+//           // Si el producto está en el carrito
+//           const updatedCart = [...myCart];
+//           const currentQuantity = updatedCart[productIndex].cantidad;
+
+//           console.log("CANTIDAD ACTUAL: ", currentQuantity);
+//           console.log("CANTIDAD MAXIMA: ", stockMax);
+//           if (parseInt(currentQuantity, 10) < parseInt(stockMax, 10)) {
+//             // Aumenta la cantidad solo si es menor que el stock máximo
+//             updatedCart[productIndex].cantidad += 1;
+
+//             // Actualiza el estado global del carrito con el carrito modificado
+//             dispatch({
+//               type: CART,
+//               payload: updatedCart,
+//             });
+//           } else {
+//             Swal.fire({
+//               title: "Alerta",
+//               text: "Has alcanzado la cantidad máxima de este producto en el carrito.",
+//               icon: "warning",
+//             });
+//           }
+//         }
+//       } else {
+//         alert("El producto no se encuentra en el carrito.");
+//       }
+//     } catch (error) {
+//       alert("Algo salió mal con addQuantityToProduct!");
+//       console.log(error);
+//     }
+//   };
+// };
+
 export const addproductCart = (userId, productId, sizeId, stockMax) => {
   return async (dispatch, getState) => {
     try {
@@ -250,7 +319,7 @@ export const addproductCart = (userId, productId, sizeId, stockMax) => {
           const updatedCart = [...myCart];
           const currentQuantity = updatedCart[productIndex].cantidad;
 
-          if (currentQuantity < stockMax) {
+          if (parseInt(currentQuantity, 10) < parseInt(stockMax, 10)) {
             // Aumenta la cantidad solo si es menor que el stock máximo
             updatedCart[productIndex].cantidad += 1;
 
@@ -259,18 +328,28 @@ export const addproductCart = (userId, productId, sizeId, stockMax) => {
               type: CART,
               payload: updatedCart,
             });
+
+            // Indica que el producto se agregó al carrito con éxito
+            return true;
           } else {
-            alert(
-              "Has alcanzado la cantidad máxima de este producto en el carrito."
-            );
+            Swal.fire({
+              title: "Alerta",
+              text: "Has alcanzado la cantidad máxima de este producto en el carrito.",
+              icon: "warning",
+            });
+
+            // Indica que no se pudo agregar el producto debido al stock máximo alcanzado
+            return false;
           }
         }
       } else {
-        alert("El producto no se encuentra en el carrito.");
+        // Indica que no se pudo agregar el producto al carrito
+        return false;
       }
     } catch (error) {
-      alert("Algo salió mal con addQuantityToProduct!");
+      // Indica que ocurrió un error al agregar el producto
       console.log(error);
+      return false;
     }
   };
 };
@@ -353,10 +432,32 @@ export const removeCart = (userId) => {
 
       const data = await response.json();
 
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Carrito Eliminado",
+          text: data.message,
+          icon: "success",
+        }).then(() => {
+          window.location.reload(); // Forzar la recarga de la página
+        });
+      }
+
       if (response.status === 404) {
+        Swal.fire({
+          title: "Error",
+          text: data.message,
+          icon: "error",
+          allowOutsideClick: true, // Permite hacer clic fuera de la alerta
+        });
         console.log(data.message);
       }
     } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "Algo salió mal con removeproductCart!",
+        icon: "error",
+        allowOutsideClick: true, // Permite hacer clic fuera de la alerta
+      });
       console.log("Algo salió mal con removeproductCart!");
       console.log(error);
     }
