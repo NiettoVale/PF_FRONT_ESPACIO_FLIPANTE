@@ -1,36 +1,25 @@
 import React, { useEffect, useState } from "react";
 import CartCards from "./CartCards/CartCards.component";
 import { useDispatch, useSelector } from "react-redux";
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
-import axios from "axios";
 import {
   getproductCart,
   getUserByName,
   removeCart,
-  addOrder,
 } from "../../Redux/actions/productsActions";
-
 import NavBar from "../../Components/NavBar/navBar";
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import Footer from "../../Components/Footer/Footer";
-
 import { Link } from "react-router-dom";
 import styles from "./CartView.module.css";
 import Swal from "sweetalert2";
 
-const back = process.env.REACT_APP_BACK;
-
 const CartView = () => {
-  const mercadoPagoKey = process.env.REACT_APP_MERCADO_PAGO_KEY;
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
   const user = useSelector((state) => state.infoUser);
   const cart = useSelector((state) => state.myCart);
   const dispatch = useDispatch();
-
-  const [preferenceId, setPreferenceId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [hasPurchased, setHasPurchased] = useState(false);
 
   let userId = 0;
   if (user.length > 0) {
@@ -50,10 +39,6 @@ const CartView = () => {
   }, [dispatch, name, userId, googleName]);
 
   useEffect(() => {
-    initMercadoPago(mercadoPagoKey);
-  }, [mercadoPagoKey]);
-
-  useEffect(() => {
     const calculatePrice = cart.reduce((total, product) => {
       return total + product.price * product.cantidad;
     }, 0);
@@ -64,57 +49,6 @@ const CartView = () => {
     localStorage.removeItem("orders");
   }, []);
 
-  const createPreference = async (totalPrice) => {
-    try {
-      const response = await axios.post(`${back}create_preference`, {
-        description: "Indumentaria",
-        price: totalPrice,
-        quantity: 1,
-      });
-
-      const { id } = response.data;
-      return id;
-    } catch (error) {
-      console.error("Error al crear preferencia:", error);
-    }
-  };
-
-  const handleBuy = async () => {
-    Swal.fire({
-      title: "¿Estás seguro de realizar la compra?",
-      text: "Una vez realizada la compra, no podrás deshacerla.",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, comprar",
-      cancelButtonText: "Cancelar",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        setHasPurchased(true);
-        try {
-          const id = await createPreference(totalPrice);
-          if (id) {
-            setPreferenceId(id);
-            // Procesa las órdenes primero
-            for (const product of cart) {
-              const { productId, cantidad: quantity, price, sizeId } = product;
-              const totalPrice = quantity * price;
-              dispatch(
-                addOrder(userId, productId, sizeId, quantity, totalPrice)
-              );
-            }
-            // Luego, elimina el carrito después de un retraso de 10 segundos
-            setTimeout(() => {
-              dispatch(removeCart(userId));
-            }, 10 * 1000);
-          }
-        } catch (error) {
-          console.error("Error al procesar la compra:", error);
-        }
-      }
-    });
-  };
   const handleDelete = () => {
     Swal.fire({
       title: "¿Estás seguro?",
@@ -153,22 +87,16 @@ const CartView = () => {
             totalPrice={totalPrice}
           />
 
-          <a className={styles.deleteButton} onClick={handleDelete}>
+          <button className={styles.deleteButton} onClick={handleDelete}>
             Eliminar carrito
-          </a>
+          </button>
 
           <div className={styles.lastFlex}>
             <p>Total de la compra</p>
             <h2 className={styles.totalPrice}>${totalPrice}</h2>
-
-            <button
-              className={styles.buyButton}
-              onClick={handleBuy}
-              disabled={hasPurchased}
-            >
-              Continuar Compra
-            </button>
-            {preferenceId && <Wallet initialization={{ preferenceId }} />}
+            <Link to={"/checkout"}>
+              <button className={styles.buyButton}>Continuar Compra</button>
+            </Link>
           </div>
         </div>
       ) : (
