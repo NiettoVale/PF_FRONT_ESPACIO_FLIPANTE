@@ -97,7 +97,7 @@ const Orders = () => {
             <img
               className={styles.imgCard}
               src={order.image[0]}
-              alt={`Imagen de ${order.productName}`} // Agrega un texto descriptivo aquí
+              alt={`Imagen de ${order.productName}`} // Agrega un texto descriptivo aquí :D todo bien
             />
             <Link to={`/detail-order/${order.id}`}>Ver Detalle de Compra</Link>
           </div>
