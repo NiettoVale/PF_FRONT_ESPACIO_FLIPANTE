@@ -27,6 +27,8 @@ import DeletedProductList from "./Components/DeletedProductList/DeletedProductLi
 
 import "./App.css";
 
+import BadURL from "./views/badURL/BadURL";
+
 function App() {
   return (
     <Routes>
@@ -55,6 +57,8 @@ function App() {
         <Route path="users" element={<UserList />} />
         <Route path="banned" element={<Banned />} />
       </Route>
+
+      <Route path="*" element={<BadURL />} />
     </Routes>
   );
 }
