@@ -1,5 +1,4 @@
 import NavBar from "../../Components/NavBar/navBar";
-import CountrySelect from "./CountrySelect";
 
 import styles from "./Checkout.module.css";
 
@@ -9,14 +8,13 @@ const Checkout = () => {
       <div className={styles.checkNav}>
         <NavBar />
       </div>
-      <h2 className={styles.checkTitle}>DATOS DE ENVIO</h2>
 
       <div className={styles.checkContainer}>
         <div className={styles.checkImage}></div>
         <div className={styles.checkForm}>
+          <h2 className={styles.checkTitle}>DATOS DE ENVIO</h2>
           <form>
             <div>
-              <CountrySelect />
               <div className={styles.horizontal}>
                 <input type="text" name="nombre" placeholder="Nombre" />
                 <input type="text" name="apellido" placeholder="Apellido" />
