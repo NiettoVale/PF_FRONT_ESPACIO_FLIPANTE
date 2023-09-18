@@ -423,6 +423,7 @@ export const removeCart = (userId) => {
           text: data.message,
           icon: "success",
         }).then(() => {
+          localStorage.removeItem("orders");
           window.location.reload(); // Forzar la recarga de la página
         });
       }
@@ -535,6 +536,7 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
     }
   };
 };
+
 export const paymentOrder = (
   userId,
   productId,
@@ -563,6 +565,25 @@ export const paymentOrder = (
       localStorage.removeItem("orders");
       alert("Algo salió mal con addOrder!");
       console.log(error);
+    }
+  };
+};
+
+export const deleteOrders = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await fetch(`${back}order/${userId}`, {
+        method: "DELETE",
+      });
+      // Verifica si la solicitud fue exitosa (código de respuesta 201)
+      if (response.status === 201) {
+        // Obtiene el contenido actual del Local Storage bajo la clave "orders" o crea una matriz vacía si no hay nada almacenado allí
+        localStorage.removeItem("orders");
+      }
+    } catch (error) {
+      // Maneja los errores de la solicitud HTTP o cualquier otro error que pueda ocurrir
+      alert("Algo salió mal con addOrder!");
+      console.error(error);
     }
   };
 };

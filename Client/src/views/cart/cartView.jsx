@@ -30,6 +30,7 @@ const CartView = () => {
 
   const [preferenceId, setPreferenceId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [hasPurchased, setHasPurchased] = useState(false);
 
   let userId = 0;
   if (user.length > 0) {
@@ -59,6 +60,10 @@ const CartView = () => {
     setTotalPrice(calculatePrice);
   }, [cart]);
 
+  useEffect(() => {
+    localStorage.removeItem("orders");
+  }, []);
+
   const createPreference = async (totalPrice) => {
     try {
       const response = await axios.post(`${back}create_preference`, {
@@ -86,11 +91,11 @@ const CartView = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        setHasPurchased(true);
         try {
           const id = await createPreference(totalPrice);
           if (id) {
             setPreferenceId(id);
-
             // Procesa las órdenes primero
             for (const product of cart) {
               const { productId, cantidad: quantity, price, sizeId } = product;
@@ -99,7 +104,6 @@ const CartView = () => {
                 addOrder(userId, productId, sizeId, quantity, totalPrice)
               );
             }
-
             // Luego, elimina el carrito después de un retraso de 10 segundos
             setTimeout(() => {
               dispatch(removeCart(userId));
@@ -157,7 +161,11 @@ const CartView = () => {
             <p>Total de la compra</p>
             <h2 className={styles.totalPrice}>${totalPrice}</h2>
 
-            <button className={styles.buyButton} onClick={handleBuy}>
+            <button
+              className={styles.buyButton}
+              onClick={handleBuy}
+              disabled={hasPurchased}
+            >
               Continuar Compra
             </button>
             {preferenceId && <Wallet initialization={{ preferenceId }} />}
