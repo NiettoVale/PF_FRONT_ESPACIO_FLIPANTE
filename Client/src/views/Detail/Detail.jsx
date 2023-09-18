@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -157,7 +156,6 @@ export default function Detail() {
       }
       setIsFavorite(isProductInFavorites);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, name, userId, googleName, isSizeSelected, id]);
 
   useEffect(() => {

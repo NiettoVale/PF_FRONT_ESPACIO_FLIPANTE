@@ -10,9 +10,9 @@ import Swal from "sweetalert2";
 const back = process.env.REACT_APP_BACK;
 
 const GoogleLogin = () => {
-  const navigate = useNavigate();
-  const [isBanned, setIsBanned] = useState(true);
   const [googleEmail, setGoogleEmail] = useState("");
+  const [isBanned, setIsBanned] = useState(false);
+  const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -63,13 +63,13 @@ const GoogleLogin = () => {
     }
   };
 
-  function submitHandler(email) {
+  const submitHandler = (email) => {
     let correo = email;
     let asunto = "BIENVENIDO";
     let texto = "Hola bienvenido";
     enviar(correo, asunto, texto);
     correo = asunto = texto = "";
-  }
+  };
 
   const postUser = async (name, email, imageProfile) => {
     try {

@@ -8,8 +8,8 @@ import NavBar from "../../Components/NavBar/navBar";
 const MySwal = withReactContent(Swal);
 
 const ReviewForm = () => {
+  const navigate = useNavigate();
   const { userId, productId } = useParams();
-  const navigate = useNavigate(); // Obtiene la función navigate
 
   const [formData, setFormData] = useState({
     comment: "",

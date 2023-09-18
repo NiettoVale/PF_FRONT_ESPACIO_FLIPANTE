@@ -7,6 +7,14 @@ import SearchBar from "../SearchBar/SearchBar";
 const teamMembers = [
   {
     id: 1,
+    name: "Joaquín Gioffre",
+    github: "No lo sabemos, pero te queremos igual UwU",
+    linkedin: "linkedin.com/in/joaquingioffre",
+    image: "https://acortar.link/1V65sd",
+    description: "El mejor Henry Mentor del mundo mundial",
+  },
+  {
+    id: 2,
     name: "Benjamín Palazzo",
     github: "https://github.com/BenjaPalazzo12",
     linkedin: "https://www.linkedin.com/in/benjam%C3%ADn-palazzo-32167a275/",
@@ -15,7 +23,7 @@ const teamMembers = [
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
   {
-    id: 2,
+    id: 3,
     name: "German Bisutti",
     github: "https://github.com/German-Bisutti",
     linkedin: "https://www.linkedin.com/in/german-bisutti/",
@@ -24,7 +32,7 @@ const teamMembers = [
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
   {
-    id: 3,
+    id: 4,
     name: "Valentín Francisco Diaz Nieto",
     github: "https://github.com/NiettoVale",
     linkedin:
@@ -34,7 +42,7 @@ const teamMembers = [
       "Tengo 20 años y soy un entusiasta de la programación backend y la ciberseguridad. Comencé mi viaje en tecnología con Python, luego me sumergí en el desarrollo web full stack en Soy Henry. Mi pasión radica en fusionar estas habilidades y aprender constantemente. En mi tiempo libre, disfruto de la música y las series. Conóceme en:",
   },
   {
-    id: 4,
+    id: 5,
     name: "Fernando Anibal Nasso",
     github: "https://github.com/FernandoNasso",
     linkedin: "https://www.linkedin.com/in/fernando-nasso/",
@@ -43,7 +51,7 @@ const teamMembers = [
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
   {
-    id: 5,
+    id: 6,
     name: "Juan Guillermo Eraso",
     github: "https://github.com/juaneraso",
     linkedin: "https://www.linkedin.com/in/juan-guillermo-ing-electronico/",
@@ -52,7 +60,7 @@ const teamMembers = [
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
   {
-    id: 6,
+    id: 7,
     name: "Ramiro Fiscella",
     github: "https://github.com/BenjaPalazzo12",
     linkedin: "https://www.linkedin.com/in/benjam%C3%ADn-palazzo-32167a275/",

@@ -10,9 +10,13 @@ import styles from "./Orders.module.css";
 const Orders = () => {
   const dispatch = useDispatch();
   const [ArrayOrders, setArrayOrders] = useState([]);
+<<<<<<< HEAD
   const [userId, setUserId] = useState();
   const name =
     localStorage.getItem("username") || localStorage.getItem("googleName");
+=======
+  const userId = localStorage.getItem("userId");
+>>>>>>> 0782e715898e45507fe0846b4b9861ee36891d31
 
   // Info Mercado Pago
   const location = useLocation();
@@ -71,7 +75,7 @@ const Orders = () => {
           }
         }
       } catch (error) {
-        console.error("Error al obtener datos:", error);
+        
         // Maneja el error según tu lógica (por ejemplo, mostrar un mensaje al usuario)
         Swal.fire({
           icon: "error",
