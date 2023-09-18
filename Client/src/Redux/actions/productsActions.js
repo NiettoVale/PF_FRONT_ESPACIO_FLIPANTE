@@ -137,8 +137,6 @@ export const getUserByName = (name) => {
       } else {
         const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
 
-        console.log(name);
-        console.log(emailRegex.test(name));
         if (emailRegex.test(name)) {
           const response = await fetch(`${back}user/${name}`);
           const data = await response.json();

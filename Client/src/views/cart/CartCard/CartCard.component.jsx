@@ -44,7 +44,6 @@ const Card = ({
   const cartItem = cart.find((item) => item.id === id);
 
   const handleIncrement = () => {
-    console.log("Este es el stock", cartItem.stock);
     if (cartItem && quantity < cartItem.stock) {
       // Comprobar si la cantidad es menor que el stock
       dispatch(

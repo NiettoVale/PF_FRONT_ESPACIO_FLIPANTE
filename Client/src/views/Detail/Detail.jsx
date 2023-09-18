@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ import SearchBar from "../../Components/SearchBar/SearchBar";
 import axios from "axios";
 
 // Importa Slick Carousel y los estilos
-import Slider from "react-slick";
+//import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CardReview from "./CardReview";
@@ -34,14 +33,10 @@ export default function Detail() {
   const [cardDetail, setCardDetail] = useState({});
   const [imageDetail, setImageDetail] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [productCart, setProductCart] = useState(false);
   const [availableSizes, setAvailableSizes] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [isSizeSelected, setIsSizeSelected] = useState(false);
-  const [cartQuantity, setCartQuantity] = useState(0);
-  const [cartproduct, setCartProduct] = useState(null);
   const [isProductAvailable, setIsProductAvailable] = useState(true);
-  const [favoritesLoaded, setFavoritesLoaded] = useState(false);
   const [reviewsProducts, setReviewsProducts] = useState([]);
 
   const name = localStorage.getItem("username");
@@ -94,7 +89,6 @@ export default function Detail() {
         });
       } else {
         dispatch(addproductCart(userId, id, selectedSize));
-        setProductCart(true);
 
         setIsSizeSelected(false);
         Swal.fire({
@@ -140,9 +134,7 @@ export default function Detail() {
     }
 
     if (userId) {
-      dispatch(getFavorites(userId)).then(() => {
-        setFavoritesLoaded(true);
-      });
+      dispatch(getFavorites(userId)).then(() => {});
     }
     if (userId) {
       dispatch(getproductCart(userId));
@@ -196,7 +188,7 @@ export default function Detail() {
     axiosData();
     fetchData();
   }, [id, back]);
-  console.log(reviewsProducts);
+
   useEffect(() => {
     if (user && user.length > 0 && cart && isSizeSelected) {
       const cartProduct = cart.find(
@@ -204,13 +196,12 @@ export default function Detail() {
           product.productId === parseInt(id) && product.sizeId === selectedSize
       );
       if (cartProduct) {
-        setCartQuantity(cartProduct.cantidad);
-        setCartProduct(cartProduct.stock);
+        if (cartProduct.cantidad === cartProduct.stock) {
+          setIsProductAvailable(false);
+        }
       } else {
-        setCartQuantity(0);
+        setIsProductAvailable(true);
       }
-    } else {
-      setCartQuantity(null);
     }
   }, [id, user, cart, selectedSize, isSizeSelected]);
 
