@@ -18,12 +18,16 @@ import DetailOrder from "./views/DetailOrder/DetailOrder";
 import UserReviews from "./Components/Reviews/UserReviews";
 import Review from "./views/Review/Review.jsx";
 import About from "./Components/About/About";
-// import Offers from "./Components/Offers/Offers";
 import CreateProduct from "./views/create/create.view";
 import Checkout from "./views/Checkout/Checkout";
 import Vista from "./Components/firebase/Autentication";
-import "./App.css";
 import PasswordReset from "./Components/resetPAssword/ResetPAssword";
+import ModifyPassword from "./Components/resetPAssword/ModifyPassword";
+import DeletedProductList from "./Components/DeletedProductList/DeletedProductList";
+
+import "./App.css";
+
+import BadURL from "./views/badURL/BadURL";
 
 function App() {
   return (
@@ -45,13 +49,16 @@ function App() {
       <Route path="/detail-order/:id" element={<DetailOrder />} />
       <Route path="/user-reviews/:userId" element={<UserReviews />} />
       <Route path="/reset-password" element={<PasswordReset />} />
+      <Route path="/modify-password" element={<ModifyPassword />} />
       <Route path="/admin/*" element={<DashboardAdmin />}>
         <Route path="list" element={<ProductList />} />
+        <Route path="inactive" element={<DeletedProductList />} />
         <Route path="create" element={<CreateForm />} />
         <Route path="users" element={<UserList />} />
         <Route path="banned" element={<Banned />} />
-        {/* <Route path="offers" element={<Offers />} /> */}
       </Route>
+
+      <Route path="*" element={<BadURL />} />
     </Routes>
   );
 }

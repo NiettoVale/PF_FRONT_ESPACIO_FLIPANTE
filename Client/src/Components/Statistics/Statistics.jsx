@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Chart as ChartJS, LineElement, Tooltip, Legend } from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar, Pie } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import moment from "moment";
+
+const back = process.env.REACT_APP_BACK;
 
 Chart.register(...registerables);
 ChartJS.register(LineElement, Tooltip, Legend);
@@ -62,11 +64,30 @@ const Statistics = () => {
         },
       ],
     },
+    ventasPorCategoria: {
+      labels: [],
+      datasets: [
+        {
+          label: "Ventas por Categoría",
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(255, 205, 86, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(153, 102, 255, 0.6)",
+            "rgba(255, 159, 64, 0.6)",
+          ],
+          borderWidth: 2,
+          data: [],
+        },
+      ],
+    },
   });
 
   const [totalUsuariosRegistrados, setTotalUsuariosRegistrados] = useState(0);
   const [totalVentas, setTotalVentas] = useState(0);
   const [totalProductosActivos, setTotalProductosActivos] = useState(0);
+  const [totalProductosInactivos, setTotalProductosInactivos] = useState(0);
   const [totalIngresos, setTotalIngresos] = useState(0);
   const [totalVisitas, setTotalVisitas] = useState(0);
 
@@ -74,9 +95,7 @@ const Statistics = () => {
     const fetchData = async () => {
       try {
         // Obtener datos de usuarios registrados
-        const usersResponse = await fetch(
-          "https://backend-espacio-flipante.onrender.com/users"
-        );
+        const usersResponse = await fetch(`${back}users`);
         const usersData = await usersResponse.json();
 
         const totalUsuarios = usersData.length;
@@ -112,9 +131,7 @@ const Statistics = () => {
         }));
 
         // Obtener datos de revisiones
-        const reviewsResponse = await fetch(
-          "https://backend-espacio-flipante.onrender.com/reviews"
-        );
+        const reviewsResponse = await fetch(`${back}reviews`);
         let reviewsData = await reviewsResponse.json();
 
         const months = [
@@ -170,9 +187,7 @@ const Statistics = () => {
         }));
 
         // Obtener datos de ventas
-        const orderResponse = await fetch(
-          "https://backend-espacio-flipante.onrender.com/order"
-        );
+        const orderResponse = await fetch(`${back}order`);
         const orderData = await orderResponse.json();
 
         const totalSales = orderData.length;
@@ -224,10 +239,45 @@ const Statistics = () => {
           ventas: ventasData,
         }));
 
+        const categoryCounts = {};
+
+        orderData.forEach((order) => {
+          const category = order.category;
+          if (category) {
+            if (categoryCounts[category]) {
+              categoryCounts[category]++;
+            } else {
+              categoryCounts[category] = 1;
+            }
+          }
+        });
+
+        // Convertir los datos en un formato adecuado para el gráfico de pastel
+        const pieChartData = {
+          labels: Object.keys(categoryCounts),
+          datasets: [
+            {
+              data: Object.values(categoryCounts),
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.6)",
+                "rgba(75, 192, 192, 0.6)",
+                "rgba(255, 205, 86, 0.6)",
+                "rgba(54, 162, 235, 0.6)",
+                "rgba(153, 102, 255, 0.6)",
+                "rgba(255, 159, 64, 0.6)",
+              ],
+            },
+          ],
+        };
+
+        // Actualiza el estado con los datos del gráfico de pastel
+        setChartData((prevChartData) => ({
+          ...prevChartData,
+          ventasPorCategoria: pieChartData,
+        }));
+
         // Obtener datos de visitas
-        const visitResponse = await fetch(
-          "https://backend-espacio-flipante.onrender.com/visit"
-        );
+        const visitResponse = await fetch(`${back}visit`);
         const visitData = await visitResponse.json();
 
         // Procesar los datos de visitas aquí
@@ -247,13 +297,11 @@ const Statistics = () => {
     // Realiza una solicitud HTTP para obtener los datos de productos
     const fetchProducts = async () => {
       try {
-        const productsResponse = await fetch(
-          "https://backend-espacio-flipante.onrender.com/products"
-        );
+        const productsResponse = await fetch(`${back}products`);
         const productsData = await productsResponse.json();
 
         const activeProducts = productsData.filter(
-          (product) => product.estado === "activo"
+          (product) => product.deleted === false
         );
         const totalActiveProducts = activeProducts.length;
         setTotalProductosActivos(totalActiveProducts);
@@ -265,12 +313,33 @@ const Statistics = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    // Realiza una solicitud HTTP para obtener los datos de productos
+    const fetchDeletedProducts = async () => {
+      try {
+        const productsDeletedResponse = await fetch(`${back}products-deleted`);
+        const productsDeletedData = await productsDeletedResponse.json();
+
+        const inactiveProducts = productsDeletedData.filter(
+          (product) => product.deleted === true
+        );
+        const totalInactiveProducts = inactiveProducts.length;
+        setTotalProductosInactivos(totalInactiveProducts);
+      } catch (error) {
+        console.error("Error al obtener los datos de productos:", error);
+      }
+    };
+
+    fetchDeletedProducts();
+  }, []);
+
   return (
     <div>
-      <h2>Total de Ventas: {totalVentas}</h2>
+      <h2>Ventas Concretadas: {totalVentas}</h2>
       <h2>Total de Ingresos: ${totalIngresos.toFixed(2)}</h2>
-      <h2>Total de Productos: {totalProductosActivos}</h2>
-      <h2>Total de Usuarios Registrados: {totalUsuariosRegistrados}</h2>
+      <h2>Productos Activos: {totalProductosActivos}</h2>
+      <h2>Productos Inactivos: {totalProductosInactivos}</h2>
+      <h2>Usuarios Registrados: {totalUsuariosRegistrados}</h2>
       <h2>Total de Visitas: {totalVisitas}</h2>
       <div className="chart-container">
         <h2>Estadísticas de Ventas</h2>
@@ -283,6 +352,10 @@ const Statistics = () => {
       <div className="chart-container">
         <h2>Revisiones Recibidas</h2>
         <Bar data={chartData.reviews} />
+      </div>
+      <div className="chart-container">
+        <h2>Ventas por Categoría</h2>
+        <Pie data={chartData.ventasPorCategoria} />
       </div>
     </div>
   );
