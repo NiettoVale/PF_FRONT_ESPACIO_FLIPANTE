@@ -1,5 +1,5 @@
-//!  Correcion Favs:
 import React, { useEffect, useState } from "react";
+
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -16,6 +16,13 @@ import {
 } from "../../Redux/actions/productsActions";
 import Footer from "../../Components/Footer/Footer";
 import SearchBar from "../../Components/SearchBar/SearchBar";
+import axios from "axios";
+
+// Importa Slick Carousel y los estilos
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import CardReview from "./CardReview";
 
 const MySwal = withReactContent(Swal);
 
@@ -35,6 +42,7 @@ export default function Detail() {
   const [cartproduct, setCartProduct] = useState(null);
   const [isProductAvailable, setIsProductAvailable] = useState(true);
   const [favoritesLoaded, setFavoritesLoaded] = useState(false);
+  const [reviewsProducts, setReviewsProducts] = useState([]);
 
   const name = localStorage.getItem("username");
   const googleName = localStorage.getItem("googleName");
@@ -175,10 +183,20 @@ export default function Detail() {
         console.log(error.message);
       }
     };
-
+    const axiosData = async () => {
+      try {
+        const { data } = await axios(
+          `http://localhost:3001/reviews-product/${id}`
+        );
+        setReviewsProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    axiosData();
     fetchData();
   }, [id, back]);
-
+  console.log(reviewsProducts);
   useEffect(() => {
     if (user && user.length > 0 && cart && isSizeSelected) {
       const cartProduct = cart.find(
@@ -202,7 +220,9 @@ export default function Detail() {
         <NavBar />
         <SearchBar />
       </div>
-
+      <Link to={"/"}>
+        <button className={styles.backButton}>⬅</button>
+      </Link>
       <div className={styles.detailContainer}>
         <div className={styles.imgContainer}>
           {imageDetail.map((url, index) =>
@@ -270,7 +290,7 @@ export default function Detail() {
           </div>
         </div>
       </div>
-
+      <CardReview reviewsProducts={reviewsProducts} />
       <Footer />
     </div>
   );

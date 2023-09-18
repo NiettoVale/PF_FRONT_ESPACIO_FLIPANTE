@@ -136,13 +136,28 @@ export const getUserByName = (name) => {
       if (name === null || name === undefined || name === "") {
         return;
       } else {
-        const response = await fetch(`${back}profile/${name}`);
-        const data = await response.json();
-        if (response.status === 404) {
-          alert(data.message);
-        }
-        if (response.status === 200) {
-          dispatch({ type: GET_USER_NAME, payload: data });
+        const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
+
+        console.log(name);
+        console.log(emailRegex.test(name));
+        if (emailRegex.test(name)) {
+          const response = await fetch(`${back}user/${name}`);
+          const data = await response.json();
+          if (response.status === 404) {
+            alert("PEPE2");
+          }
+          if (response.status === 200) {
+            dispatch({ type: GET_USER_NAME, payload: data });
+          }
+        } else {
+          const response = await fetch(`${back}profile/${name}`);
+          const data = await response.json();
+          if (response.status === 404) {
+            alert("PEPE");
+          }
+          if (response.status === 200) {
+            dispatch({ type: GET_USER_NAME, payload: data });
+          }
         }
       }
     } catch (error) {

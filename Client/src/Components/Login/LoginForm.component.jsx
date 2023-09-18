@@ -23,7 +23,6 @@ const LoginForm = () => {
     password: "",
   });
 
-  const regex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,11 +38,6 @@ const LoginForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -55,69 +49,39 @@ const LoginForm = () => {
           text: "Por favor, complete correctamente la información del formulario.",
         });
       } else {
-        if (regex.test(formData.name)) {
-          const auth = getAuth();
-          const email = formData.name;
-          const methods = await fetchSignInMethodsForEmail(auth, email);
+        // Verifica si formData.name es un correo electrónico
+        const isEmail = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(formData.name);
 
-          if (methods && methods.length > 0) {
-            const userCredentials = await signInWithEmailAndPassword(
-              auth,
-              email,
-              formData.password
-            );
-            if (userCredentials.user.emailVerified) {
-              // Comprueba si el correo de bienvenida ya se ha enviado
-              const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
+        // Construye la URL de la petición en función de si es un correo electrónico o no
+        const apiUrl = isEmail
+          ? `${back}user/${formData.name}`
+          : `${back}profile/${formData.name}`;
 
-              if (welcomeEmailSent === "false") {
-                // Cambia formData.name a la dirección de correo electrónico
-                const email = formData.name;
+        // Realiza la petición
+        const responseUser = await fetch(apiUrl);
 
-                // Envía el correo electrónico cuando se inicia sesión con éxito
-                enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+        const userData = await responseUser.json();
+        const isGoogle = userData.isGoogle;
 
-                // Establece la bandera en "true" para que no se envíe nuevamente
-                localStorage.setItem("welcomeEmailSent", "true");
-              }
-
-              if (userCredentials.user.isSuperuser) {
-                localStorage.setItem("username", "root"); // Guarda "root" si es superusuario
-              } else {
-                localStorage.setItem("username", formData.name);
-              }
-
-              navigate(userCredentials.user.isSuperuser ? "/admin" : "/");
-
-              MySwal.fire({
-                icon: "success",
-                title: "Éxito",
-                text: "Inicio de sesión exitoso.",
-              });
-            } else {
-              MySwal.fire({
-                icon: "warning",
-                title: "Advertencia",
-                text: "Debe verificar el correo.",
-              });
-            }
-          } else {
-            MySwal.fire({
-              icon: "error",
-              title: "Error",
-              text: "El usuario no existe.",
-            });
-          }
+        if (isGoogle) {
+          // Si isGoogle es true, muestra una alerta
+          MySwal.fire({
+            icon: "warning",
+            title: "Advertencia",
+            text: "Este usuario esta registrado con google, por favor inicia sesion con google.",
+          });
+          return; // No continúes con el inicio de sesión normal
         } else {
-          const response = await fetch(`${back}login`, {
+          const response = await fetch("http://localhost:3001/login", {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json", // Asegúrate de establecer el tipo de contenido adecuado
             },
             body: JSON.stringify(formData),
           });
-          const data = await response.json();
+
           if (response.status === 200) {
+            const data = await response.json();
             const superUser = data.isSuperuser;
 
             if (superUser) {
@@ -129,11 +93,8 @@ const LoginForm = () => {
               localStorage.setItem("userId", data.id);
               navigate("/");
             }
-            const name = localStorage.getItem("username");
-            const response = await fetch(`${back}profile/${name}`);
-            const datau = await response.json();
 
-            const email = datau.email;
+            const email = data.email; // Aquí se descomentó la línea que estaba comentada
 
             // Comprueba si el correo de bienvenida ya se ha enviado
             const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
@@ -150,28 +111,20 @@ const LoginForm = () => {
 
             navigate("/");
 
-            if (superUser) {
-              MySwal.fire({
-                icon: "success",
-                title: "Éxito",
-                text: "Bienvenido Administrador!.",
-              });
-            } else {
-              MySwal.fire({
-                icon: "success",
-                title: "Éxito",
-                text: "Inicio de sesión exitoso.",
-              });
-            }
-          }
-          if (response.status === 401) {
+            MySwal.fire({
+              icon: "success",
+              title: superUser ? "Éxito" : "Éxito",
+              text: superUser
+                ? "Bienvenido Administrador!."
+                : "Inicio de sesión exitoso.",
+            });
+          } else if (response.status === 401) {
             MySwal.fire({
               icon: "error",
               title: "Error:",
               text: "Contraseña incorrecta.",
             });
-          }
-          if (response.status === 404) {
+          } else if (response.status === 404) {
             MySwal.fire({
               icon: "error",
               title: "Error:",
@@ -194,6 +147,11 @@ const LoginForm = () => {
         text: "Algo salió mal.",
       });
     }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
