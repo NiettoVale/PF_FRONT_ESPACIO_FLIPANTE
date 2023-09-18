@@ -9,6 +9,8 @@ import {
   getSizes,
 } from "../../Redux/actions/productsActions";
 
+import { AiOutlineClose } from "react-icons/ai";
+
 function CreateForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -217,29 +219,27 @@ function CreateForm() {
 
   return (
     <div>
-      <form className={styles["create-form"]} onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Nombre</label>
+      <form className={styles.createForm} onSubmit={handleSubmit}>
+        <div className={styles.inputs}>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleInputChange}
+            placeholder="NOMBRE..."
             required
-            maxLength="30"
           />
           <span className={styles["error-message"]}>{errors.name}</span>
         </div>
 
-        <div>
-          <label htmlFor="gender">Género</label>
+        <div className={styles.inputs}>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleInputChange}
             required
           >
-            <option value="Seleccionar">Seleccionar</option>
+            <option value="genero">genero</option>
             {genderOptions.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -249,15 +249,14 @@ function CreateForm() {
           <span className={styles["error-message"]}>{errors.gender}</span>
         </div>
 
-        <div>
-          <label htmlFor="category">Categoría</label>
+        <div className={styles.inputs}>
           <select
             name="category"
             value={formData.category}
             onChange={handleInputChange}
             required
           >
-            <option value="Seleccionar">Seleccionar</option>
+            <option value="categoria">categoria</option>
             {categoryOptions.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -267,65 +266,68 @@ function CreateForm() {
           <span className={styles["error-message"]}>{errors.category}</span>
         </div>
 
-        <div>
+        <div className={styles.sizesContainer}>
           <label>Talles y Stock</label>
-          {sizesOptions.map((size) => (
-            <div key={size}>
-              <label htmlFor={`sizes_${size}`}>{size}</label>
-              <input
-                type="number"
-                name={`sizes_${size}`}
-                value={formData.sizes[size]}
-                onChange={(event) => handleSizeChange(event, size)}
-                required
-              />
-            </div>
-          ))}
+          <div className={styles.sizesFlex}>
+            {sizesOptions.map((size) => (
+              <div key={size} className={styles.sizeInput}>
+                <label htmlFor={`sizes_${size}`}>{size}</label>
+                <input
+                  className={styles.size}
+                  type="number"
+                  name={`sizes_${size}`}
+                  value={formData.sizes[size]}
+                  defaultValue={0}
+                  onChange={(event) => handleSizeChange(event, size)}
+                  required
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="mainMaterial">Material principal</label>
+        <div className={styles.inputs}>
           <input
             type="text"
             name="mainMaterial"
             value={formData.mainMaterial}
             onChange={handleInputChange}
+            placeholder="MATERIAL PRINCIPAL..."
             required
           />
         </div>
 
-        <div>
-          <label htmlFor="description">Descripción</label>
+        <div className={styles.inputs}>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
+            placeholder="DESCRIPCION DEL PRODUCTO"
             required
           />
         </div>
 
-        <div>
+        <div className={styles.uploadimg}>
           <UploadImage
             handleImageURLChange={handleImageURLChange}
             imageURLs={formData.images}
           />
-          <label htmlFor="images">Imágenes (seleccionar archivos)</label>
           {formData.tempImages.map((tempImage, index) => (
             <div key={index} className={styles["image-thumbnail"]}>
               <img src={tempImage} alt={`Imagen ${index}`} />
               <button
                 type="button"
                 onClick={() => handleImageDelete(index)}
-                className={styles["delete-image-button"]}
+                className={styles.deleteImageButton}
               >
-                Eliminar
+                <AiOutlineClose />
               </button>
             </div>
           ))}
         </div>
 
-        <div>
-          <label htmlFor="price">Precio</label>
+        <div className={styles.priceFlex}>
+          <label htmlFor="price">Precio:</label>
           <input
             type="number"
             step="0.01"
@@ -336,7 +338,7 @@ function CreateForm() {
           />
         </div>
 
-        <button type="submit" className={styles["submit-button"]}>
+        <button type="submit" className={styles.submitButton}>
           Crear Producto
         </button>
       </form>
