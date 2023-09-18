@@ -86,7 +86,6 @@ const Orders = () => {
       dispatch(getUserByName(googleName));
     }
   }, [dispatch, name, userId, googleName]);
-
   return (
     <div>
       <SideBar />
@@ -95,6 +94,11 @@ const Orders = () => {
           <div className={styles.ordercard} key={order.id}>
             <p>Compra {order.id}</p>
             <p>Producto: {order.productName}</p>
+            <img
+              className={styles.imgCard}
+              src={order.image[0]}
+              alt={`Imagen de ${order.productName}`} // Agrega un texto descriptivo aquí
+            />
             <Link to={`/detail-order/${order.id}`}>Ver Detalle de Compra</Link>
           </div>
         ))}
@@ -103,4 +107,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Orders;
