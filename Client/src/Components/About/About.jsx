@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./About.module.css";
 import CardsAbout from "./cardsAbout";
 import NavBar from "../NavBar/navBar";
 import SearchBar from "../SearchBar/SearchBar";
-
+import Benja from "../../assets/Benja.png";
+import Ger from "../../assets/Ger.png";
+import Fer from "../../assets/Fer.png";
+import Vale from "../../assets/Vale.png";
+import Anto from "../../assets/Anto.png";
+import Juan from "../../assets/Juan.png";
 const teamMembers = [
   {
     id: 1,
     name: "Benjamín Palazzo",
     github: "https://github.com/BenjaPalazzo12",
     linkedin: "https://www.linkedin.com/in/benjam%C3%ADn-palazzo-32167a275/",
-    image: "https://acortar.link/aSh7u2",
+    image: Benja,
     description:
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
@@ -19,9 +24,9 @@ const teamMembers = [
     name: "German Bisutti",
     github: "https://github.com/German-Bisutti",
     linkedin: "https://www.linkedin.com/in/german-bisutti/",
-    image: "https://acortar.link/7cg8BX",
+    image: Ger,
     description:
-      "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
+      "Tengo 19 años y mi pasión es la programación en el lado back-end. Soy un capo programando y muy fachero.",
   },
   {
     id: 3,
@@ -29,7 +34,7 @@ const teamMembers = [
     github: "https://github.com/NiettoVale",
     linkedin:
       "https://www.linkedin.com/in/valentin-francisco-diaz-nieto-6b3892263/",
-    image: "https://acortar.link/ovfGJA",
+    image: Vale,
     description:
       "Tengo 20 años y soy un entusiasta de la programación backend y la ciberseguridad. Comencé mi viaje en tecnología con Python, luego me sumergí en el desarrollo web full stack en Soy Henry. Mi pasión radica en fusionar estas habilidades y aprender constantemente. En mi tiempo libre, disfruto de la música y las series. Conóceme en:",
   },
@@ -38,7 +43,7 @@ const teamMembers = [
     name: "Fernando Anibal Nasso",
     github: "https://github.com/FernandoNasso",
     linkedin: "https://www.linkedin.com/in/fernando-nasso/",
-    image: "https://acortar.link/54Emnd",
+    image: Fer,
     description:
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
@@ -47,7 +52,7 @@ const teamMembers = [
     name: "Juan Guillermo Eraso",
     github: "https://github.com/juaneraso",
     linkedin: "https://www.linkedin.com/in/juan-guillermo-ing-electronico/",
-    image: "https://acortar.link/ZDDQoV",
+    image: Juan,
     description:
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
@@ -66,7 +71,7 @@ const teamMembers = [
     name: "Anthoaned Zavala ",
     github: "https://github.com/Karenjtp18",
     linkedin: "https://www.linkedin.com/in/karen-tiznado-736043219/",
-    image: "https://avatars.githubusercontent.com/u/94303392?v=4",
+    image: Anto,
     description:
       "Tengo 20 años y mi pasión es la programación en el lado back-end y la ciberseguridad. Apasionado por la creación de sistemas seguros y eficientes.",
   },
