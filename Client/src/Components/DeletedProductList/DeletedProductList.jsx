@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./ProductList.module.css";
+import styles from "./DeletedProductList.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getCategory, getGenders } from "../../Redux/actions/productsActions";
 import UploadImageProductList from "../firebase/UploadImageProductList";
@@ -7,7 +7,7 @@ import axios from "axios";
 
 const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
-const ProductList = () => {
+const DeletedProductList = () => {
   // Declaración de estados
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -33,7 +33,7 @@ const ProductList = () => {
 
   // Función para cargar productos desde la API
   const fetchProducts = () => {
-    fetch(`${back}products`)
+    fetch(`${back}products-deleted`)
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) =>
@@ -194,7 +194,7 @@ const ProductList = () => {
 
   return (
     <div>
-      <h3>Productos Activos</h3>
+      <h3>Productos Inactivos</h3>
       {/* Barra de búsqueda */}
       <input
         type="text"
@@ -337,29 +337,29 @@ const ProductList = () => {
               </td>
               <td>
                 {editingProduct === product ? (
-                  <div>
+                    <div>
                     {sizeOrder.map((size) => ( // Mapear los talles en el orden deseado
-                      <div key={size}>
+                        <div key={size}>
                         <label htmlFor={`size_${size}`}>{size}</label>
                         <input
-                          type="number"
-                          value={editedStock[size] || 0}
-                          onChange={(e) => handleSizeChange(size, e.target.value)}
-                          className={styles["input-number"]}
+                            type="number"
+                            value={editedStock[size] || 0}
+                            onChange={(e) => handleSizeChange(size, e.target.value)}
+                            className={styles["input-number"]}
                         />
-                      </div>
+                        </div>
                     ))}
-                  </div>
+                    </div>
                 ) : (
-                  <div>
+                    <div>
                     {sizeOrder.map((size) => ( // Mapear los talles en el orden deseado
-                      <div key={size}>
-                        <span>
-                          {size}: {product.Sizes.find((s) => s.name === size)?.Stock.quantity}
-                        </span>
-                      </div>
+                    <div key={size}>
+                    <span>
+                        {size}: {product.Sizes.find((s) => s.name === size)?.Stock.quantity}
+                    </span>
+                    </div>
                     ))}
-                  </div>
+                    </div>
                 )}
               </td>
               <td>
@@ -436,4 +436,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default DeletedProductList;

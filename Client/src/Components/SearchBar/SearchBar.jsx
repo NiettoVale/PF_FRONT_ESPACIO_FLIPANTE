@@ -35,9 +35,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   }, [dispatch, name]);
 
   const logOut = () => {
-    localStorage.removeItem("googleName");
-    localStorage.removeItem("googleImage");
-    localStorage.removeItem("googleEmail");
+    localStorage.removeItem("username");
     localStorage.removeItem("root");
     window.location.reload();
   };
@@ -50,7 +48,6 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const logOutGoogle = () => {
     localStorage.removeItem("googleName");
     localStorage.removeItem("googleImage");
-    localStorage.removeItem("googleEmail");
     localStorage.removeItem("root");
     window.location.reload();
   };
