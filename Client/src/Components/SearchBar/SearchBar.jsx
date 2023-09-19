@@ -13,6 +13,7 @@ import { getUserByName } from "../../Redux/actions/productsActions";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const googleName = localStorage.getItem("googleName");
+  const googleImage = localStorage.getItem("googleImage");
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const root = localStorage.getItem("root");
@@ -40,6 +41,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
 
   const logOutGoogle = () => {
     localStorage.removeItem("googleName");
+    localStorage.removeItem("username");
     localStorage.removeItem("googleImage");
     localStorage.removeItem("root");
     window.location.reload();
@@ -52,7 +54,9 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
 
   const isLoggedIn = storedUsername || googleName;
   const imageProfile = isLoggedIn
-    ? userInfo.imageProfile
+    ? googleName
+      ? googleImage // Si se ha iniciado sesión con Google, muestra la imagen de Google
+      : userInfo.imageProfile
       ? userInfo.imageProfile
       : root
       ? "https://acortar.link/wrpVGk"

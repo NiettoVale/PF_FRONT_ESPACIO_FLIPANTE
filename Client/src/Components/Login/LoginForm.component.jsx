@@ -25,11 +25,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Almacena una bandera para verificar si el correo de bienvenida se ha enviado
-    if (!localStorage.getItem("welcomeEmailSent")) {
-      localStorage.setItem("welcomeEmailSent", "false");
-    }
-
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setFormData({ ...formData, name: storedUsername });
@@ -61,6 +56,7 @@ const LoginForm = () => {
 
         const userData = await responseUser.json();
         const isGoogle = userData.isGoogle;
+        const sendEmail = userData.sendEmail; // Obtener la propiedad sendEmail del usuario
 
         if (isGoogle) {
           // Si isGoogle es true, muestra una alerta
@@ -71,7 +67,7 @@ const LoginForm = () => {
           });
           return; // No continúes con el inicio de sesión normal
         } else {
-          const response = await fetch(`${back}/login`, {
+          const response = await fetch(`${back}login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json", // Asegúrate de establecer el tipo de contenido adecuado
@@ -93,17 +89,19 @@ const LoginForm = () => {
               navigate("/");
             }
 
-            const email = data.email; // Aquí se descomentó la línea que estaba comentada
+            const email = data.email;
 
-            // Comprueba si el correo de bienvenida ya se ha enviado
-            const welcomeEmailSent = localStorage.getItem("welcomeEmailSent");
-
-            if (welcomeEmailSent === "false") {
+            if (!sendEmail) {
+              // Verifica si se debe enviar el correo de bienvenida
               // Envía el correo electrónico cuando se inicia sesión con éxito
               enviarMail(email, "BIENVENIDO", "Hola bienvenido");
-
-              // Establece la bandera en "true" para que no se envíe nuevamente
-              localStorage.setItem("welcomeEmailSent", "true");
+              await fetch(`${back}update-user/${data.id}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ sendEmail: true }),
+              });
             }
 
             localStorage.setItem("username", formData.name);
@@ -201,7 +199,7 @@ const LoginForm = () => {
 
         <p>
           ¿Olvidaste tu contraseña?{" "}
-          <Link to={"/reset-password"}>Recuperala</Link>
+          <Link to={"/reset-password"}>Recupérala</Link>
         </p>
       </div>
     </div>
