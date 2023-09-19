@@ -47,6 +47,7 @@ const CartView = () => {
 
   useEffect(() => {
     localStorage.removeItem("orders");
+    localStorage.removeItem("checkout");
   }, []);
 
   const handleDelete = () => {
@@ -63,6 +64,10 @@ const CartView = () => {
       if (result.isConfirmed) {
         try {
           dispatch(removeCart(userId));
+          Swal.fire({
+            title: "Carrito Eliminado",
+            icon: "success",
+          });
           // Puedes redirigir al usuario después de eliminar el carrito si es necesario
         } catch (error) {
           console.error("Error al eliminar el carrito:", error);

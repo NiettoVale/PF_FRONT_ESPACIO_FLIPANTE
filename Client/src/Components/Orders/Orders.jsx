@@ -8,7 +8,6 @@ import {
   getUserByName,
 } from "../../Redux/actions/productsActions";
 import enviarMail from "./funcionCompra";
-import getProductId from "./getProductById";
 import Swal from "sweetalert2";
 import SideBar from "../SideBar/SideBar";
 import axios from "axios";
@@ -36,6 +35,7 @@ const Orders = () => {
       try {
         // Obtener datos del Local Storage
         const storedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+        const checkout = JSON.parse(localStorage.getItem("checkout")) || [];
         // Verifica si se ha recibido la confirmación de pago (status: success)
         if (
           status === "approved" &&
@@ -44,35 +44,18 @@ const Orders = () => {
         ) {
           dispatch(removeCart(storedOrders[0].userId));
           if (storedOrders) {
-            storedOrders.forEach(async (order) => {
-              const { userId, productId, sizeId, quantity, totalPrice } = order;
-              dispatch(
-                paymentOrder(userId, productId, sizeId, quantity, totalPrice)
-              );
-              const Username = localStorage.getItem("username");
-              const googleName = localStorage.getItem("googleName");
-              const User = Username != null ? Username : googleName;
-
-              const { name, sizeName, image } = await getProductId(
-                productId,
-                sizeId
-              );
-
-              enviarMail(
-                storedOrders[0].userEmail,
-                "COMPRA REALIZADA",
-                // `Name:${name}, Cantidad:${quantity}, Precio Total:${totalPrice}, Talle:${sizeName}`
-                name,
-                quantity,
-                totalPrice,
-                sizeName,
-                userId,
-                productId,
-                User,
-                image
-              );
-              dispatch(deleteOrders(storedOrders[0].userId));
-            });
+            const email = storedOrders[0].userEmail;
+            await Promise.all(
+              storedOrders.map(async (order) => {
+                const { userId, productId, sizeId, quantity, totalPrice } =
+                  order;
+                dispatch(
+                  paymentOrder(userId, productId, sizeId, quantity, totalPrice)
+                );
+              })
+            );
+            await enviarMail(email, "COMPRA REALIZADA", checkout, storedOrders);
+            dispatch(deleteOrders(storedOrders[0].userId));
           }
         }
         if (userId > 0) {
