@@ -6,6 +6,7 @@ import withReactContent from "sweetalert2-react-content";
 import NavBar from "../../Components/NavBar/navBar";
 
 const MySwal = withReactContent(Swal);
+const back = process.env.REACT_APP_BACK;
 
 const ReviewForm = () => {
   const { userId, productId } = useParams();
@@ -18,7 +19,7 @@ const ReviewForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3001/reviews/${userId}/${productId}`;
+    const url = `${back}reviews/${userId}/${productId}`;
 
     try {
       const response = await fetch(url, {

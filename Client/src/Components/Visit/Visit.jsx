@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const back = process.env.REACT_APP_BACK;
 
 function VisitsCounter() {
   const [visits, setVisits] = useState(0);
@@ -7,7 +8,7 @@ function VisitsCounter() {
   useEffect(() => {
     // Realiza una solicitud POST al backend para incrementar el contador
     axios
-      .post("https://backend-espacio-flipante.onrender.com/visit")
+      .post(`${back}/visit`)
       .then((response) => {
         setVisits(response.data.count); // Actualiza el contador en la interfaz
       })

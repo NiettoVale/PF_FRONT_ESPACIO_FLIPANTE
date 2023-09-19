@@ -24,6 +24,7 @@ import "slick-carousel/slick/slick-theme.css";
 import CardReview from "./CardReview";
 
 const MySwal = withReactContent(Swal);
+const back = process.env.REACT_APP_BACK;
 
 export default function Detail() {
   const back = process.env.REACT_APP_BACK;
@@ -177,9 +178,7 @@ export default function Detail() {
     };
     const axiosData = async () => {
       try {
-        const { data } = await axios(
-          `http://localhost:3001/reviews-product/${id}`
-        );
+        const { data } = await axios(`${back}reviews-product/${id}`);
         setReviewsProducts(data);
       } catch (error) {
         console.log(error);

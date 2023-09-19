@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../../Components/NavBar/navBar";
+const back = process.env.REACT_APP_BACK;
 
 const DetailOrder = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const DetailOrder = () => {
   useEffect(() => {
     const getOrder = async () => {
       try {
-        const { data } = await axios(`http://localhost:3001/orders/${id}`);
+        const { data } = await axios(`${back}orders/${id}`);
         setOrder(data);
       } catch (error) {
         console.error("Error al obtener la orden:", error);
@@ -29,7 +30,7 @@ const DetailOrder = () => {
     if (name) {
       const getUser = async () => {
         try {
-          const { data } = await axios(`http://localhost:3001/profile/${name}`);
+          const { data } = await axios(`${back}profile/${name}`);
           setUser(data.id); // Establecer el userId desde la data del usuario
         } catch (error) {
           console.error("Error al obtener el usuario:", error);

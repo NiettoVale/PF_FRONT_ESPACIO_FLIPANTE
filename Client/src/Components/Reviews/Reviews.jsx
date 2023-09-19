@@ -5,6 +5,7 @@ import styles from "./UserReview.module.css"; // Importa tus estilos CSS Modules
 import { Link } from "react-router-dom";
 import NavBar from "../NavBar/navBar";
 import Footer from "../Footer/Footer";
+const back = process.env.REACT_APP_BACK;
 
 const Reviews = () => {
   const [allReviews, setAllReviews] = useState([]);
@@ -12,7 +13,7 @@ const Reviews = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/reviews");
+        const response = await fetch(`${back}reviews`);
         if (response.ok) {
           const data = await response.json();
           setAllReviews(data);

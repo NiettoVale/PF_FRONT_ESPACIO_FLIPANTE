@@ -12,6 +12,8 @@ import Footer from "../../Components/Footer/Footer";
 import axios from "axios";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
+const back = process.env.REACT_APP_BACK;
+
 const Home = () => {
   const dispatch = useDispatch();
   const [visits, setVisits] = useState(0);
@@ -105,7 +107,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .post("http://localhost:3001/visit")
+      .post(`${back}visit`)
       .then((response) => {
         setVisits(response.data.count);
       })

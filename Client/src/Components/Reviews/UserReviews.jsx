@@ -4,6 +4,7 @@ import styles from "./UserReview.module.css";
 import NavBar from "../NavBar/navBar";
 import Footer from "../Footer/Footer";
 import Swal from "sweetalert2";
+const back = process.env.REACT_APP_BACK;
 
 const UserReviews = () => {
   const { userId } = useParams();
@@ -14,9 +15,7 @@ const UserReviews = () => {
   // Función para verificar si el usuario no tiene reseñas y mostrar la alerta
   const checkForNoReviews = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/reviews-user/${userId}`
-      );
+      const response = await fetch(`${back}reviews-user/${userId}`);
       if (response.status === 200) {
         const data = await response.json();
         setUserReviews(data);
