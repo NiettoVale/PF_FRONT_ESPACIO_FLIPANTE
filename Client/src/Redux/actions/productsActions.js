@@ -430,15 +430,9 @@ export const removeCart = (userId) => {
       const data = await response.json();
 
       if (response.status === 200) {
-        Swal.fire({
-          title: "Carrito Eliminado",
-          text: data.message,
-          icon: "success",
-        }).then(() => {
-          dispatch({
-            type: CART,
-            payload: [], // Un carrito vacío
-          });
+        dispatch({
+          type: CART,
+          payload: [], // Un carrito vacío
         });
       }
 

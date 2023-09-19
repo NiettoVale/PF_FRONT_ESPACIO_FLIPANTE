@@ -28,9 +28,8 @@ export default async function getProductById(productId, sizeId) {
     const result = {
       name: productData.name,
       sizeName: getSizeName(sizeId),
-      image:productData.images[0]
+      image: productData.images[0],
     };
-    console.log(result);
     // Devuelve el resultado
     return result;
   } catch (error) {
