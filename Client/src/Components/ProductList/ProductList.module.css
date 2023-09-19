@@ -11,6 +11,16 @@
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.product-table td input {
+  height: 28px;
+  margin: 0;
+}
+.product-table td select {
+  margin: 0;
+  font-size: 10px;
 }
 
 .product-table th {
@@ -24,8 +34,14 @@
 .product-table tbody tr:hover {
   background-color: #ddd;
 }
+.input-text {
+  width: 50%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
 
-.input-text,
 .input-number,
 .input-select {
   width: 100%;
@@ -41,20 +57,167 @@
   margin-left: 5px;
 }
 
+.imagecolumn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  width: 190px;
+}
 .imagecolumn img {
-  max-width: 100px;
-  max-height: 100px;
-  margin-bottom: 5px;
+  max-width: 60px;
+}
+
+.imagecolumnEdit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  width: 210px;
+}
+.imagecolumnEdit div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+.imagecolumnEdit img {
+  max-width: 60px;
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+}
+.deleteImgBtn {
+  position: relative;
+
+  background-color: #000;
+  color: #fff;
+  padding: 2px;
+  width: 60px;
+  cursor: pointer;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Estilo para productos activos */
 .active {
-  background-color: #42c919; 
+  background-color: #30ad0a;
   color: white; /* Texto blanco */
+  font: 600;
 }
 
 /* Estilo para productos inactivos */
 .inactive {
-  background-color: #f73333; 
+  background-color: #da1d1d;
   color: white; /* Texto blanco */
+  font: 600;
+}
+
+.pagination button {
+  margin: 15px 3px 0 3px;
+  padding: 2px 5px;
+}
+
+.acciones {
+  width: 50px;
+}
+
+.buttonsColumn button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 0;
+
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  margin: 10px auto;
+  border-radius: 50px;
+}
+.cancelBtn {
+  font-size: 18px;
+}
+
+.descriptionProducts {
+  width: 100px;
+}
+.descriptionProducts textarea {
+  width: 90px;
+  height: 150px;
+  resize: both;
+}
+.descriptionProducts p {
+  text-transform: none;
+  font-size: 12px;
+}
+
+.sizesProducts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 60px;
+}
+.sizeLetter {
+  color: #000;
+  font-weight: 500;
+  border-bottom: solid 1px #ccc;
+}
+
+.sizesProductsEdit {
+  width: 70px;
+}
+.sizesProductsEdit label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.sizesProductsEdit div {
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+.sizesProductsEdit input {
+  margin: 0;
+  height: 10px;
+  width: 30px;
+  color: 000;
+  line-height: 0;
+  border: none;
+}
+
+.sizesProductsEdit input::-webkit-outer-spin-button,
+.sizesProductsEdit input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.sizesProductsEdit input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.priceProducts {
+  width: 70px;
+}
+.priceProducts input {
+  width: 60px;
+}
+.materialProducts {
+  width: 70px;
+}
+.materialProducts input {
+  width: 60px;
+}
+
+.nameProducts {
+  width: 100px;
+  font-weight: 500;
+}
+.nameProducts textarea {
+  width: 90px;
 }

@@ -219,123 +219,133 @@ function CreateForm() {
 
   return (
     <div>
+      <h2>CREAR PRODUCTO</h2>
       <form className={styles.createForm} onSubmit={handleSubmit}>
-        <div className={styles.inputs}>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="NOMBRE..."
-            required
-          />
-          <span className={styles["error-message"]}>{errors.name}</span>
-        </div>
-
-        <div className={styles.inputs}>
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="genero">genero</option>
-            {genderOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <span className={styles["error-message"]}>{errors.gender}</span>
-        </div>
-
-        <div className={styles.inputs}>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="categoria">categoria</option>
-            {categoryOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <span className={styles["error-message"]}>{errors.category}</span>
-        </div>
-
-        <div className={styles.sizesContainer}>
-          <label>Talles y Stock</label>
-          <div className={styles.sizesFlex}>
-            {sizesOptions.map((size) => (
-              <div key={size} className={styles.sizeInput}>
-                <label htmlFor={`sizes_${size}`}>{size}</label>
-                <input
-                  className={styles.size}
-                  type="number"
-                  name={`sizes_${size}`}
-                  value={formData.sizes[size]}
-                  defaultValue={0}
-                  onChange={(event) => handleSizeChange(event, size)}
-                  required
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className={styles.inputs}>
-          <input
-            type="text"
-            name="mainMaterial"
-            value={formData.mainMaterial}
-            onChange={handleInputChange}
-            placeholder="MATERIAL PRINCIPAL..."
-            required
-          />
-        </div>
-
-        <div className={styles.inputs}>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            placeholder="DESCRIPCION DEL PRODUCTO"
-            required
-          />
-        </div>
-
-        <div className={styles.uploadimg}>
-          <UploadImage
-            handleImageURLChange={handleImageURLChange}
-            imageURLs={formData.images}
-          />
-          {formData.tempImages.map((tempImage, index) => (
-            <div key={index} className={styles["image-thumbnail"]}>
-              <img src={tempImage} alt={`Imagen ${index}`} />
-              <button
-                type="button"
-                onClick={() => handleImageDelete(index)}
-                className={styles.deleteImageButton}
-              >
-                <AiOutlineClose />
-              </button>
+        <div className={styles.bigFlex}>
+          <div className={styles.flex2}>
+            <div className={styles.inputs}>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="NOMBRE..."
+                required
+              />
+              <span className={styles["error-message"]}>{errors.name}</span>
             </div>
-          ))}
-        </div>
 
-        <div className={styles.priceFlex}>
-          <label htmlFor="price">Precio:</label>
-          <input
-            type="number"
-            step="0.01"
-            name="price"
-            value={formData.price}
-            onChange={handleInputChange}
-            required
-          />
+            <div className={styles.inputs}>
+              <label htmlFor="">GENERO</label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="Seleccionar">Seleccionar</option>
+                {genderOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <span className={styles["error-message"]}>{errors.gender}</span>
+            </div>
+
+            <div className={styles.inputs}>
+              <label htmlFor="">categoria</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="Seleccionar">Seleccionar</option>
+                {categoryOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <span className={styles["error-message"]}>{errors.category}</span>
+            </div>
+
+            <label className={styles.inputs}>Talles y Stock</label>
+            <div className={styles.sizesContainer}>
+              <div className={styles.sizesFlex}>
+                {sizesOptions.map((size) => (
+                  <div key={size} className={styles.sizeInput}>
+                    <label htmlFor={`sizes_${size}`}>{size}</label>
+                    <input
+                      className={styles.size}
+                      type="number"
+                      name={`sizes_${size}`}
+                      value={formData.sizes[size]}
+                      defaultValue={0}
+                      min={0}
+                      onChange={(event) => handleSizeChange(event, size)}
+                      required
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.flex2}>
+            <div className={styles.inputs}>
+              <input
+                type="text"
+                name="mainMaterial"
+                value={formData.mainMaterial}
+                onChange={handleInputChange}
+                placeholder="MATERIAL PRINCIPAL..."
+                required
+              />
+            </div>
+
+            <div className={styles.inputs}>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="DESCRIPCION DEL PRODUCTO"
+                required
+              />
+            </div>
+
+            <div className={styles.uploadimg}>
+              <UploadImage
+                handleImageURLChange={handleImageURLChange}
+                imageURLs={formData.images}
+              />
+              {formData.tempImages.map((tempImage, index) => (
+                <div key={index} className={styles["image-thumbnail"]}>
+                  <img src={tempImage} alt={`Imagen ${index}`} />
+                  <button
+                    type="button"
+                    onClick={() => handleImageDelete(index)}
+                    className={styles.deleteImageButton}
+                  >
+                    <AiOutlineClose />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.priceFlex}>
+              <label htmlFor="price">Precio:</label>
+              <input
+                type="number"
+                step="0.01"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          </div>
         </div>
 
         <button type="submit" className={styles.submitButton}>

@@ -1,19 +1,47 @@
-/* DashboardAdmin.module.css */
-.dashboardAdmin {
-  display: flex;
-  height: 100vh;
+.logo:hover {
+  border: solid 1px #cb48ff;
 }
+.logo h2:hover,
+.logo span:hover {
+  color: #cb48ff; /* Cambiar el color al pasar el mouse */
+}
+.logo {
+  margin: 0;
+  margin-bottom: 50px;
+  width: 100px;
+  display: block;
+  line-height: 15px;
+  font-size: 12px;
+  padding: 10px 3px;
+  border: solid 1px #fff;
+}
+
+.logo h2 {
+  color: #fff;
+  letter-spacing: -1px;
+}
+.logo span {
+  letter-spacing: 0;
+  color: #fff;
+}
+
+/* DashboardAdmin.module.css */
 
 .sidebar {
-  width: 250px;
-  background-color: #333;
+  width: 120px;
+  background-color: #000;
   color: #fff;
   padding: 20px;
-}
 
-.sidebar h2 {
-  font-size: 24px;
-  margin-bottom: 150px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  left: 0;
+  top: 0;
+  height: 100%;
+  z-index: 100;
 }
 
 .sidebar ul {
@@ -22,45 +50,57 @@
 }
 
 .sidebar ul li {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 13px;
+  width: 108px;
+
+  border: solid 1px #fff;
+  padding: 6px 0;
+}
+.sidebar ul li:hover {
+  border: solid 1px #f948ff;
+  color: #f948ff; /* Cambiar el color al pasar el mouse */
 }
 
 .sidebar a {
   text-decoration: none;
   color: #fff;
-  font-size: 18px;
-}
-
-.contentContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: #f4f4f4;
-  padding: 20px;
+  font-size: 11px;
 }
 
 .title {
-  background-color: #dddada;
+  z-index: 100;
+
+  background-color: #000;
   color: #fff;
-  padding: 10px 0;
+  padding: 10px;
   text-align: center;
-  font-size: 28px;
+  font-size: 12px;
   margin: 0;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+  left: 160px;
+  right: 0;
+  top: 0;
 }
 
 .logOutIcon {
   text-decoration: none;
-  font-size: 22px;
+  font-size: 26px;
   line-height: 0;
-  margin-left: 16px;
+  margin: 5px 20px 0 0;
+  color: #fff;
 }
 
-/* Estilo para el botón "Visitar mi Pagina" */
-.visitPage {
-  border: solid black 2px;
-  font-size: 18px;
-  margin-left: 90px;
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 80px 20px 0 180px;
+  width: 84vw;
 }

@@ -156,8 +156,9 @@ function UserList() {
         placeholder="Buscar por nombre"
         value={searchTerm}
         onChange={handleSearch} // Actualiza la búsqueda en tiempo real
+        className={styles["input-text"]}
       />
-      <div>
+      <div className={styles.pagination}>
         {Array(totalPages)
           .fill()
           .map((_, i) => (
@@ -166,7 +167,7 @@ function UserList() {
             </button>
           ))}
       </div>
-      <table>
+      <table className={styles.userTable}>
         <thead>
           <tr>
             <th>ID</th>
@@ -175,8 +176,9 @@ function UserList() {
             <th>Teléfono</th>
             <th>Dirección</th>
             <th>DNI</th>
-            <th>Imagen de Perfil</th>
+            <th>Imagen</th>
             <th>Estado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -254,7 +256,7 @@ function UserList() {
                   user.DNI
                 )}
               </td>
-              <td>
+              <td className={styles.profileImg}>
                 {editingUserId === user.id ? (
                   <input
                     type="text"
@@ -290,12 +292,12 @@ function UserList() {
                     <button onClick={handleCancelEdit}>Cancelar</button>
                   </div>
                 ) : (
-                  <>
+                  <div>
                     <button onClick={() => handleEdit(user.id)}>Editar</button>
                     <button onClick={() => handleDelete(user.id)}>
                       Banear
                     </button>
-                  </>
+                  </div>
                 )}
               </td>
             </tr>

@@ -2,6 +2,8 @@ import React from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
+import styles from "./Banned.module.css";
+
 const back = process.env.REACT_APP_BACK;
 
 const MySwal = withReactContent(Swal);
@@ -65,27 +67,27 @@ const CardBan = ({ id, name, address, phone, imageProfile, deleted }) => {
 
   return (
     <table>
-      <tbody>
+      <tbody className={styles.bannedCard}>
         <tr>
-          <td>ID:</td>
+          <td className={styles.bannedTitle}>ID:</td>
           <td>{id}</td>
-          <td>Nombre:</td>
+          <td className={styles.bannedTitle}>Nombre:</td>
           <td>{name}</td>
         </tr>
         <tr>
-          <td>Dirección:</td>
+          <td className={styles.bannedTitle}>Dirección:</td>
           <td>{address || "No hay datos"}</td>
-          <td>Teléfono:</td>
+          <td className={styles.bannedTitle}>Teléfono:</td>
           <td>{phone || "No hay datos"}</td>
         </tr>
         <tr>
-          <td>Imagen:</td>
+          <td className={styles.bannedTitle}>Imagen:</td>
           <td>{imageProfile || "No hay datos"}</td>
-          <td>Estado:</td>
+          <td className={styles.bannedTitle}>Estado:</td>
           <td>{deleted ? "Baneado" : "Activo"}</td>
         </tr>
-        <button onClick={handleClick}>Desbanear</button>
       </tbody>
+      <button onClick={handleClick}>Desbanear</button>
     </table>
   );
 };

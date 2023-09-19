@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import styles from "./DeletedProductList.module.css";
+import styles from "../ProductList/ProductList.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getCategory, getGenders } from "../../Redux/actions/productsActions";
 import UploadImageProductList from "../firebase/UploadImageProductList";
 import axios from "axios";
 
-const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+import { FaPenToSquare } from "react-icons/fa6";
+import { FaCheckCircle } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
+
+const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL"];
 
 const DeletedProductList = () => {
   // Declaración de estados
@@ -61,16 +65,17 @@ const DeletedProductList = () => {
     setShowImages(true);
 
     // Crear una lista predefinida de talles en el orden deseado
-    const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL"];
 
     // Crear un objeto para el stock del producto
     const stockObject = {};
     sizeOrder.forEach((size) => {
-        stockObject[size] = product.Sizes.find((s) => s.name === size)?.Stock.quantity || 0;
-      });
-    
-      setEditedStock({ ...stockObject }); // Establecer los talles en el orden deseado
-    };
+      stockObject[size] =
+        product.Sizes.find((s) => s.name === size)?.Stock.quantity || 0;
+    });
+
+    setEditedStock({ ...stockObject }); // Establecer los talles en el orden deseado
+  };
 
   // Función para cancelar la edición de un producto
   const handleCancelEdit = () => {
@@ -130,8 +135,6 @@ const DeletedProductList = () => {
     axios
       .put(`${back}products/${updatedProduct.id}`, updatedProduct)
       .then((response) => {
-       
-
         // Actualizar la lista de productos manteniendo el producto en su posición original
         setProducts((prevProducts) =>
           prevProducts.map((prevProduct) =>
@@ -146,26 +149,23 @@ const DeletedProductList = () => {
         setEditedImages([]);
         setEditedStock({});
         fetchProducts();
-        
       })
       .catch((error) => {
         console.error("Error al actualizar el producto:", error);
-        
-      })
+      });
   };
 
   // Función para manejar el clic en el botón de eliminar producto
-  const handleDeleteClick = (productId) => {
-    fetch(`${back}products/${productId}`, { method: "DELETE" })
-      .then((response) => {
-        if (response.status === 204) {
-          
-          const updatedProducts = products.filter((p) => p.id !== productId);
-          setProducts(updatedProducts);
-        }
-      })
-      .catch((error) => console.error("Error al eliminar el producto:", error));
-  };
+  // const handleDeleteClick = (productId) => {
+  //   fetch(`${back}products/${productId}`, { method: "DELETE" })
+  //     .then((response) => {
+  //       if (response.status === 204) {
+  //         const updatedProducts = products.filter((p) => p.id !== productId);
+  //         setProducts(updatedProducts);
+  //       }
+  //     })
+  //     .catch((error) => console.error("Error al eliminar el producto:", error));
+  // };
 
   // Función para manejar cambios en el término de búsqueda
   const handleSearchChange = (e) => {
@@ -193,7 +193,7 @@ const DeletedProductList = () => {
   };
 
   return (
-    <div>
+    <div className={styles.activosContainer}>
       <h3>Productos Inactivos</h3>
       {/* Barra de búsqueda */}
       <input
@@ -225,15 +225,15 @@ const DeletedProductList = () => {
             <th>Talles y Stock</th>
             <th>Descripción</th>
             <th>Imágenes</th>
-            <th>Acciones</th>
+            <th className={styles.acciones}>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {currentProducts.map((product) => (
             <tr key={product.id}>
-              <td>
+              <td className={styles.nameProducts}>
                 {editingProduct === product ? (
-                  <input
+                  <textarea
                     type="text"
                     value={editedProduct.name || product.name || ""}
                     onChange={(e) =>
@@ -263,8 +263,10 @@ const DeletedProductList = () => {
                     <option value="false">Activo</option>
                     <option value="true">Inactivo</option>
                   </select>
+                ) : product.deleted ? (
+                  "Inactivo"
                 ) : (
-                  product.deleted ? "Inactivo" : "Activo"
+                  "Activo"
                 )}
               </td>
               <td>
@@ -301,7 +303,7 @@ const DeletedProductList = () => {
                   product.category
                 )}
               </td>
-              <td>
+              <td className={styles.materialProducts}>
                 {editingProduct === product ? (
                   <input
                     type="text"
@@ -318,7 +320,7 @@ const DeletedProductList = () => {
                   product.mainMaterial
                 )}
               </td>
-              <td>
+              <td className={styles.priceProducts}>
                 {editingProduct === product ? (
                   <input
                     type="number"
@@ -337,56 +339,74 @@ const DeletedProductList = () => {
               </td>
               <td>
                 {editingProduct === product ? (
-                    <div>
-                    {sizeOrder.map((size) => ( // Mapear los talles en el orden deseado
+                  <div className={styles.sizesProductsEdit}>
+                    {sizeOrder.map(
+                      (
+                        size // Mapear los talles en el orden deseado
+                      ) => (
                         <div key={size}>
-                        <label htmlFor={`size_${size}`}>{size}</label>
-                        <input
+                          <label htmlFor={`size_${size}`}>{size}</label>
+                          <input
                             type="number"
                             value={editedStock[size] || 0}
-                            onChange={(e) => handleSizeChange(size, e.target.value)}
+                            onChange={(e) =>
+                              handleSizeChange(size, e.target.value)
+                            }
                             className={styles["input-number"]}
-                        />
+                          />
                         </div>
-                    ))}
-                    </div>
+                      )
+                    )}
+                  </div>
                 ) : (
-                    <div>
-                    {sizeOrder.map((size) => ( // Mapear los talles en el orden deseado
-                    <div key={size}>
-                    <span>
-                        {size}: {product.Sizes.find((s) => s.name === size)?.Stock.quantity}
-                    </span>
-                    </div>
-                    ))}
-                    </div>
+                  <div className={styles.sizesProducts}>
+                    {sizeOrder.map(
+                      (
+                        size // Mapear los talles en el orden deseado
+                      ) => (
+                        <div key={size}>
+                          <span className={styles.sizeLetter}>
+                            {size}:{" "}
+                            {
+                              product.Sizes.find((s) => s.name === size)?.Stock
+                                .quantity
+                            }
+                          </span>
+                        </div>
+                      )
+                    )}
+                  </div>
                 )}
               </td>
-              <td>
+              <td className={styles.descriptionProducts}>
                 {editingProduct === product ? (
-                  <input
+                  <textarea
                     type="text"
                     value={editedProduct.description || ""}
                     onChange={(e) =>
-                      setEditedProduct({ ...editedProduct, description: e.target.value })
+                      setEditedProduct({
+                        ...editedProduct,
+                        description: e.target.value,
+                      })
                     }
                     className={styles["input-text"]}
                   />
                 ) : (
-                  product.description
+                  <p>{product.description} </p>
                 )}
               </td>
               <td>
                 {editingProduct === product ? (
-                  <div>
+                  <div className={styles.imagecolumnEdit}>
                     {editedImages.map((image, index) => (
-                      <div key={index} className={styles.imagecolumn}>
+                      <div key={index}>
                         <img src={image} alt={`Imagen ${index}`} />
                         <button
                           type="button"
                           onClick={() => handleRemoveImageInput(index)}
+                          className={styles.deleteImgBtn}
                         >
-                          Eliminar
+                          BORRAR
                         </button>
                       </div>
                     ))}
@@ -409,22 +429,24 @@ const DeletedProductList = () => {
                 )}
               </td>
 
-              <td>
+              <td className={styles.buttonsColumn}>
                 {editingProduct === product ? (
                   <div>
                     <button onClick={() => handleSaveEdit(editedProduct)}>
-                      Guardar
+                      <FaCheckCircle />
                     </button>
-                    <button onClick={handleCancelEdit}>Cancelar</button>
+                    <button onClick={handleCancelEdit}>
+                      <MdCancel className={styles.cancelBtn} />
+                    </button>
                   </div>
                 ) : (
                   <div>
                     <button onClick={() => handleEditClick(product)}>
-                      Editar
+                      <FaPenToSquare />
                     </button>
-                    <button onClick={() => handleDeleteClick(product.id)}>
-                      Eliminar
-                    </button>
+                    {/* <button onClick={() => handleDeleteClick(product.id)}>
+                      <FaRegTrashCan />
+                    </button> */}
                   </div>
                 )}
               </td>

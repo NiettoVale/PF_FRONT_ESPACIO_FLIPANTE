@@ -1,0 +1,52 @@
+.pagination button {
+  margin: 15px 3px 8px 3px;
+  padding: 2px 5px;
+}
+
+.reviewsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.reviewsTable th,
+.reviewsTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.reviewsTable td input {
+  height: 28px;
+  margin: 0;
+}
+.reviewsTable td select {
+  margin: 0;
+  font-size: 10px;
+}
+
+.reviewsTable th {
+  background-color: #f2f2f2;
+}
+
+.reviewsTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.reviewsTable tbody tr:hover {
+  background-color: #ddd;
+}
+
+.reviewsTable thead {
+  background-color: #ddd;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.deleteButton {
+  padding: 5px;
+  font-weight: 600;
+  font-size: 11px;
+}

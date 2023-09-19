@@ -1,0 +1,54 @@
+.pagination button {
+  margin: 15px 3px 20px 3px;
+  padding: 2px 5px;
+}
+.input-text {
+  width: 50%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+
+.bannedFlex {
+  width: 80vw;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bannedList {
+  border-radius: 8px;
+
+  border: solid 1px #333;
+  box-shadow: 0 0 30px #ccc;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
+  color: #000;
+
+  width: 34vw;
+  height: 150px;
+
+  padding: 20px;
+  margin: 15px;
+
+  font-size: 14px;
+  text-align: left;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.bannedTitle {
+  background-color: #ccc;
+  padding: 1px 5px;
+  margin: 15px;
+}
+
+.bannedList button {
+  font-size: 11px;
+  padding: 5px;
+}
