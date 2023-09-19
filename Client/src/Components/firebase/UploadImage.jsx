@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+import styles from "../CreateForm/CreateForm.module.css";
+
 function UploadImage({ handleImageURLChange, imageURLs }) {
   const [image, setImage] = useState(null);
 
@@ -21,7 +23,7 @@ function UploadImage({ handleImageURLChange, imageURLs }) {
           getDownloadURL(storageRef)
             .then((url) => {
               console.log("URL de la imagen:", url);
-              handleImageURLChange(index, url); 
+              handleImageURLChange(index, url);
             })
             .catch((error) => {
               console.error("Error al obtener la URL de descarga:", error);
@@ -36,9 +38,19 @@ function UploadImage({ handleImageURLChange, imageURLs }) {
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleImageChange} />
-      <button type="button" onClick={() => handleImageUpload(imageURLs.length)}>Subir Imagen</button>
+    <div className={styles.uploading}>
+      <input
+        className={styles.uploadInput}
+        type="file"
+        onChange={handleImageChange}
+      />
+      <button
+        className={styles.uploadButton}
+        type="button"
+        onClick={() => handleImageUpload(imageURLs.length)}
+      >
+        Subir Imagen
+      </button>
     </div>
   );
 }

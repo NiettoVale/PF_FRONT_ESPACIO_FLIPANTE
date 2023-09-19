@@ -1,24 +1,26 @@
-import { useEffect } from 'react';
-import { applyActionCode } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { useEffect } from "react";
+import { applyActionCode } from "firebase/auth";
+import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const Vista = () => {
+  const navigate = useNavigate();
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
-  const mode = params.get('mode');
-  const oobCode = params.get('oobCode');
+  const mode = params.get("mode");
+  const oobCode = params.get("oobCode");
 
   const verificarCorreoElectronico = async () => {
     try {
-      if (mode === 'verifyEmail' && oobCode) {
+      if (mode === "verifyEmail" && oobCode) {
         await applyActionCode(auth, oobCode);
-        alert('Correo electrónico verificado con éxito');
-        
+        alert("Correo electrónico verificado con éxito");
+
         // Redirige a otra página después de verificar el correo
-        window.location.href = 'http://localhost:3000/'; // Reemplaza '/tu-otra-pagina' con la URL a la que deseas redirigir
+        navigate("/login"); // Reemplaza '/tu-otra-pagina' con la URL a la que deseas redirigir
       }
     } catch (error) {
-      console.error('Error al verificar el correo electrónico:', error);
+      console.error("Error al verificar el correo electrónico:", error);
     }
   };
 

@@ -49,12 +49,12 @@
 
 /* Estilo para productos activos */
 .active {
-  background-color: #42c919;
+  background-color: #42c919; 
   color: white; /* Texto blanco */
 }
 
 /* Estilo para productos inactivos */
 .inactive {
-  background-color: #f73333;
+  background-color: #f73333; 
   color: white; /* Texto blanco */
 }

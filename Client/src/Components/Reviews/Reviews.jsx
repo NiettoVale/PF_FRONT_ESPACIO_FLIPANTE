@@ -12,9 +12,7 @@ const Reviews = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://backend-espacio-flipante.onrender.com/reviews"
-        );
+        const response = await fetch("http://localhost:3001/reviews");
         if (response.ok) {
           const data = await response.json();
           setAllReviews(data);

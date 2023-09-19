@@ -14,7 +14,6 @@ import {
   CART,
   PRICE_CART,
   GET_USER_MAIL,
-  ORDER_INFO,
 } from "./actionTypes";
 import Swal from "sweetalert2";
 
@@ -138,8 +137,6 @@ export const getUserByName = (name) => {
       } else {
         const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
 
-        console.log(name);
-        console.log(emailRegex.test(name));
         if (emailRegex.test(name)) {
           const response = await fetch(`${back}user/${name}`);
           const data = await response.json();
@@ -424,7 +421,7 @@ export const updateTotalPrice = (newTotalPrice) => {
 };
 
 export const removeCart = (userId) => {
-  return async () => {
+  return async (dispatch) => {
     try {
       const response = await fetch(`${back}cart/${userId}`, {
         method: "DELETE",
@@ -438,7 +435,10 @@ export const removeCart = (userId) => {
           text: data.message,
           icon: "success",
         }).then(() => {
-          window.location.reload(); // Forzar la recarga de la página
+          dispatch({
+            type: CART,
+            payload: [], // Un carrito vacío
+          });
         });
       }
 
@@ -499,7 +499,14 @@ export const removeallproductCart = (userId, productId, sizeId) => {
   };
 };
 
-export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
+export const addOrder = (
+  userId,
+  productId,
+  sizeId,
+  quantity,
+  totalPrice,
+  userEmail
+) => {
   return async (dispatch, getState) => {
     try {
       const requestOptions = {
@@ -530,6 +537,7 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
           sizeId,
           quantity,
           totalPrice,
+          userEmail,
         };
 
         // Agrega la nueva orden al final de la matriz de órdenes existente
@@ -537,11 +545,6 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
 
         // Actualiza el contenido del Local Storage con la matriz actualizada que contiene la nueva orden
         localStorage.setItem("orders", JSON.stringify(existingOrders));
-
-        // Muestra un mensaje en la consola para confirmar que la orden se ha agregado correctamente
-        console.log(
-          "La orden se ha agregado correctamente al servidor y al Local Storage."
-        );
       }
     } catch (error) {
       // Maneja los errores de la solicitud HTTP o cualquier otro error que pueda ocurrir
@@ -550,6 +553,7 @@ export const addOrder = (userId, productId, sizeId, quantity, totalPrice) => {
     }
   };
 };
+
 export const paymentOrder = (
   userId,
   productId,
@@ -570,9 +574,7 @@ export const paymentOrder = (
         console.log(
           "todo bien amigo sos un capo total ya confirmaste la compra como un master y te va a llegar tu ropita FLipante"
         );
-        console.log(localStorage.order);
         localStorage.removeItem("orders");
-        console.log(localStorage.order);
       }
     } catch (error) {
       localStorage.removeItem("orders");
@@ -582,6 +584,68 @@ export const paymentOrder = (
   };
 };
 
+export const deleteOrders = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await fetch(`${back}order/${userId}`, {
+        method: "DELETE",
+      });
+      // Verifica si la solicitud fue exitosa (código de respuesta 201)
+      if (response.status === 201) {
+        // Obtiene el contenido actual del Local Storage bajo la clave "orders" o crea una matriz vacía si no hay nada almacenado allí
+        localStorage.removeItem("orders");
+      }
+    } catch (error) {
+      // Maneja los errores de la solicitud HTTP o cualquier otro error que pueda ocurrir
+      alert("Algo salió mal con addOrder!");
+      console.error(error);
+    }
+  };
+};
+
 export const setOrder = (order) => {
   return { type: ORDER, payload: order };
+};
+
+export const getProductById = (productId, sizeId) => {
+  return async (dispatch) => {
+    try {
+      // Realiza una solicitud para obtener los detalles del producto por su ID
+      const responseProduct = await axios.get(`${back}detail/${productId}`);
+      const productData = responseProduct.data;
+
+      // Función para obtener el nombre del tamaño según el ID
+      const getSizeName = (sizeId) => {
+        switch (sizeId) {
+          case 1:
+            return "XS";
+          case 2:
+            return "S";
+          case 3:
+            return "M";
+          case 4:
+            return "L";
+          case 5:
+            return "XL";
+          case 6:
+            return "XXL";
+          default:
+            return "Tamaño no válido";
+        }
+      };
+
+      // Crea un objeto que contendrá los datos del producto y el tamaño
+      const result = {
+        name: productData.name,
+        price: productData.price,
+        size: getSizeName(sizeId),
+      };
+
+      // Devuelve el resultado
+      return result;
+    } catch (error) {
+      alert("Algo salió mal con getProductById!");
+      console.log(error);
+    }
+  };
 };

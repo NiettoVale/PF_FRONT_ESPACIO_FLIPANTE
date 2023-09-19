@@ -1,11 +1,26 @@
 /* Estilos generales para el formulario */
-.create-form {
+.createForm {
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.createForm input[name] {
+  width: 300px;
+}
+.createForm input {
+  height: 20px;
+  width: 400px;
+}
+.createForm select {
+  width: 400px;
 }
 
 /* Estilos para los campos de entrada de texto y select */
@@ -46,10 +61,11 @@
 /* Estilo especial para textarea */
 textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 60px;
   /* Evita que el texto se vuelva blanco en fondo blanco */
   color: #333;
   background-color: #fff;
+  margin: 0;
 }
 
 /* Estilo para el mensaje de éxito */
@@ -76,13 +92,13 @@ textarea {
 }
 
 /* Estilos para el botón de eliminación de imagen */
-.delete-image-button {
+.deleteImageButton {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: #ff0000;
-  color: #fff;
-  border: none;
+  background-color: #fff;
+  color: #000;
+  border: solid 1px #000;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -94,94 +110,126 @@ textarea {
   align-items: center;
 }
 
-.delete-image-button:hover {
+.deleteImageButton:hover {
   background-color: #dd0000;
-}
-/* .create-form {
-  text-align: left;
-  width: 320px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-
-  display: flex;
-  flex-direction: column;
+  color: #fff;
 }
 
-.create-form div {
+/* NEW */
+
+.sizesContainer {
+  width: 420px;
+  border: solid 1px #ccc;
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+.sizeInput input[type="number"] {
+  width: 30px;
+}
+.sizesFlex {
   display: flex;
-  flex-direction: column;
-  margin-top: 10px;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 100px;
 }
-.create-form button {
-  margin-top: 10px;
+.sizesFlex div {
+  width: 50px;
 }
-.create-form input,
-.create-form select {
+.sizesContainer label {
+  font-weight: 500;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.sizesFlex input::-webkit-outer-spin-button,
+.sizesFlex input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
   margin: 0;
 }
 
-.error-message {
-  color: red;
+/* Firefox */
+.sizesFlex input[type="number"] {
+  -moz-appearance: textfield;
 }
 
-.input-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.input-label {
-  font-weight: bold;
-}
-
-.input-field {
-  flex: 1;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.size-stock-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.size-column {
-  flex: 1;
-}
-
-.size-label,
-.size-item {
-  font-weight: bold;
-}
-
-.stock-column {
-  flex: 1;
+.inputs {
+  width: 400px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: 500;
+}
+.inputs select {
+  width: 422px;
+}
+.uploadimg {
+  border: solid 1px #ccc;
+  border-radius: 3px;
+  width: 400px;
+  padding: 10px;
+}
+.submitButton {
+  padding: 10px;
 }
 
-.stock-label {
-  font-weight: bold;
+/* UPLOAD IMAGE STYLES */
+.uploadInput::-webkit-file-upload-button {
+  visibility: hidden;
 }
+.uploadInput::before {
+  content: "SELECCIONAR IMAGEN";
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #000;
+  padding: 7px 5px 3px 5px;
+  height: 18px;
+  outline: none;
+  white-space: nowrap;
 
-.stock-item {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 10pt;
+}
+.imageThumbnail {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  max-width: 200px;
+}
+.uploading input {
+  height: 100%;
+  border: none;
+  padding-inline: 0;
+  width: 200px;
+}
+.uploadButton {
+  padding: 5px;
+  margin: 10px 0 10px auto;
+  font-size: 14px;
+}
+.priceFlex {
+  margin: 10px auto;
   display: flex;
   align-items: center;
-  margin: 5px 0;
+  justify-content: space-around;
+  width: 420px;
+  border-radius: 3px;
+  border: solid 1px #ccc;
+  padding: 9px 0px 0px 0px;
 }
-
-.stock-input-container {
+.priceFlex input[type="number"] {
+  width: 240px;
+}
+.priceFlex label {
+  text-align: center;
+  margin: 10px 10px 18px 10px;
+  font-weight: 500;
+}
+.uploading {
   display: flex;
   align-items: center;
-  margin: 5px 0;
+  justify-content: space-around;
 }
-
-.stock-input-label {
-  font-weight: bold;
-  margin-right: 10px;
-  width: 40px;
-} */

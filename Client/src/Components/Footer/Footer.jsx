@@ -18,12 +18,18 @@ const Footer = () => {
           <li>Síguenos!</li>
           <div className={styles.redes}>
             <li>
-              <a href="https://www.instagram.com/espacio_flipante/">
+              <a
+                href="https://www.instagram.com/espacio_flipante/"
+                target="_blank"
+              >
                 <BsInstagram />
               </a>
             </li>
             <li>
-              <a href="https://www.facebook.com/p/Espacio-Flipante-100087886206668/">
+              <a
+                href="https://www.facebook.com/p/Espacio-Flipante-100087886206668/"
+                target="_blank"
+              >
                 <BsFacebook />
               </a>
             </li>

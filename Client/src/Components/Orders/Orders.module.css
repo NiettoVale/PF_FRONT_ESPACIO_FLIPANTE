@@ -10,3 +10,14 @@
   margin: 8px;
   width: 300px; /* Establece el ancho máximo de cada tarjeta */
 }
+
+.imgCard {
+  margin: 0;
+  margin-bottom: 10px;
+
+  width: 330px;
+  height: 420px;
+
+  object-fit: cover;
+  object-position: center;
+}
