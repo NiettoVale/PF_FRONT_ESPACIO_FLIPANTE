@@ -200,8 +200,8 @@ const LoginForm = () => {
         </p>
 
         <p>
-          ¿Sos boludo y te olvidaste tu password?{" "}
-          <Link to={"/reset-password"}>recuperala</Link>
+          ¿Olvidaste tu contraseña?{" "}
+          <Link to={"/reset-password"}>Recuperala</Link>
         </p>
       </div>
     </div>

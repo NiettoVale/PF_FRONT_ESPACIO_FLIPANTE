@@ -1,3 +1,4 @@
+/* Estilos para CartView */
 .fullContainer {
   height: 100vh;
   display: flex;
@@ -6,7 +7,7 @@
 }
 
 .cartTitle {
-  margin: 100px auto 60px auto;
+  margin: 20px auto 10px auto;
 }
 
 .buyButton {
@@ -14,31 +15,34 @@
   margin-top: 10px;
   padding: 10px;
 }
+
 .deleteButton {
   color: red;
-
   margin: 10px auto;
   padding: 10px;
 }
+
 .cartNav {
   position: fixed;
   top: 0;
   left: 0;
+  margin-top: 100px; /* Ajusta la altura del pie de página aquí */
 }
+
 .totalPrice {
   font-size: 30px;
   margin-bottom: 10px;
 }
+
 .lastFlex p {
   margin: 0;
   text-transform: uppercase;
   font-weight: 500;
 }
+
 .lastFlex {
   width: 80vw;
-
   max-width: 900px;
-
   margin: 20px auto;
   display: flex;
   flex-direction: column;
@@ -46,12 +50,29 @@
   justify-content: space-between;
   text-align: right;
 }
+
 .catalogButton {
   padding: 10px 20px;
   margin: 50px;
 }
+
 .footer {
   display: block;
   left: 0;
   bottom: 0;
+  width: 100%;
+}
+
+/* Estilos para el mensaje "El carrito se encuentra vacío" */
+.cartContent {
+  flex-grow: 1; /* Permite que el contenido crezca para ocupar el espacio disponible */
+  padding: 20px; /* Añade un espacio alrededor del contenido del carrito */
+}
+
+.emptyCart {
+  text-align: center;
+  margin-top: 100px; /* Espacio superior para separar del encabezado */
+  padding: 20px;
+  white-space: pre-line; /* Permite división de líneas */
+  font-size: 24px; /* Tamaño de fuente más pequeño */
 }

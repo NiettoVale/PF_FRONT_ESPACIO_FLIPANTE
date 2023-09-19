@@ -24,10 +24,12 @@ const SideBar = () => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.logo}>
-        <h2>
-          <span>ESPACIO</span>
-        </h2>
-        <h2> FLIPANTE</h2>
+        <Link to={"/"}>
+          <h2>
+            <span>ESPACIO</span>
+          </h2>
+          <h2> FLIPANTE</h2>
+        </Link>
       </div>
       <ul>
         <li>
@@ -47,21 +49,15 @@ const SideBar = () => {
         <li>
           <Link to={`/user-reviews/${userId}`}>Mis reseñas</Link>
         </li>
-        <li>
-          <Link to="/">Volver al Inicio</Link>
-        </li>
         {googleName ? null : (
           <li>
             <Link to="/change-password">Cambiar Contraseña</Link>
           </li>
         )}
-        <li>
+        <li className={styles.logout}>
           <Link onClick={logOut}>Cerrar Sesión</Link>
         </li>
       </ul>
-      <Link to={"/"}>
-        <button className={styles.backButton}>⬅</button>
-      </Link>
     </div>
   );
 };

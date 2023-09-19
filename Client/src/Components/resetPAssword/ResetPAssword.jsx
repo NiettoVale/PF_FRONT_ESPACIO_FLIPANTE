@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import enviarMail from "./funcionEnviarPassword";
+import styles from "./ResetPassword.module.css"; // Importa los estilos CSS
+import { Link } from "react-router-dom";
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");
@@ -37,30 +39,46 @@ const PasswordReset = () => {
       }
 
       // Si llegamos aquí, el correo está registrado, por lo que podemos enviar el correo de recuperación
-      enviarMail(email, "Modificar contraseña", "Hola , recupera tu contraseña");
+      enviarMail(
+        email,
+        "Modificar contraseña",
+        "Hola , recupera tu contraseña"
+      );
       setError(null);
 
       // Mostrar una alerta cuando se envía con éxito
-      alert("Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña.");
+      alert(
+        "Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña."
+      );
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
-    <div>
-      <h2>Recuperación de Contraseña</h2>
-      <form onSubmit={handleResetPassword}>
+    <div className={styles.container}>
+      {" "}
+      {/* Aplica el estilo container */}
+      <form onSubmit={handleResetPassword} className={styles.formContainer}>
+        <h2>Recuperación de Contraseña</h2>
         <input
           type="email"
           placeholder="Correo Electrónico"
           value={email}
           onChange={handleEmailChange}
           required
+          className={styles.inputForm}
         />
-        {emailError && <p className="error">{emailError}</p>}
-        <button type="submit">Recuperar Contraseña</button>
-        {error && <p className="error">{error}</p>}
+        {emailError && <p className={styles.error}>{emailError}</p>}{" "}
+        {/* Aplica el estilo error */}
+        <button type="submit" className={styles.buttonForm}>
+          Recuperar Contraseña
+        </button>
+        <Link to={"/"}>
+          <button className={styles.buttonForm}>Volver</button>
+        </Link>
+        {error && <p className={styles.error}>{error}</p>}{" "}
+        {/* Aplica el estilo error */}
       </form>
     </div>
   );

@@ -166,6 +166,7 @@ const Home = () => {
           </button>
         </div>
       )}
+
       <div className="">
         {busqueda === "" && productsFiltered.length === 0 ? (
           // Caso 1: No hay búsqueda y no hay productos filtrados, mostramos el catálogo completo

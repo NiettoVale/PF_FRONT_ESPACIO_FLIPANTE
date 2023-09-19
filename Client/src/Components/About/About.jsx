@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./About.module.css";
 import CardsAbout from "./cardsAbout";
 import NavBar from "../NavBar/navBar";
@@ -90,6 +90,10 @@ const teamMembers = [
 ];
 
 const About = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Desplaza la ventana al principio cuando se carga el componente
+  }, []);
+
   return (
     <div className={styles.aboutContainer}>
       <div className={styles.aboutNav}>

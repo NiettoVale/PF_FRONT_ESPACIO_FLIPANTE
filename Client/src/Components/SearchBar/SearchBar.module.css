@@ -3,17 +3,13 @@
 .searchBarContainer {
   z-index: 1000;
   height: 60px;
-
   position: fixed;
   top: 0px;
   right: 0;
-
   padding-right: 30px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   background-color: #fff;
 }
 
@@ -42,6 +38,7 @@
   width: 35px;
   height: 35px;
   border-radius: 50%;
+  margin-left: 15px;
 }
 
 .userImage {
@@ -62,4 +59,49 @@
   font-size: 22px;
   line-height: 0;
   margin-top: 4px;
+}
+
+.loginIcon {
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 22px;
+  line-height: 0;
+  margin-top: 4px;
+}
+
+.profileMenu {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  width: 100px; /* Ancho ajustable */
+}
+
+.menu a {
+  text-decoration: none;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 25px;
+  transition: color 0.2s;
+}
+
+.menu a:hover {
+  color: #c300ff;
+}
+
+.menu .logOutIcon {
+  margin-left: 5px;
+  width: 30px;
 }

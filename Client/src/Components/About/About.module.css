@@ -2,18 +2,19 @@
   width: 90vw;
   padding: 5vw;
   margin: auto;
-
   background-color: black;
   background-image: linear-gradient(#222, #000);
   color: #fff;
 }
+
 .insideContainer {
   display: flex;
   align-items: center;
   flex-direction: column;
   margin: auto;
-  margin-top: 100px;
+  padding: 100px 0; /* Agrega relleno superior e inferior */
 }
+
 .flexContainer {
   display: flex;
   justify-content: space-around;
@@ -21,7 +22,6 @@
   flex-wrap: wrap;
   align-items: flex-start;
   margin: 100px auto;
-
   max-width: 1200px;
 }
 
@@ -34,6 +34,7 @@
   width: 100vw;
   background-color: #fff;
 }
+
 .aboutDescription {
   max-width: 1000px;
   margin: 50px auto;
@@ -48,13 +49,17 @@
   font-size: 70px;
   letter-spacing: 12px;
 }
+
 .aboutTeam {
   font-size: 30px;
   letter-spacing: 5px;
   margin: 100px 0;
 }
+
 .aboutNav {
   position: fixed;
   top: 0;
   left: 0;
+  margin-top: 100px;
+  z-index: 1000;
 }
