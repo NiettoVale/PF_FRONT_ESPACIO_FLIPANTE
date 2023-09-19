@@ -86,8 +86,8 @@ const CardBan = ({ id, name, address, phone, imageProfile, deleted }) => {
           <td className={styles.bannedTitle}>Estado:</td>
           <td>{deleted ? "Baneado" : "Activo"}</td>
         </tr>
+        <button onClick={handleClick}>Desbanear</button>
       </tbody>
-      <button onClick={handleClick}>Desbanear</button>
     </table>
   );
 };
