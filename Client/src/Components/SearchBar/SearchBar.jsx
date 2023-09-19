@@ -1,3 +1,5 @@
+// SearchBar.js
+
 import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +10,7 @@ import {
   HiOutlineLogout,
   HiOutlineHeart,
   HiOutlineUser,
+  HiMenu,
 } from "react-icons/hi";
 import { getUserByName } from "../../Redux/actions/productsActions";
 
@@ -19,16 +22,13 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const root = localStorage.getItem("root");
   const dispatch = useDispatch();
 
-  // Mueve la declaración de storedUsername arriba
   const [storedUsername, setStoredUsername] = useState(
     localStorage.getItem("username")
   );
 
-  // Declaración de userInfo
   const userInfo = user.length > 0 ? user[0] : "";
 
   useEffect(() => {
-    // Actualiza storedUsername cuando el usuario inicia sesión o cierra sesión
     setStoredUsername(localStorage.getItem("username"));
     dispatch(getUserByName(name));
   }, [dispatch, name]);
@@ -55,7 +55,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const isLoggedIn = storedUsername || googleName;
   const imageProfile = isLoggedIn
     ? googleName
-      ? googleImage // Si se ha iniciado sesión con Google, muestra la imagen de Google
+      ? googleImage
       : userInfo.imageProfile
       ? userInfo.imageProfile
       : root
@@ -72,44 +72,46 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         className={styles.searchInput}
         placeholder="BUSCAR"
       />
+      <img src={imageProfile} className={styles.userIcon} alt="profile" />
+      <div className={styles.menuSeparator}></div> {/* Separación */}
       {isLoggedIn ? (
-        <Link to={"/cart"} className={styles.cart}>
-          <HiOutlineShoppingCart />
+        <div className={styles.hamburgerMenu} onClick={toggleMenu}>
+          <HiMenu />
+        </div>
+      ) : (
+        <Link to={"/login"} className={styles.loginIcon}>
+          <HiOutlineLogin />
         </Link>
-      ) : null}
-      <div className={styles.flexSpace}></div>
-      <div className={styles.profileMenu}>
-        <div className={styles.profileImageContainer} onClick={toggleMenu}>
+      )}
+      {isMenuOpen && (
+        <div className={styles.menu}>
           {isLoggedIn ? (
-            <img src={imageProfile} className={styles.userIcon} alt="profile" />
+            <div className={styles.profileContainer}>
+              <p className={styles.username}>{name || googleName}</p>
+            </div>
           ) : (
             <Link to={"/login"}>
               <HiOutlineLogin className={styles.loginIcon} />
             </Link>
           )}
-          {isMenuOpen && (
-            <div className={styles.menu}>
-              {user || googleName ? (
-                <Link to={"/favorites"}>
-                  <HiOutlineHeart />
-                </Link>
-              ) : null}
-              <Link to={"/userProfile"}>
-                <HiOutlineUser />
-              </Link>
-              {isLoggedIn ? (
-                <Link
-                  to={"/"}
-                  className={styles.menuLink}
-                  onClick={logOutGoogle}
-                >
-                  <HiOutlineLogout className={styles.logOutIcon} />
-                </Link>
-              ) : null}
-            </div>
+          <Link to={"/cart"} className={styles.menuItem}>
+            <HiOutlineShoppingCart /> Carrito
+          </Link>
+          {user || googleName ? (
+            <Link to={"/favorites"} className={styles.menuItem}>
+              <HiOutlineHeart /> Favoritos
+            </Link>
+          ) : null}
+          <Link to={"/userProfile"} className={styles.menuItem}>
+            <HiOutlineUser /> Perfil
+          </Link>
+          {isLoggedIn && (
+            <Link to={"/"} className={styles.menuItem} onClick={logOutGoogle}>
+              <HiOutlineLogout /> Salir
+            </Link>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 }

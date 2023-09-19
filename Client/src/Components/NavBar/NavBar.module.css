@@ -1,6 +1,8 @@
+/* NavBar.module.css */
+
 .navBar {
   display: flex;
-  gap: 16px; /* Espacio entre los elementos */
+  justify-content: space-between; /* Ajusta para que los elementos se separen uniformemente */
   align-items: center;
 }
 
@@ -13,16 +15,12 @@
   z-index: 1000;
   height: 60px;
   width: 100%;
-
   position: fixed;
   top: 0px;
-
   padding: 0 30px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   background-color: #fff;
 }
 
@@ -37,6 +35,7 @@
   height: 50px;
   border-radius: 50%;
 }
+
 .userIcon {
   font-size: 22px;
   line-height: 0;
@@ -49,12 +48,14 @@
   border: solid 1px #000;
   margin-top: 5px;
 }
+
 .logOutIcon {
   text-decoration: none;
   font-size: 22px;
   line-height: 0;
   margin-left: 16px;
 }
+
 .logOutGoogleIcon {
   text-decoration: none;
   font-size: 22px;
@@ -75,7 +76,12 @@
   color: #000;
   letter-spacing: -1px;
 }
+
 .logo span {
   letter-spacing: 0;
   color: #000;
+}
+
+.link {
+  margin-left: 20px;
 }
