@@ -40,9 +40,9 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   };
 
   const logOutGoogle = () => {
+    localStorage.removeItem("googleImage");
     localStorage.removeItem("googleName");
     localStorage.removeItem("username");
-    localStorage.removeItem("googleImage");
     localStorage.removeItem("root");
     window.location.reload();
   };
@@ -72,8 +72,11 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         className={styles.searchInput}
         placeholder="BUSCAR"
       />
-      <img src={imageProfile} className={styles.userIcon} alt="profile" />
-      <div className={styles.menuSeparator}></div> {/* Separación */}
+
+      {googleImage ? (
+        <img src={imageProfile} className={styles.userIcon} alt="profile" />
+      ) : null}
+
       {isLoggedIn ? (
         <div className={styles.hamburgerMenu} onClick={toggleMenu}>
           <HiMenu />
