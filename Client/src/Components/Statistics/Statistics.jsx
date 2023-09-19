@@ -4,6 +4,8 @@ import { Line, Bar, Pie } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import moment from "moment";
 
+import styles from "./Statistics.module.css";
+
 const back = process.env.REACT_APP_BACK;
 
 Chart.register(...registerables);
@@ -16,7 +18,7 @@ const Statistics = () => {
       datasets: [
         {
           label: "Usuarios Registrados por Mes",
-          borderColor: "rgba(255, 99, 132, 1)",
+          borderColor: "#000",
           borderWidth: 2,
           data: [],
           fill: false,
@@ -45,7 +47,7 @@ const Statistics = () => {
       datasets: [
         {
           label: "Ventas",
-          borderColor: "rgba(75, 192, 192, 1)",
+          borderColor: "#000",
           borderWidth: 2,
           data: [],
           fill: false,
@@ -117,10 +119,11 @@ const Statistics = () => {
           datasets: [
             {
               label: "Usuarios Registrados por Mes",
-              borderColor: "rgba(255, 99, 132, 1)",
+              borderColor: "#ad4dfc",
               borderWidth: 2,
               data: Object.values(userCountByMonth),
               fill: false,
+              backgroundColor: "#333", // Violeta
             },
           ],
         };
@@ -168,13 +171,13 @@ const Statistics = () => {
           datasets: [
             {
               label: "Comentarios Negativos (1 y 2 estrellas)",
-              backgroundColor: "rgba(255, 0, 0, 0.6)",
+              backgroundColor: "#6f32ff",
               borderWidth: 1,
               data: negativeData,
             },
             {
               label: "Comentarios Positivos (3, 4 y 5 estrellas)",
-              backgroundColor: "rgba(0, 255, 0, 0.6)",
+              backgroundColor: "#c532ff",
               borderWidth: 1,
               data: positiveData,
             },
@@ -226,7 +229,8 @@ const Statistics = () => {
           datasets: [
             {
               label: "Ventas",
-              borderColor: "rgba(75, 192, 192, 1)",
+
+              borderColor: "#ad4dfc",
               borderWidth: 2,
               data: ventasPorMes,
               fill: false,
@@ -335,27 +339,62 @@ const Statistics = () => {
 
   return (
     <div>
-      <h2>Ventas Concretadas: {totalVentas}</h2>
-      <h2>Total de Ingresos: ${totalIngresos.toFixed(2)}</h2>
-      <h2>Productos Activos: {totalProductosActivos}</h2>
-      <h2>Productos Inactivos: {totalProductosInactivos}</h2>
-      <h2>Usuarios Registrados: {totalUsuariosRegistrados}</h2>
-      <h2>Total de Visitas: {totalVisitas}</h2>
-      <div className="chart-container">
-        <h2>Estadísticas de Ventas</h2>
-        <Line data={chartData.ventas} />
+      <h2>ESTADISTICAS</h2>
+      <div className={styles.cardsContainer}>
+        <div className={`${styles.StatsCard} ${styles.card1}`}>
+          <h3 className={styles.cardTitle}>Ventas: </h3>
+          <h2>{totalVentas}</h2>
+          <p>Total de ventas realizadas hasta la fecha.</p>
+        </div>
+        <div className={`${styles.StatsCard} ${styles.card2}`}>
+          <h3 className={styles.cardTitle}>Ingresos: </h3>
+          <h2>${totalIngresos.toFixed(2)}</h2>
+          <p>Total generado por todas las ventas hasta la fecha.</p>
+        </div>
+        <div className={`${styles.StatsCard} ${styles.card3}`}>
+          <h3 className={styles.cardTitle}>Productos Activos: </h3>
+          <h2>{totalProductosActivos}</h2>
+          <p>Productos actualmente disponibles y activos en la plataforma.</p>
+        </div>
+        <div className={`${styles.StatsCard} ${styles.card4}`}>
+          <h3 className={styles.cardTitle}>Productos Inactivos: </h3>
+          <h2>{totalProductosInactivos}</h2>
+          <p>
+            Productos que fueron desactivados o eliminados de la plataforma.
+          </p>
+        </div>
+        <div className={`${styles.StatsCard} ${styles.card5}`}>
+          <h3 className={styles.cardTitle}>Usuarios: </h3>
+          <h2>{totalUsuariosRegistrados}</h2>
+          <p>Usuarios que se han registrado en la plataforma.</p>
+        </div>
+        <div className={`${styles.StatsCard} ${styles.card6}`}>
+          <h3 className={styles.cardTitle}>Visitas: </h3>
+          <h2>{totalVisitas}</h2>
+          <p>Total de visitas o interacciones en la plataforma.</p>
+        </div>
       </div>
-      <div className="chart-container">
-        <h2>Usuarios Registrados por Mes</h2>
-        <Line data={chartData.usuariosRegistrados} />
-      </div>
-      <div className="chart-container">
-        <h2>Revisiones Recibidas</h2>
-        <Bar data={chartData.reviews} />
-      </div>
-      <div className="chart-container">
-        <h2>Ventas por Categoría</h2>
-        <Pie data={chartData.ventasPorCategoria} />
+
+      <div className={styles.bigChartContainer}>
+        <div className={styles.chartContainer}>
+          <h2>Estadísticas de Ventas</h2>
+          <Line data={chartData.ventas} />
+        </div>
+
+        <div className={styles.chartContainer}>
+          <h2>Usuarios Registrados por Mes</h2>
+          <Line data={chartData.usuariosRegistrados} />
+        </div>
+
+        <div className={styles.chartContainer}>
+          <h2>Revisiones Recibidas</h2>
+          <Bar data={chartData.reviews} className={styles.barChart} />
+        </div>
+
+        <div className={styles.chartContainer}>
+          <h2>Ventas por Categoría</h2>
+          <Pie data={chartData.ventasPorCategoria} />
+        </div>
       </div>
     </div>
   );

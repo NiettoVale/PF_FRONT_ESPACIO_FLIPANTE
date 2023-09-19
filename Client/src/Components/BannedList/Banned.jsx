@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CardBan from "../BannedList/BannedCard";
+import styles from "./Banned.module.css";
 
 const back = process.env.REACT_APP_BACK;
 
@@ -47,14 +48,15 @@ const Banned = () => {
 
   return (
     <div>
-      <h2>Lista de Usuarios Prohibidos</h2>
+      <h2>Lista de Usuarios baneados</h2>
       <input
         type="text"
         placeholder="Buscar por nombre"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles["input-text"]}
       />
-      <div>
+      <div className={styles.pagination}>
         {Array(totalPages)
           .fill()
           .map((_, i) => (
@@ -63,17 +65,21 @@ const Banned = () => {
             </button>
           ))}
       </div>
-      {currentBannedUsers.map((user) => (
-        <CardBan
-          key={user.id}
-          id={user.id}
-          name={user.name}
-          address={user.address}
-          phone={user.phone}
-          imageProfile={user.imageProfile}
-          deleted={user.deleted}
-        />
-      ))}
+      <div className={styles.bannedFlex}>
+        {currentBannedUsers.map((user) => (
+          <div className={styles.bannedList}>
+            <CardBan
+              key={user.id}
+              id={user.id}
+              name={user.name}
+              address={user.address}
+              phone={user.phone}
+              imageProfile={user.imageProfile}
+              deleted={user.deleted}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

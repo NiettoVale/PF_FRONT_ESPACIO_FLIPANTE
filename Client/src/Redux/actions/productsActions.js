@@ -141,7 +141,7 @@ export const getUserByName = (name) => {
           const response = await fetch(`${back}user/${name}`);
           const data = await response.json();
           if (response.status === 404) {
-            alert("PEPE2");
+            console.log("PEPE2");
           }
           if (response.status === 200) {
             dispatch({ type: GET_USER_NAME, payload: data });
@@ -150,7 +150,7 @@ export const getUserByName = (name) => {
           const response = await fetch(`${back}profile/${name}`);
           const data = await response.json();
           if (response.status === 404) {
-            alert("PEPE");
+            console.log("PEPE");
           }
           if (response.status === 200) {
             dispatch({ type: GET_USER_NAME, payload: data });
@@ -497,6 +497,7 @@ export const addOrder = (
   userId,
   productId,
   sizeId,
+  category,
   quantity,
   totalPrice,
   userEmail
@@ -511,6 +512,7 @@ export const addOrder = (
         body: JSON.stringify({
           userId,
           productId,
+          category,
           sizeId,
           quantity,
           totalPrice,
@@ -529,6 +531,7 @@ export const addOrder = (
           userId,
           productId,
           sizeId,
+          category,
           quantity,
           totalPrice,
           userEmail,
@@ -552,6 +555,7 @@ export const paymentOrder = (
   userId,
   productId,
   sizeId,
+  category,
   quantity,
   totalPrice
 ) => {
@@ -561,6 +565,7 @@ export const paymentOrder = (
         userId,
         productId,
         sizeId,
+        category,
         quantity,
         totalPrice,
       });

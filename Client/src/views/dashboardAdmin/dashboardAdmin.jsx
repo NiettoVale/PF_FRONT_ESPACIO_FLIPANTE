@@ -19,27 +19,36 @@ function DashboardAdmin() {
     <div className={styles.dashboardAdmin}>
       {/* Barra lateral */}
       <div className={styles.sidebar}>
-        <h2>ESPACIO FLIPANTE</h2>
+        <Link to={"/"}>
+          <div className={styles.logo}>
+            <h2>
+              <span>ESPACIO</span>
+            </h2>
+            <h2> FLIPANTE</h2>
+          </div>
+        </Link>
         <ul>
-          <li>
-            <Link to="/admin/list">Productos Activos</Link>
-          </li>
-          <li>
-            <Link to="/admin/inactive">Productos Inactivos</Link>
-          </li>
-          <li>
-            <Link to="/admin/create">Nuevo Producto</Link>
-          </li>
-          <li>
-            <Link to="/admin/users">Lista de Usuarios</Link>
-          </li>
-          <li>
-            <Link to="/admin/banned">Usuarios Baneados</Link>
-          </li>
-          <li>
-            <Link to="/admin">Estadisticas</Link>
-          </li>
-          <li></li>
+          <Link to="/admin/list">
+            <li>Productos Activos</li>
+          </Link>
+          <Link to="/admin/inactive">
+            <li>Productos Inactivos</li>
+          </Link>
+          <Link to="/admin/create">
+            <li>Nuevo Producto</li>
+          </Link>
+          <Link to="/admin/users">
+            <li>Lista de Usuarios</li>
+          </Link>
+          <Link to="/admin/banned">
+            <li>Usuarios Baneados</li>
+          </Link>
+          <Link to="/admin/reviews">
+            <li>Reseñas Recibidas</li>
+          </Link>
+          <Link to="/admin">
+            <li>Estadisticas</li>
+          </Link>
         </ul>
       </div>
 
@@ -48,12 +57,11 @@ function DashboardAdmin() {
         {/* Título */}
         <div className={styles.title}>
           <h1>PANEL DE CONTROL</h1>
-          <Link to="/" className={styles.visitPage}>
-            Visitar mi Pagina
-          </Link>
-          <Link to={"/"}>
-            <HiOutlineLogout className={styles.logOutIcon} onClick={logOut} />
-          </Link>
+          <div>
+            <Link to={"/"}>
+              <HiOutlineLogout className={styles.logOutIcon} onClick={logOut} />
+            </Link>
+          </div>
         </div>
 
         {/* Contenido dinámico */}

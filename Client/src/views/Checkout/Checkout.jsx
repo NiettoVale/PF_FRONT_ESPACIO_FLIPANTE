@@ -124,14 +124,23 @@ const Checkout = () => {
             };
             localStorage.setItem("checkout", JSON.stringify(checkoutData));
             // Procesa las órdenes primero
+
+            console.log(cart[0].category);
             for (const product of cart) {
-              const { productId, cantidad: quantity, price, sizeId } = product;
+              const {
+                productId,
+                cantidad: quantity,
+                price,
+                sizeId,
+                category,
+              } = product;
               const totalPrice = quantity * price;
               dispatch(
                 addOrder(
                   userId,
                   productId,
                   sizeId,
+                  category,
                   quantity,
                   totalPrice,
                   userEmail

@@ -24,6 +24,7 @@ import Vista from "./Components/firebase/Autentication";
 import PasswordReset from "./Components/resetPAssword/ResetPAssword";
 import ModifyPassword from "./Components/resetPAssword/ModifyPassword";
 import DeletedProductList from "./Components/DeletedProductList/DeletedProductList";
+import ReviewsList from "./Components/Reviews/ReviewsList";
 
 import "./App.css";
 
@@ -56,6 +57,7 @@ function App() {
         <Route path="create" element={<CreateForm />} />
         <Route path="users" element={<UserList />} />
         <Route path="banned" element={<Banned />} />
+        <Route path="reviews" element={<ReviewsList />} />
       </Route>
 
       <Route path="*" element={<BadURL />} />
