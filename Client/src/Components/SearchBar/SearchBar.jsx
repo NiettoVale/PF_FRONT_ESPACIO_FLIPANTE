@@ -72,11 +72,9 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         className={styles.searchInput}
         placeholder="BUSCAR"
       />
-
       {googleImage ? (
         <img src={imageProfile} className={styles.userIcon} alt="profile" />
       ) : null}
-
       {isLoggedIn ? (
         <div className={styles.hamburgerMenu} onClick={toggleMenu}>
           <HiMenu />
