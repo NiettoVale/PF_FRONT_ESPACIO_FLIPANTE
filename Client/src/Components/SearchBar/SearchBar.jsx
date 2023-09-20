@@ -12,6 +12,7 @@ import {
   HiOutlineUser,
   HiMenu,
 } from "react-icons/hi";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { getUserByName } from "../../Redux/actions/productsActions";
 
 export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
@@ -77,7 +78,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
       ) : null}
       {isLoggedIn ? (
         <div className={styles.hamburgerMenu} onClick={toggleMenu}>
-          <HiMenu />
+          <GiHamburgerMenu />
         </div>
       ) : (
         <Link to={"/login"} className={styles.loginIcon}>

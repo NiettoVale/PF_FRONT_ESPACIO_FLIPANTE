@@ -1,4 +1,32 @@
-/* NavBar.module.css */
+.logo {
+  display: block;
+  line-height: 15px;
+  font-size: 12px;
+  padding: 3px;
+  border: solid 1px #000;
+}
+
+.logo h2 {
+  color: #000;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  letter-spacing: 0;
+  color: #000;
+}
+
+.logo:hover {
+  border: solid 1px #c300ff;
+}
+.logo h2:hover,
+.logo span:hover {
+  color: #c300ff; /* Cambiar el color al pasar el mouse */
+}
+
+.link {
+  margin-left: 20px;
+}
 
 .navBar {
   display: flex;
@@ -62,26 +90,4 @@
   line-height: 0;
   margin-left: 16px;
   margin-bottom: 4px;
-}
-
-.logo {
-  display: block;
-  line-height: 15px;
-  font-size: 12px;
-  padding: 3px;
-  border: solid 1px #000;
-}
-
-.logo h2 {
-  color: #000;
-  letter-spacing: -1px;
-}
-
-.logo span {
-  letter-spacing: 0;
-  color: #000;
-}
-
-.link {
-  margin-left: 20px;
 }

@@ -8,7 +8,7 @@ const Hero = () => {
   return (
     <div className={styles.heroContainer}>
       <div className={styles.heroText}>
-        <h3>DEL 2 AL 20 DE SEPTIEMBRE</h3>
+        <h3>DEL 2 AL 20 DE OCTUBRE</h3>
         <h1>HOT SALE</h1>
         <h2>HASTA 40% OFF</h2>
         <button onClick={handleClickScroll}>VER MAS</button>

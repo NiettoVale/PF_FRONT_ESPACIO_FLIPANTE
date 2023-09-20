@@ -72,12 +72,11 @@ const Statistics = () => {
         {
           label: "Ventas por Categoría",
           backgroundColor: [
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(255, 205, 86, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
+            "#ad4dfc",
+            "#5841d8",
+            "#cb41d8",
+            "#5841d8",
+            "#5841d8",
           ],
           borderWidth: 2,
           data: [],
@@ -263,12 +262,12 @@ const Statistics = () => {
             {
               data: Object.values(categoryCounts),
               backgroundColor: [
-                "rgba(255, 99, 132, 0.6)",
-                "rgba(75, 192, 192, 0.6)",
-                "rgba(255, 205, 86, 0.6)",
-                "rgba(54, 162, 235, 0.6)",
-                "rgba(153, 102, 255, 0.6)",
-                "rgba(255, 159, 64, 0.6)",
+                "#cb41d8ea",
+                "#8741d8ea",
+                "#3235cfea",
+                "#cf3259ea",
+                "#254bf5ea",
+                "#ff3a85ea",
               ],
             },
           ],
@@ -393,7 +392,10 @@ const Statistics = () => {
 
         <div className={styles.chartContainer}>
           <h2>Ventas por Categoría</h2>
-          <Pie data={chartData.ventasPorCategoria} />
+          <Pie
+            data={chartData.ventasPorCategoria}
+            options={{ responsive: true }}
+          />
         </div>
       </div>
     </div>

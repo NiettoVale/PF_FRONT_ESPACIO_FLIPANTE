@@ -71,8 +71,14 @@
 
 .emptyCart {
   text-align: center;
+  margin: auto;
   margin-top: 100px; /* Espacio superior para separar del encabezado */
   padding: 20px;
   white-space: pre-line; /* Permite división de líneas */
-  font-size: 24px; /* Tamaño de fuente más pequeño */
+  font-size: 20px; /* Tamaño de fuente más pequeño */
+  border-radius: 10px;
+  border: solid 1px #aaa;
+  box-shadow: 0 0 30px #ccc;
+  color: #000;
+  width: fit-content;
 }
