@@ -11,6 +11,7 @@ import styles from "./home.module.css";
 import Footer from "../../Components/Footer/Footer";
 import axios from "axios";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import Brands from "../../Components/Brands/Brands";
 
 const back = process.env.REACT_APP_BACK;
 
@@ -229,6 +230,7 @@ const Home = () => {
         )}
       </div>
 
+      <Brands />
       <Footer />
     </div>
   );
