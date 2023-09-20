@@ -98,7 +98,6 @@ const About = () => {
     <div className={styles.aboutContainer}>
       <div className={styles.aboutNav}>
         <NavBar />
-        <SearchBar />
       </div>
       <div className={styles.insideContainer}>
         <h2 className={styles.aboutTitle}>Espacio Flipante</h2>

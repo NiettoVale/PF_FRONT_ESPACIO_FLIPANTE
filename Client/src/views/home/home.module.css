@@ -63,3 +63,16 @@
 .paginationButtons button:last-of-type {
   padding-right: 3px;
 }
+
+.paginationButtons button[disabled] {
+  background-color: #ccc; /* Cambia el color de fondo a uno gris o el que desees */
+  color: #999; /* Cambia el color del texto a uno más claro si lo deseas */
+  cursor: not-allowed; /* Cambia el cursor del mouse a "no permitido" */
+  pointer-events: none; /* Deshabilita los eventos de clic en el botón */
+}
+
+/* Estilo para el botón deshabilitado de página actual */
+.paginationButtons button[disabled].currentPageButton {
+  background-color: #999; /* Cambia el color de fondo del botón de página actual deshabilitado */
+  color: #fff; /* Cambia el color del texto del botón de página actual deshabilitado */
+}
