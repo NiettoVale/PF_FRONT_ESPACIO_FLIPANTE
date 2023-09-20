@@ -92,9 +92,9 @@ const CartView = () => {
             totalPrice={totalPrice}
           />
 
-          <button className={styles.deleteButton} onClick={handleDelete}>
+          <a className={styles.deleteButton} onClick={handleDelete}>
             Eliminar carrito
-          </button>
+          </a>
 
           <div className={styles.lastFlex}>
             <p>Total de la compra</p>
