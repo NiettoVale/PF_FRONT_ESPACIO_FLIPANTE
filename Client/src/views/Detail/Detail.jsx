@@ -128,6 +128,10 @@ export default function Detail() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!googleName) {
       dispatch(getUserByName(name));
     } else {

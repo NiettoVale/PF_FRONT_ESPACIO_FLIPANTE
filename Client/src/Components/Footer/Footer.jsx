@@ -51,6 +51,9 @@ const Footer = () => {
           <li>Contacto</li>
           <li>flipante@eshop.com</li>
           <li>+54 11 123-456-789</li>
+          <Link to={"/about"}>
+            <li>¿Quienes somos?</li>
+          </Link>
         </ul>
       </div>
     </div>
