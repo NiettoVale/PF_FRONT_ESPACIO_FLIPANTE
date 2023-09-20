@@ -47,10 +47,23 @@ const Orders = () => {
             const email = storedOrders[0].userEmail;
             await Promise.all(
               storedOrders.map(async (order) => {
-                const { userId, productId, sizeId, quantity, totalPrice, category } =
-                  order;
+                const {
+                  userId,
+                  productId,
+                  sizeId,
+                  quantity,
+                  totalPrice,
+                  category,
+                } = order;
                 dispatch(
-                  paymentOrder(userId, productId, sizeId, quantity, totalPrice, category)
+                  paymentOrder(
+                    userId,
+                    productId,
+                    sizeId,
+                    quantity,
+                    totalPrice,
+                    category
+                  )
                 );
               })
             );
@@ -63,6 +76,7 @@ const Orders = () => {
           dispatch(deleteOrders(userId));
           const response = await axios.get(`${back}order/${userId}`);
           const data = response.data;
+          console.log(data);
           setArrayOrders(data); // Actualiza el estado con los datos de la API
         }
       } catch (error) {
