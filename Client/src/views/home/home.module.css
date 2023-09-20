@@ -74,5 +74,5 @@
 /* Estilo para el botón deshabilitado de página actual */
 .paginationButtons button[disabled].currentPageButton {
   background-color: #999; /* Cambia el color de fondo del botón de página actual deshabilitado */
-  color: #fff; /* Cambia el color del texto del botón de página actual deshabilitado */
+  color: #fff; /* Cambia el color del texto del botón de página actual deshabilitadoasd */
 }
