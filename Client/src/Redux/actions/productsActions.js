@@ -570,9 +570,6 @@ export const paymentOrder = (
         totalPrice,
       });
       if (response.status === 200) {
-        console.log(
-          "todo bien amigo sos un capo total ya confirmaste la compra como un master y te va a llegar tu ropita FLipante"
-        );
         localStorage.removeItem("orders");
       }
     } catch (error) {
@@ -644,6 +641,23 @@ export const getProductById = (productId, sizeId) => {
       return result;
     } catch (error) {
       alert("Algo salió mal con getProductById!");
+      console.log(error);
+    }
+  };
+};
+
+export const removeproductStock = (ProductId, SizeId) => {
+  return async (dispatch, getState) => {
+    const change = false;
+    try {
+      const response = await fetch(
+        `${back}products/${ProductId}/${SizeId}/${change}`,
+        {
+          method: "POST",
+        }
+      );
+    } catch (error) {
+      console.log("Algo salió mal con removeproductStock!");
       console.log(error);
     }
   };
