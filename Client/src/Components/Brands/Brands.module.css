@@ -1,0 +1,63 @@
+.brandsContainer {
+  padding: 50px;
+  height: 190px;
+  margin-top: 90px;
+  background-image: linear-gradient(to top, #aa75ffa4 0%, #e653fa00 100%);
+}
+
+.brandsImages {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  width: 80vw;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.adidas {
+  background-image: url(../../assets/brands/adidas.png);
+  mix-blend-mode: multiply;
+
+  width: 140px;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+}
+.boss {
+  background-image: url(../../assets/brands/boss.png);
+  mix-blend-mode: multiply;
+
+  width: 140px;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+}
+.converse {
+  background-image: url(../../assets/brands/converse.png);
+  mix-blend-mode: multiply;
+
+  width: 140px;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+}
+.fila {
+  background-image: url(../../assets/brands/fila.png);
+  mix-blend-mode: multiply;
+
+  width: 140px;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+}
+.lacoste {
+  background-image: url(../../assets/brands/lacoste.png);
+  mix-blend-mode: multiply;
+
+  width: 140px;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+}

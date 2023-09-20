@@ -1,11 +1,11 @@
 .footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: flex-start;
   height: auto;
-  width: 100%;
+  width: 98vw;
   padding: 20px;
-  margin-top: 100px;
+  margin-top: 0;
   text-align: left;
   background-color: #000;
   color: #fff;

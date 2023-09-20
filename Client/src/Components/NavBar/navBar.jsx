@@ -10,14 +10,14 @@ const NavBar = () => {
   return (
     <div className={styles.navContainer}>
       <div className={styles.navBar}>
-        <div className={styles.logo}>
-          <Link to={"/"}>
+        <Link to={"/"}>
+          <div className={styles.logo}>
             <h2>
               <span>ESPACIO</span>
             </h2>
             <h2> FLIPANTE</h2>
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         {superUser ? (
           <>

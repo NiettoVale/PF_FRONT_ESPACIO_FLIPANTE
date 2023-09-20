@@ -7,7 +7,7 @@
   margin: 20px 0 50px 0;
 }
 .StatsCard {
-  border: solid 1px #eee;
+  border: solid 1px #af4dff;
   box-shadow: 0 0 30px #999;
   border-radius: 8px;
   padding: 20px;
@@ -47,10 +47,9 @@
 
 .chartContainer {
   width: 35vw;
-  height: fit-content;
   padding: 20px;
   border-radius: 10px;
-  margin-top: 40px;
+  margin-bottom: 40px;
 
   border: solid 1px #333;
   box-shadow: 0 0 30px #ccc;
@@ -60,7 +59,4 @@
     rgb(230, 230, 230) 100%
   );
   color: #000;
-}
-.bigChartContainer {
-  color: #ad4dfc;
 }
