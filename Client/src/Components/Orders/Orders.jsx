@@ -6,6 +6,7 @@ import {
   deleteOrders,
   removeCart,
   getUserByName,
+  removeproductStock,
 } from "../../Redux/actions/productsActions";
 import enviarMail from "./funcionCompra";
 import Swal from "sweetalert2";
@@ -65,6 +66,10 @@ const Orders = () => {
                     category
                   )
                 );
+                for (let i = 0; i < quantity; i++) {
+                  console.log("se ejecutop el for");
+                  dispatch(removeproductStock(productId, sizeId));
+                }
               })
             );
             await enviarMail(email, "COMPRA REALIZADA", checkout, storedOrders);
@@ -76,7 +81,6 @@ const Orders = () => {
           dispatch(deleteOrders(userId));
           const response = await axios.get(`${back}order/${userId}`);
           const data = response.data;
-          console.log(data);
           setArrayOrders(data); // Actualiza el estado con los datos de la API
         }
       } catch (error) {
