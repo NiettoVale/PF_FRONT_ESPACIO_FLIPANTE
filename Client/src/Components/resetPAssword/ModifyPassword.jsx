@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ModifyPassword.module.css";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+import NavBar from "../NavBar/navBar";
+import SearchBar from "../SearchBar/SearchBar";
+import Footer from "../Footer/Footer";
+
 const back = process.env.REACT_APP_BACK;
+const MySwal = withReactContent(Swal);
 
 function ModifyPassword() {
   const [password, setPassword] = useState("");
@@ -24,7 +32,11 @@ function ModifyPassword() {
 
     if (password !== confirmPassword) {
       // Contraseñas no coinciden, muestra una alerta
-      alert("Las contraseñas no coinciden.");
+      MySwal.fire({
+        icon: "warning",
+        title: "Advertencia",
+        text: "Las contraseñas no coinciden.",
+      });
       return;
     }
 
@@ -34,7 +46,11 @@ function ModifyPassword() {
 
       if (!response.ok) {
         // Correo no registrado, muestra una alerta
-        alert("El correo electrónico no está registrado.");
+        MySwal.fire({
+          icon: "warning",
+          title: "Advertencia",
+          text: "El correo electrónico no está registrado.",
+        });
         return;
       }
 
@@ -60,7 +76,11 @@ function ModifyPassword() {
       setPassword("");
       setConfirmPassword("");
       setMessage("Contraseña cambiada con éxito.");
-      alert("Contraseña cambiada exitosamente");
+      MySwal.fire({
+        icon: "success",
+        title: "Exito!",
+        text: "Contraseña cambiada exitosamente.",
+      });
       navigate("/login");
     } catch (error) {
       console.error("Error al realizar la solicitud:", error);
@@ -70,9 +90,11 @@ function ModifyPassword() {
 
   return (
     <div className={styles.container}>
+      <NavBar />
+      <SearchBar />
       <form onSubmit={handleSubmit} className={styles.formContainer}>
         <h2>Cambiar Contraseña</h2>
-        <p>Correo Electrónico: {correoElectronico}</p>
+        <h3>{correoElectronico}</h3>
         <label htmlFor="password">Nueva Contraseña:</label>
         <input
           type="password"
@@ -99,6 +121,7 @@ function ModifyPassword() {
         </button>
         <p>{message}</p>
       </form>
+      <Footer className={styles.footer} />
     </div>
   );
 }

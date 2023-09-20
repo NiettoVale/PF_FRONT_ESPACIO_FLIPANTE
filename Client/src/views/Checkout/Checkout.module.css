@@ -79,13 +79,31 @@
 .checkButtons {
   display: flex;
   flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
-  padding: 0 5px;
+  margin-top: 10px;
+}
+.checkBottom {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.total {
+  display: flex;
+  flex-direction: column;
+}
+.total p {
+  margin: 0;
 }
 .checkButtons button {
   padding: 10px;
+  width: 100%;
+  margin: 10px 0;
+  height: 48px;
+  border-radius: 7px;
 }
 .checkButtons a {
   letter-spacing: normal;

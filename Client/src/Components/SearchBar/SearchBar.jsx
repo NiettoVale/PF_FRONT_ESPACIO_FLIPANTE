@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
 import {
   HiOutlineShoppingCart,
   HiOutlineLogin,
@@ -23,6 +24,8 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const root = localStorage.getItem("root");
   const userInfo = user.length > 0 ? user[0] : "";
   const dispatch = useDispatch();
+
+  const location = useLocation();
 
   const [storedUsername, setStoredUsername] = useState(
     localStorage.getItem("username")
@@ -68,16 +71,22 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
       : "https://acortar.link/9rBdMA"
     : null;
 
+  const isHomeView = location.pathname === "/";
+
   return (
     <div className={styles.searchBarContainer}>
-      <input
-        type="search"
-        value={busqueda}
-        onChange={handleChange}
-        className={styles.searchInput}
-        placeholder="BUSCAR"
-        onClick={handleClickScroll}
-      />
+      {isHomeView && (
+        <>
+          <input
+            type="search"
+            value={busqueda}
+            onChange={handleChange}
+            className={styles.searchInput}
+            placeholder="BUSCAR"
+            onClick={handleClickScroll}
+          />
+        </>
+      )}
       {googleImage ? (
         <img src={imageProfile} className={styles.userIcon} alt="PEPEss" />
       ) : user.length > 0 && user[0].name ? (

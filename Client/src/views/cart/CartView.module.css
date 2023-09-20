@@ -17,8 +17,8 @@
   border: solid 1px #000;
   background-color: #fff;
   color: red;
-  margin: 10px auto;
-  padding: 10px;
+
+  letter-spacing: normal;
 }
 
 .cartNav {
