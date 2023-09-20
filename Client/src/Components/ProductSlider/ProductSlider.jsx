@@ -10,7 +10,7 @@ const ProductSlider = ({ products }) => {
 
   return (
     <div className={styles.sliderContainer}>
-      <h1>PRODUCTOS DESTACADOS</h1>
+      <h1>PRODUCTOS DESTACADOS ⟶</h1>
 
       <div className={styles.sliderCards}>
         <Swiper

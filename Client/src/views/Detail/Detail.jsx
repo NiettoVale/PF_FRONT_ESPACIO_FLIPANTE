@@ -29,6 +29,9 @@ const back = process.env.REACT_APP_BACK;
 export default function Detail() {
   const back = process.env.REACT_APP_BACK;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   //----ESTADOS
   const { id } = useParams();
   const [cardDetail, setCardDetail] = useState({});

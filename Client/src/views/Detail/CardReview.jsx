@@ -18,27 +18,39 @@ const CardReview = ({ reviewsProducts }) => {
     }
     return starArray;
   };
+  console.log(reviewsProducts);
   return (
     <div className={styles.carouselContainer}>
-      <Slider
-        dots={true}
-        infinite={true}
-        speed={500}
-        slidesToShow={1}
-        slidesToScroll={1}
-      >
-        {reviewsProducts.map((review) => (
-          <div key={review.id} className={styles.reviewCard}>
-            <p>Comentario: {review.comment}</p>
-            <div>
-              <p className={styles.rating}>
-                Rating: {renderStars(review.rating)}
-              </p>
+      {reviewsProducts.length > 0 ? (
+        <Slider
+          dots={true}
+          infinite={true}
+          speed={500}
+          slidesToShow={reviewsProducts.length}
+          slidesToScroll={2}
+        >
+          {reviewsProducts.map((review) => (
+            <div key={review.id} className={styles.reviewCard}>
+              <div className={styles.reviewCardContainer}>
+                <p className={styles.reviewText}>{review.comment}</p>
+                <div>
+                  <p className={styles.rating}>{renderStars(review.rating)}</p>
+                </div>
+                <p>{review.user}</p>
+              </div>
             </div>
-            <p>Usuario: {review.user}</p>
+          ))}
+        </Slider>
+      ) : (
+        <div className={styles.reviewCard}>
+          <div className={styles.reviewCardContainer}>
+            <p className={styles.reviewText}>No hay reseñas disponibles.</p>
+            <div>
+              <p className={styles.rating}>- - - - -</p>
+            </div>
           </div>
-        ))}
-      </Slider>
+        </div>
+      )}
     </div>
   );
 };

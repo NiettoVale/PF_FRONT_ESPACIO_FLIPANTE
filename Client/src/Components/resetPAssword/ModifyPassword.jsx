@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import styles from "./ModifyPassword.module.css";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
-import styles from "./ModifyPassword.module.css";
 
 import NavBar from "../NavBar/navBar";
 import SearchBar from "../SearchBar/SearchBar";

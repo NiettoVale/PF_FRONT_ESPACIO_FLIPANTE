@@ -114,3 +114,11 @@
     display: none;
   }
 }
+
+.wallet-label-container span {
+  color: #fff;
+}
+
+div div div div div span {
+  color: #fff;
+}

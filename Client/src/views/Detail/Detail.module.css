@@ -113,79 +113,29 @@
   border: solid 1px #000;
   color: #fff;
 }
-/* DashboardAdmin.module.css */
-.dashboardAdmin {
-  display: flex;
-  height: 100vh;
+
+/* CARD REVIEW */
+
+.carouselContainer {
+  width: 100vw;
 }
 
-.sidebar {
-  width: 250px;
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
+.reviewCardContainer {
+  width: 22vw;
+
+  padding: 12px 25px;
+  margin: 100px auto;
+
+  border: solid 1px #ccc;
+  box-shadow: 0 0 50px #dddddd;
+
+  border-radius: 10px;
 }
-
-.sidebar h2 {
-  font-size: 24px;
-  margin-bottom: 150px;
+.reviewText {
+  font-size: 14px;
+  color: #333;
 }
-
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-
-.sidebar a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 18px;
-}
-
-.contentContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: #f4f4f4;
-  padding: 20px;
-}
-
-.title {
-  background-color: #dddada;
-  color: #fff;
-  padding: 10px 0;
-  text-align: center;
-  font-size: 28px;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-.logOutIcon {
-  text-decoration: none;
-  font-size: 22px;
-  line-height: 0;
-  margin-left: 16px;
-}
-
-/* Estilo para el botón "Visitar mi Pagina" */
-.visitPage {
-  border: solid black 2px;
-  font-size: 18px;
-  margin-left: 90px;
-}
-
-@media (max-width: 910px) {
-  .detailContainer {
-    width: 360px;
-  }
-
-  .detailName {
-    margin: 30px 0 10px 0;
-  }
+.slick-slider {
+  width: 100vw;
+  background-color: red;
 }

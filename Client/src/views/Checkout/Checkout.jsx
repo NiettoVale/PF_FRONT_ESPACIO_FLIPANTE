@@ -325,7 +325,10 @@ const Checkout = () => {
           </div>
           {showBuyButton && (
             <div className={styles.overlay}>
-              <BuyButton preferenceId={preferenceId} />
+              <BuyButton
+                preferenceId={preferenceId}
+                className={styles.BuyButton}
+              />
             </div>
           )}
         </div>
