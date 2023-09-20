@@ -47,10 +47,10 @@ const Orders = () => {
             const email = storedOrders[0].userEmail;
             await Promise.all(
               storedOrders.map(async (order) => {
-                const { userId, productId, sizeId, quantity, totalPrice } =
+                const { userId, productId, sizeId, quantity, totalPrice, category } =
                   order;
                 dispatch(
-                  paymentOrder(userId, productId, sizeId, quantity, totalPrice)
+                  paymentOrder(userId, productId, sizeId, quantity, totalPrice, category)
                 );
               })
             );
