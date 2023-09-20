@@ -21,13 +21,12 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
   const name = localStorage.getItem("username");
   const user = useSelector((state) => state.infoUser);
   const root = localStorage.getItem("root");
+  const userInfo = user.length > 0 ? user[0] : "";
   const dispatch = useDispatch();
 
   const [storedUsername, setStoredUsername] = useState(
     localStorage.getItem("username")
   );
-
-  const userInfo = user.length > 0 ? user[0] : "";
 
   useEffect(() => {
     setStoredUsername(localStorage.getItem("username"));
@@ -45,6 +44,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
     localStorage.removeItem("googleName");
     localStorage.removeItem("username");
     localStorage.removeItem("root");
+    localStorage.clear();
     window.location.reload();
   };
 
@@ -74,7 +74,22 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         placeholder="BUSCAR"
       />
       {googleImage ? (
-        <img src={imageProfile} className={styles.userIcon} alt="profile" />
+        <img src={imageProfile} className={styles.userIcon} alt="PEPEss" />
+      ) : user.length > 0 && user[0].name ? (
+        <img
+          src={
+            userInfo && userInfo.imageProfile
+              ? userInfo.imageProfile
+              : "https://acortar.link/9rBdMA"
+          }
+          className={styles.userIcon}
+          alt="profile"
+          onError={(e) => {
+            e.target.onerror = null; // Evitar un bucle infinito si la imagen de carga también falla
+            e.target.src =
+              "https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"; // Reemplaza "URL_DEL_GIF_DE_CARGA" con la URL de tu GIF de carga
+          }}
+        />
       ) : null}
       {isLoggedIn ? (
         <div className={styles.hamburgerMenu} onClick={toggleMenu}>
