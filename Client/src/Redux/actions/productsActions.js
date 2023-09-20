@@ -555,9 +555,9 @@ export const paymentOrder = (
   userId,
   productId,
   sizeId,
-  category,
   quantity,
-  totalPrice
+  totalPrice,
+  category
 ) => {
   return async (dispatch, getState) => {
     try {
@@ -578,7 +578,7 @@ export const paymentOrder = (
     } catch (error) {
       localStorage.removeItem("orders");
       alert("Algo salió mal con addOrder!");
-      console.log(error);
+      console.log(error, "a");
     }
   };
 };
