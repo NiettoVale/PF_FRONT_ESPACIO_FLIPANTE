@@ -387,7 +387,7 @@ const Home = () => {
 
           {pageNumbers.map((number) => (
             <button
-              className={`${
+              className={`${styles.paginationButton} ${
                 number === currentPage ? styles.currentPageButton : ""
               }`}
               key={number}

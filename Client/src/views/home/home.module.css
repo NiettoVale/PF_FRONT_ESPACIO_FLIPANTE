@@ -76,3 +76,22 @@
   background-color: #999; /* Cambia el color de fondo del botón de página actual deshabilitado */
   color: #fff; /* Cambia el color del texto del botón de página actual deshabilitadoasd */
 }
+
+.paginationButtons button {
+  border: solid 1px #000;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin-right: 10px;
+}
+
+/* Estilo para el botón de página actual */
+.paginationButtons button.currentPageButton {
+  background: #000; /* Color de fondo cuando es la página actual */
+  color: #fff; /* Color del texto cuando es la página actual */
+}
