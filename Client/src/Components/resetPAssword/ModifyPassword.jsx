@@ -14,23 +14,15 @@ const back = process.env.REACT_APP_BACK;
 const MySwal = withReactContent(Swal);
 
 function ModifyPassword() {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [id, setId] = useState(null); // Agregamos un estado para almacenar la ID
-  const [emailError, setEmailError] = useState("");
-
+  const correoElectronico = localStorage.getItem("correoElectronico");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "email") {
-      setEmail(value);
-      // Validar el correo electrónico en tiempo real
-      const emailIsValid = /^\S+@\S+\.\S+$/.test(value);
-      setEmailError(emailIsValid ? "" : "El correo electrónico no es válido");
-    } else if (name === "password") {
+    if (name === "password") {
       setPassword(value);
     } else if (name === "confirmPassword") {
       setConfirmPassword(value);
@@ -54,11 +46,18 @@ function ModifyPassword() {
       // Realiza la solicitud GET con fetch
       const response = await fetch(`${back}user/${correoElectronico}`);
 
+      if (!response.ok) {
+        // Correo no registrado, muestra una alerta
+        MySwal.fire({
+          icon: "warning",
+          title: "Advertencia",
+          text: "El correo electrónico no está registrado.",
+        });
+        return;
+      }
+
       // Parsea la respuesta como JSON
       const data = await response.json();
-
-      // Almacenar la ID del usuario en el estado
-      setId(data.id);
 
       // Realiza la solicitud PUT para cambiar la contraseña
       const putResponse = await fetch(`${back}modify-password/${data.id}`, {
