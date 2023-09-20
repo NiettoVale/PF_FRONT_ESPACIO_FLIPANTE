@@ -46,7 +46,7 @@ const MapComponent = () => {
     <div
       id="map"
       style={{
-        width: "280px",
+        width: "500px",
         height: "250px",
         borderRadius: "15px",
         marginRight: "0",
