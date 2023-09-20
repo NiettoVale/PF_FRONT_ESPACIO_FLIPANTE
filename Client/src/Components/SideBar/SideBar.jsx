@@ -43,7 +43,7 @@ const SideBar = () => {
         </li>
 
         <li>
-          <Link to="/cart">Tu carrito</Link>
+          <Link to="/cart">Mi carrito</Link>
         </li>
 
         <li>

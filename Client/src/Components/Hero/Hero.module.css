@@ -1,13 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Stalinist+One&display=swap");
 .heroContainer {
-  height: 1000px;
-  width: 98.9vw;
+  height: 100vh;
+  width: 100vw;
   margin: 0;
+  padding-bottom: 0;
 
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 
-  background-image: url(../../assets/landing2.jpg);
+  background-image: url(../../assets/LANDING-2.png);
   background-position: center;
   background-size: cover;
 
@@ -19,40 +21,47 @@
 .heroText h2 {
   text-transform: uppercase;
   margin: 0;
-  text-shadow: #333 2px 2px 5px;
+  text-shadow: #000000 2px 2px 5px;
 }
 
+.heroText {
+  margin-bottom: 20px;
+}
 .heroText h3 {
-  font-size: 33px;
+  font-size: 30px;
   color: #fff;
 }
 
 .heroText h1 {
-  font-family: "Jomhuria", cursive;
-  font-size: 300px;
-  line-height: 200px;
+  font-family: "Stalinist One", cursive;
+  font-size: 70px;
+  line-height: 1;
 
-  color: yellow;
+  color: #a2ff1f;
   -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #333;
+  -webkit-text-stroke-color: #000000;
 }
 
 .heroText h2 {
-  line-height: 0;
-  font-size: 64px;
+  line-height: 1;
+  font-size: 50px;
 
   color: #fff;
 }
 .heroText button {
-  margin-top: 70px;
   padding: 12px 20px;
+  margin-top: 20px;
 
   border-radius: 50px;
   border: solid 2px #fff;
 
   color: #fff;
-  background-color: #e100ff;
-
+  background: #661da2;
+  background: linear-gradient(0deg, #661da2 0%, #9a1fff 100%);
   font-weight: 600;
   text-transform: uppercase;
+}
+.heroText button:hover {
+  border-color: rgb(200, 255, 0);
+  color: rgb(200, 255, 0);
 }

@@ -1,25 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styles from "./ModifyPassword.module.css";
 const back = process.env.REACT_APP_BACK;
 
 function ModifyPassword() {
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [id, setId] = useState(null); // Agregamos un estado para almacenar la ID
-  const [emailError, setEmailError] = useState('');
-
+  const [message, setMessage] = useState(''); 
+  const correoElectronico = localStorage.getItem('correoElectronico');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'email') {
-      setEmail(value);
-      // Validar el correo electrónico en tiempo real
-      const emailIsValid = /^\S+@\S+\.\S+$/.test(value);
-      setEmailError(emailIsValid ? '' : 'El correo electrónico no es válido');
-    } else if (name === 'password') {
+    if (name === 'password') {
       setPassword(value);
     } else if (name === 'confirmPassword') {
       setConfirmPassword(value);
@@ -35,17 +28,10 @@ function ModifyPassword() {
       return;
     }
 
-    if (emailError) {
-      // El correo no es válido, muestra una alerta
-      alert('El correo electrónico no es válido.');
-      return;
-    }
-
     try {
       // Realiza la solicitud GET con fetch
-      const response = await fetch(`${back}user/${email}`);
+      const response = await fetch(`${back}user/${correoElectronico}`);
 
-      // console.log(response);
       if (!response.ok) {
         // Correo no registrado, muestra una alerta
         alert('El correo electrónico no está registrado.');
@@ -54,9 +40,6 @@ function ModifyPassword() {
 
       // Parsea la respuesta como JSON
       const data = await response.json();
-
-      // Almacenar la ID del usuario en el estado
-      setId(data.id);
 
       // Realiza la solicitud PUT para cambiar la contraseña
       const putResponse = await fetch(`${back}modify-password/${data.id}`, {
@@ -74,7 +57,6 @@ function ModifyPassword() {
       }
 
       // Limpia los campos del formulario
-      setEmail('');
       setPassword('');
       setConfirmPassword('');
       setMessage('Contraseña cambiada con éxito.');
@@ -87,22 +69,11 @@ function ModifyPassword() {
   };
 
   return (
-    <div>
-      <h2>Cambiar Contraseña</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Ingresa tu Correo Electrónico:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            required
-          />
-          {emailError && <p className="error">{emailError}</p>}
-        </div>
-        <div>
+    <div className={styles.container}>      
+      
+      <form onSubmit={handleSubmit} className={styles.formContainer}>
+          <h2>Cambiar Contraseña</h2>
+          <p>Correo Electrónico: {correoElectronico}</p>    
           <label htmlFor="password">Nueva Contraseña:</label>
           <input
             type="password"
@@ -111,9 +82,8 @@ function ModifyPassword() {
             value={password}
             onChange={handleChange}
             required
-          />
-        </div>
-        <div>
+            className={styles.inputForm}
+          />       
           <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
           <input
             type="password"
@@ -122,13 +92,13 @@ function ModifyPassword() {
             value={confirmPassword}
             onChange={handleChange}
             required
-          />
-        </div>
-        <div>
-          <button type="submit">Cambiar Contraseña</button>
-        </div>
+            className={styles.inputForm}
+          />       
+        
+          <button type="submit" className={styles.buttonForm} >Cambiar Contraseña</button>
+          <p>{message}</p>
       </form>
-      <p>{message}</p>
+      
     </div>
   );
 }

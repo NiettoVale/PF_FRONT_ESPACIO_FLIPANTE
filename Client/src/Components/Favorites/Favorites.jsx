@@ -30,6 +30,7 @@ const Favorites = () => {
   return (
     <div className={styles.favoritesContainer}>
       <SideBar />
+      <h2>FAVORITOS</h2>
       {favorites.length > 0 ? (
         <Cards products={favorites} />
       ) : (

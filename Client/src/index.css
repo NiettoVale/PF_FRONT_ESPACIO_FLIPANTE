@@ -7,7 +7,12 @@
 
   color-scheme: light dark;
   color: #000;
-  background-color: #fff;
+  background: rgb(238, 238, 238);
+  background: linear-gradient(
+    0deg,
+    rgba(238, 238, 238, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -17,6 +22,7 @@
 }
 *::selection {
   background-color: #b92ad6;
+  color: #fff;
 }
 h1,
 h2,

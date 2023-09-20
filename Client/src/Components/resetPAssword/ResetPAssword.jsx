@@ -45,7 +45,7 @@ const PasswordReset = () => {
         "Hola , recupera tu contraseña"
       );
       setError(null);
-
+      localStorage.setItem('correoElectronico', email);
       // Mostrar una alerta cuando se envía con éxito
       alert(
         "Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña."

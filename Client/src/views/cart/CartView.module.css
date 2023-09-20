@@ -1,13 +1,10 @@
 /* Estilos para CartView */
 .fullContainer {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .cartTitle {
-  margin: 20px auto 10px auto;
+  margin: 90px auto 10px auto;
 }
 
 .buyButton {
@@ -17,6 +14,8 @@
 }
 
 .deleteButton {
+  border: solid 1px #000;
+  background-color: #fff;
   color: red;
   margin: 10px auto;
   padding: 10px;
@@ -71,8 +70,7 @@
 
 .emptyCart {
   text-align: center;
-  margin: auto;
-  margin-top: 100px; /* Espacio superior para separar del encabezado */
+  margin: 180px auto;
   padding: 20px;
   white-space: pre-line; /* Permite división de líneas */
   font-size: 20px; /* Tamaño de fuente más pequeño */

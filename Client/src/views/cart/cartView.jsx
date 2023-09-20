@@ -85,7 +85,6 @@ const CartView = () => {
       {cart.length > 0 ? (
         <div>
           <h2 className={styles.cartTitle}>Carrito de Compra</h2>
-
           <CartCards
             products={cart}
             setTotalPrice={setTotalPrice}
@@ -108,7 +107,7 @@ const CartView = () => {
         <div className={styles.emptyCart}>
           <h2>El carrito se encuentra vacío</h2>
           <Link to={"/"}>
-            <button className={styles.catalogButton}>Agregar Productos</button>
+            <button className={styles.catalogButton}>Ir al catálogo</button>
           </Link>
         </div>
       )}
