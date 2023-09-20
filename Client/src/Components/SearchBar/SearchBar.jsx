@@ -39,6 +39,10 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleClickScroll = () => {
+    window.scrollTo({ top: 1650, behavior: "smooth" });
+  };
+
   const logOutGoogle = () => {
     localStorage.removeItem("googleImage");
     localStorage.removeItem("googleName");
@@ -72,6 +76,7 @@ export default function SearchBar({ busqueda, setBusqueda, filterSearch }) {
         onChange={handleChange}
         className={styles.searchInput}
         placeholder="BUSCAR"
+        onClick={handleClickScroll}
       />
       {googleImage ? (
         <img src={imageProfile} className={styles.userIcon} alt="PEPEss" />
