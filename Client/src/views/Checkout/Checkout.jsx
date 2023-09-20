@@ -302,8 +302,14 @@ const Checkout = () => {
             </div>
           </form>
           <div className={styles.checkButtons}>
-            <a href="/cart">◀ Volver al carrito</a>
-            <p>Precio Total: {totalPrice}</p>
+            <div className={styles.checkBottom}>
+              <a href="/cart">◀ Volver al carrito</a>
+              <div className={styles.total}>
+                <p>Total a pagar: </p>
+                <h3>{totalPrice}</h3>
+              </div>
+            </div>
+
             <button
               type="button"
               onClick={handleBuy}

@@ -18,8 +18,8 @@
 
 .deleteButton {
   color: red;
-  margin: 10px auto;
-  padding: 10px;
+
+  letter-spacing: normal;
 }
 
 .cartNav {

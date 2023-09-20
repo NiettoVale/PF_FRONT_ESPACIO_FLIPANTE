@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import enviarMail from "./funcionEnviarPassword";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+import NavBar from "../NavBar/navBar";
+
+import SearchBar from "../SearchBar/SearchBar";
+
+import Footer from "../Footer/Footer";
+
 import styles from "./ResetPassword.module.css"; // Importa los estilos CSS
 import { Link } from "react-router-dom";
+
+const MySwal = withReactContent(Swal);
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");
@@ -34,7 +46,11 @@ const PasswordReset = () => {
       // Realizar una solicitud GET para verificar si el correo está registrado
       const response = await fetch(`${back}user/${email}`);
       if (!response.ok) {
-        alert("El correo electrónico no está registrado");
+        MySwal.fire({
+          icon: "warning",
+          title: "Advertencia",
+          text: "El correo electrónico no está registrado.",
+        });
         return;
       }
 
@@ -45,11 +61,13 @@ const PasswordReset = () => {
         "Hola , recupera tu contraseña"
       );
       setError(null);
-
+      localStorage.setItem("correoElectronico", email);
       // Mostrar una alerta cuando se envía con éxito
-      alert(
-        "Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña."
-      );
+      MySwal.fire({
+        icon: "success",
+        title: "Perfecto!",
+        text: "Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña.",
+      });
     } catch (error) {
       setError(error.message);
     }
@@ -57,7 +75,10 @@ const PasswordReset = () => {
 
   return (
     <div className={styles.container}>
-      {" "}
+      <div className={styles.logo}>
+        <NavBar />
+      </div>
+      <SearchBar />
       {/* Aplica el estilo container */}
       <form onSubmit={handleResetPassword} className={styles.formContainer}>
         <h2>Recuperación de Contraseña</h2>
@@ -80,6 +101,8 @@ const PasswordReset = () => {
         {error && <p className={styles.error}>{error}</p>}{" "}
         {/* Aplica el estilo error */}
       </form>
+
+      <Footer />
     </div>
   );
 };

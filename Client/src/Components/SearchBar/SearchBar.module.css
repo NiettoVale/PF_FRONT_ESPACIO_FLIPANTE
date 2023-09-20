@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: space-between; /* Cambia a "space-between" para separar los elementos */
   background-color: #fff;
-  width: 390px;
+  /* width: 390px; */
   border: none;
 }
 
