@@ -10,9 +10,6 @@ import ProductSlider from "../../Components/ProductSlider/ProductSlider";
 import styles from "./home.module.css";
 import Footer from "../../Components/Footer/Footer";
 import axios from "axios";
-
-import Brands from "../../Components/Brands/Brands";
-
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 const back = process.env.REACT_APP_BACK;
@@ -230,10 +227,9 @@ const Home = () => {
         )}
       </div>
 
-      <Brands />
       <Footer />
     </div>
   );
 };
 
-export default Home;
+export default Home;
