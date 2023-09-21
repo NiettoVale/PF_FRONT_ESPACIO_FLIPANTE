@@ -82,39 +82,36 @@ const LoginForm = () => {
             if (superUser) {
               localStorage.setItem("root", data.name);
               localStorage.setItem("AdminId", data.id);
+              MySwal.fire({
+                icon: "success",
+                title: superUser ? "Éxito" : "Éxito",
+                text: superUser
+                  ? "Bienvenido Administrador!."
+                  : "Inicio de sesión exitoso.",
+              });
               navigate("/admin");
             } else {
               localStorage.setItem("username", data.name);
               localStorage.setItem("userId", data.id);
+
+              const email = data.email;
+
+              if (!sendEmail) {
+                // Verifica si se debe enviar el correo de bienvenida
+                // Envía el correo electrónico cuando se inicia sesión con éxito
+                enviarMail(email, "BIENVENIDO", "Hola bienvenido");
+                await fetch(`${back}update-user/${data.id}`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ sendEmail: true }),
+                });
+              }
+
+              localStorage.setItem("username", formData.name);
               navigate("/");
             }
-
-            const email = data.email;
-
-            if (!sendEmail) {
-              // Verifica si se debe enviar el correo de bienvenida
-              // Envía el correo electrónico cuando se inicia sesión con éxito
-              enviarMail(email, "BIENVENIDO", "Hola bienvenido");
-              await fetch(`${back}update-user/${data.id}`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ sendEmail: true }),
-              });
-            }
-
-            localStorage.setItem("username", formData.name);
-
-            navigate("/");
-
-            MySwal.fire({
-              icon: "success",
-              title: superUser ? "Éxito" : "Éxito",
-              text: superUser
-                ? "Bienvenido Administrador!."
-                : "Inicio de sesión exitoso.",
-            });
           } else if (response.status === 401) {
             MySwal.fire({
               icon: "error",

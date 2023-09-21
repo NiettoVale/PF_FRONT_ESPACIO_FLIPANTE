@@ -28,6 +28,9 @@ function DashboardAdmin() {
           </div>
         </Link>
         <ul>
+          <Link to="/admin/orderslist">
+            <li>Pedidos</li>
+          </Link>
           <Link to="/admin/list">
             <li>Productos Activos</li>
           </Link>

@@ -25,7 +25,7 @@ import PasswordReset from "./Components/resetPAssword/ResetPAssword";
 import ModifyPassword from "./Components/resetPAssword/ModifyPassword";
 import DeletedProductList from "./Components/DeletedProductList/DeletedProductList";
 import ReviewsList from "./Components/Reviews/ReviewsList";
-
+import OrdersList from "./Components/Orders/OrdersList";
 import "./App.css";
 
 import BadURL from "./views/badURL/BadURL";
@@ -52,6 +52,7 @@ function App() {
       <Route path="/reset-password" element={<PasswordReset />} />
       <Route path="/modify-password" element={<ModifyPassword />} />
       <Route path="/admin/*" element={<DashboardAdmin />}>
+        <Route path="orderslist" element={<OrdersList />} />
         <Route path="list" element={<ProductList />} />
         <Route path="inactive" element={<DeletedProductList />} />
         <Route path="create" element={<CreateForm />} />
